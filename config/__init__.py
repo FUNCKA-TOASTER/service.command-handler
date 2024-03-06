@@ -7,7 +7,8 @@ from .config import (
     TOKEN,
     GROUP_ID,
     SERVICE_NAME,
-    MAX_ARG_COUNT
+    MAX_ARG_COUNT,
+    API_VERSION
 )
 
 
@@ -16,5 +17,6 @@ __all__ = (
     "TOKEN",
     "GROUP_ID",
     "SERVICE_NAME",
-    "MAX_ARG_COUNT"
+    "MAX_ARG_COUNT",
+    "API_VERSION"
 )
