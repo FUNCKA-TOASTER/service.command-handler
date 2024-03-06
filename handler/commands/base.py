@@ -13,7 +13,7 @@ class BaseCommand(ABCHandler):
         self.api = api
 
 
-    def log(self):
+    async def log(self):
         """Sends a log of command execution
         in log-convs.
         """

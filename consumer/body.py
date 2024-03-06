@@ -3,7 +3,6 @@
 import json
 import pika
 import config
-from logger import logger
 
 
 class Consumer(object):
@@ -29,8 +28,6 @@ class Consumer(object):
         Yields:
             Iterator[dict]: JSON log data.
         """
-        log_text = "Awaiting command events..."
-        logger.info(log_text)
         self.channel.queue_declare(queue=queue, durable=True)
 
         for data in self.channel.consume(queue=queue, auto_ack=True):

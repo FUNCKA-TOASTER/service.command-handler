@@ -27,26 +27,26 @@ class ABCHandler(ABC):
         ).get_api or None
 
 
-    def __call__(self, event: dict, **kwargs) -> bool:
+    async def __call__(self, event: dict, **kwargs) -> bool:
         """Calls the class as a function,
         handling the received input
         BaseEvent object.
         """
         if self.__api is not None:
-            return self._handle(event, kwargs)
+            return await self._handle(event, kwargs)
 
         else:
             event_id = event.get("event_id")
             event_type = event.get("event_type")
             log_text = f"Unable to handle event <{event_id}|{event_type}>. " \
                         "Handler does not have an API object."
-            logger.info(log_text)
+            await logger.info(log_text)
 
         return False
 
 
     @abstractmethod
-    def _handle(self, event: dict, kwargs) -> bool:
+    async def _handle(self, event: dict, kwargs) -> bool:
         """Handle a custom event, returning the processing result.
         Applies all handlers one by one to the custom event object.
 

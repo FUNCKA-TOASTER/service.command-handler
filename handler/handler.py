@@ -12,7 +12,7 @@ class CommandHandler(ABCHandler):
     #TODO: integrate DB
     # db = DataBase()
 
-    def _handle(self, event: dict, kwargs) -> bool:
+    async def _handle(self, event: dict, kwargs) -> bool:
         command_text: str = event.get("text")
         command_text_wo_prefix: str = command_text[1:]
 
@@ -25,7 +25,8 @@ class CommandHandler(ABCHandler):
 
         if selected is None:
             log_text = f"Could not recognize command {command}"
-            logger.info(log_text)
+            await logger.info(log_text)
+
             return False
 
         #TODO: integrate DB
@@ -34,7 +35,7 @@ class CommandHandler(ABCHandler):
 
         user_lvl = 2 #self.__get_userlvl(event)
         if selected.permission <= user_lvl:
-            result = selected(event, argument_list=arguments)
+            result = await selected(event, argument_list=arguments)
 
             log_text = f"Event <{event.get('event_id')}> with " \
                        f"arg list <{arguments}> "
@@ -44,14 +45,14 @@ class CommandHandler(ABCHandler):
             else:
                 log_text += "did not triggered any command."
 
-            logger.info(log_text)
+            await logger.info(log_text)
             return result
 
         return False
 
 
     #TODO: integrate DB
-    # def __get_userlvl(self, event: dict) -> int:
+    # async def __get_userlvl(self, event: dict) -> int:
     #     if event.from_id == config.TECH_ADMIN_ID:
     #         return 2
 

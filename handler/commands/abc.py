@@ -16,7 +16,7 @@ class ABCHandler(ABC):
             False - handler skiped
     """
     @abstractmethod
-    def _handle(self, event: dict, kwargs) -> bool:
+    async def _handle(self, event: dict, kwargs) -> bool:
         """Handling a custom event that returns the result of processing.
         It is used within the framework of one specific action with a custom event.
 
@@ -29,9 +29,9 @@ class ABCHandler(ABC):
         """
 
 
-    def __call__(self, event: dict, **kwargs) -> bool:
+    async def __call__(self, event: dict, **kwargs) -> bool:
         """Calls the class as a function,
         handling the received input
         BaseEvent object.
         """
-        return self._handle(event, kwargs)
+        return await self._handle(event, kwargs)

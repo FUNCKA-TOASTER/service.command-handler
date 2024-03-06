@@ -17,7 +17,7 @@ class TestCommand(BaseCommand):
     COMMAND_NAME = "test"
     _permission_lvl = 2
 
-    def _handle(self, event: dict, kwargs) -> bool:
+    async def _handle(self, event: dict, kwargs) -> bool:
         answer_text = f"Вызвана комманда <{self.COMMAND_NAME}> " \
                       f"с аргументами {kwargs.get('argument_list')}."
 
