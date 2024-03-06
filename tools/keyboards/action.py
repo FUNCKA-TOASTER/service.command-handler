@@ -10,6 +10,16 @@ class BaseAction(object):
         self.owner_id = None
 
 
+    def set_owner(self, value: int):
+        """Sets a value to a field
+        keyboard owner.
+
+        Args:
+            value (int): Keyboard owner id.
+        """
+        self.owner_id = value
+
+
     @property
     def data(self) -> dict:
         """Returns a dictionary representation of the button
@@ -21,8 +31,6 @@ class BaseAction(object):
         data = {
             key: value for key, value in vars(self).items()
         }
-
-        data["payload"].setdefault("owner_id", self.owner_id)
 
         return data
 
@@ -37,6 +45,7 @@ class Text(BaseAction):
 
         self.label = label
         self.payload = payload
+        self.payload.setdefault("owner_id", self.owner_id)
 
 
 
@@ -49,6 +58,7 @@ class OpenLink(BaseAction):
         self.link = url
         self.label = label
         self.payload = payload
+        self.payload.setdefault("owner_id", self.owner_id)
 
 
 
@@ -62,6 +72,7 @@ class Location(BaseAction):
         self.link = url
         self.label = label
         self.payload = payload
+        self.payload.setdefault("owner_id", self.owner_id)
 
 
 
@@ -76,6 +87,7 @@ class VKPay(BaseAction):
         self.hash = payment_hash
         self.label = label
         self.payload = payload
+        self.payload.setdefault("owner_id", self.owner_id)
 
 
 
@@ -89,6 +101,7 @@ class OpenApp(BaseAction):
         self.hash = app_hash
         self.label = label
         self.payload = payload
+        self.payload.setdefault("owner_id", self.owner_id)
         self.app_id = app_id
         self.owner_id = owner_id
 
@@ -105,3 +118,4 @@ class Callback(BaseAction):
 
         self.label = label
         self.payload = payload
+        self.payload.setdefault("owner_id", self.owner_id)

@@ -10,8 +10,8 @@ class Button(object):
 
     def __init__(self, action: BaseAction, color: ButtonColor, owner_id: int):
         self.action = action
+        self.action.set_owner(owner_id)
         self.color = color
-        self.action.owner_id = owner_id
 
 
     @property
