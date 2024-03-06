@@ -48,6 +48,8 @@ class TestCommand(BaseCommand):
             )
         )
 
+        print(keyboard.as_dict)
+
         self.api.messages.send(
             peer_id=event.get("peer_id"),
             random_id=0,
