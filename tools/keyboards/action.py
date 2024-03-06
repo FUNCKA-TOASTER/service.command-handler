@@ -7,12 +7,12 @@ class BaseAction(object):
     """
     def __init__(self, action_type: str):
         self.type = action_type
-        self._owner_id = None
+        self.owner_id = None
 
 
     @owner_id.setter
-    def owner_id(self, owner_id: int):
-        self._owner_id = owner_id
+    def owner_id(self, value: int):
+        self._owner_id = value
 
 
     @property
