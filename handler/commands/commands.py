@@ -47,7 +47,7 @@ class TestCommand(BaseCommand):
                 ButtonColor.NEGATIVE
             )
         )
-
+        print(keyboard)
         self.api.messages.send(
             peer_id=event.get("peer_id"),
             random_id=0,
