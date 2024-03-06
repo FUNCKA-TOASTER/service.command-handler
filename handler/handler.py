@@ -17,7 +17,7 @@ class CommandHandler(ABCHandler):
         command_text_wo_prefix: str = command_text[1:]
 
         #command arguments
-        arguments: list = command_text_wo_prefix.split(" ")[0:config.MAX_ARG_COUNT]
+        arguments: list = command_text_wo_prefix.split(" ")[0:config.MAX_ARG_COUNT+1]
         #command name
         command: str = arguments.pop(0)
 
