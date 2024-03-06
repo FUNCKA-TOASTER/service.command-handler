@@ -34,7 +34,18 @@ class CommandHandler(ABCHandler):
 
         user_lvl = 2 #self.__get_userlvl(event)
         if selected.permission <= user_lvl:
-            return selected(event, argument_list=arguments)
+            result = selected(event, argument_list=arguments)
+
+            log_text = f"Event <{event.get('event_id')}> with " \
+                       f"arg list <{arguments}> "
+
+            if result:
+                log_text += f"triggered /{selected.COMMAND_NAME} command."
+            else:
+                log_text += "did not triggered any command."
+
+            logger.info(log_text)
+            return result
 
         return False
 
