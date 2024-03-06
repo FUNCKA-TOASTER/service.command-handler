@@ -10,11 +10,6 @@ class BaseAction(object):
         self.owner_id = None
 
 
-    @owner_id.setter
-    def owner_id(self, value: int):
-        self._owner_id = value
-
-
     @property
     def data(self) -> dict:
         """Returns a dictionary representation of the button
@@ -27,7 +22,7 @@ class BaseAction(object):
             key: value for key, value in vars(self).items()
         }
 
-        data.setdefault("owner_id", self._owner_id)
+        data.setdefault("owner_id", self.owner_id)
 
         return data
 
