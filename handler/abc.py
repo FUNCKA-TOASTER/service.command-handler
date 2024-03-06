@@ -24,7 +24,7 @@ class ABCHandler(ABC):
         self.__api: VkApi = VkApi(
             token=config.TOKEN,
             api_version=config.API_VERSION
-        ).get_api or None
+        ).get_api() or None
 
 
     async def __call__(self, event: dict, **kwargs) -> bool:
