@@ -22,7 +22,7 @@ class BaseAction(object):
             key: value for key, value in vars(self).items()
         }
 
-        data.setdefault("owner_id", self.owner_id)
+        data["payload"].setdefault("owner_id", self.owner_id)
 
         return data
 
