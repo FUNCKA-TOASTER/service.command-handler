@@ -1,6 +1,11 @@
 """Module "db"
 """
+
+
 class Executer(object):
+    """Class providing functions
+    for basic SQL queries.
+    """
     _ops = {
         '__le': '<=',
         '__lt': '<',

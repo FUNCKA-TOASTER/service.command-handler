@@ -1,6 +1,4 @@
 """Module "db".
-About:
-    This file contains a database connection class.
 """
 import MySQLdb
 from logger import logger

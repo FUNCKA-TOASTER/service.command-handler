@@ -1,3 +1,5 @@
+"""Module "db".
+"""
 import config
 from .connection import Connection
 from .execute import Executer
