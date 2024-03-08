@@ -1,3 +1,4 @@
+import config
 from .connection import Connection
 from .execute import Executer
 from .preset import Preseter
@@ -41,8 +42,8 @@ class DataBase(object):
 
 
 db = DataBase(
-    host="host",
-    port=1,
-    user="user",
-    password="password"
+    host=config.MY_SQL_HOST,
+    port=config.MY_SQL_PORT,
+    user=config.MY_SQL_USER,
+    password=config.MY_SQL_PSWD
 )
