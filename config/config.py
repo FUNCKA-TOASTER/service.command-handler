@@ -15,4 +15,4 @@ MAX_ARG_COUNT = 10
 MY_SQL_HOST = os.getenv("SQL_HOST")
 MY_SQL_PORT = os.getenv("SQL_PORT")
 MY_SQL_USER = os.getenv("SQL_USER")
-MY_SQL_USER = os.getenv("SQL_PSWD")
+MY_SQL_PSWD = os.getenv("SQL_PSWD")
