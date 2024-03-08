@@ -45,7 +45,12 @@ class CommandHandler(ABCHandler):
             await logger.info(log_text)
             return result
 
-        return False
+        else:
+            log_text = f"User {event.get('user_name')} have" \
+            " not permissions to execute this command."
+            await logger.info(log_text)
+
+            return False
 
 
     async def __get_userlvl(self, event: dict) -> int:
@@ -53,7 +58,7 @@ class CommandHandler(ABCHandler):
             schema="toaster_settings",
             table="staff",
             fields=("user_id",),
-            user_id=event.get("from_id"),
+            user_id=event.get("user_id"),
             staff_role="TECH"
         )
 
@@ -65,7 +70,7 @@ class CommandHandler(ABCHandler):
             schema="toaster",
             table="permissions",
             fields=("user_permission",),
-            conv_id=event.peer_id
+            conv_id=event.get("peer_id")
         )
 
         if bool(user_lvl):
