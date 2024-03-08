@@ -50,9 +50,10 @@ class CommandHandler(ABCHandler):
     async def __get_userlvl(self, event: dict) -> int:
         tech_admin = db.execute.select(
             schema="toaster_settings",
-            table="tech_admins",
+            table="staff",
             fields=("user_id",),
-            user_id=event.get("from_id")
+            user_id=event.get("from_id"),
+            staff_role="TECH"
         )
 
         if bool(tech_admin):
