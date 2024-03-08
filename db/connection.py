@@ -8,7 +8,7 @@ class Connection(object):
     """
     This class provides connection to the MySQL database.
     """
-    def __init__(self, host: str, port: int, user: str, password: str):
+    async def __init__(self, host: str, port: int, user: str, password: str):
         try:
             self._connection = MySQLdb.connect(
                 host=host,
@@ -19,11 +19,11 @@ class Connection(object):
             self._connection.autocommit(True)
             self._cursor = self._connection.cursor()
 
-            logger.debug(f"Connected to MySQL Server with <User: {user}>.")
+            await logger.debug(f"Connected to MySQL Server with <User: {user}>.")
 
 
         except MySQLdb.Error as error:
-            logger.debug(f"Failed to connect to MySQL Server: {error}")
+            await logger.debug(f"Failed to connect to MySQL Server: {error}")
 
 
     @property
