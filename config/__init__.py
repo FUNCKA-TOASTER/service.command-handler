@@ -8,7 +8,11 @@ from .config import (
     GROUP_ID,
     SERVICE_NAME,
     MAX_ARG_COUNT,
-    API_VERSION
+    API_VERSION,
+    MY_SQL_HOST,
+    MY_SQL_PORT,
+    MY_SQL_PSWD,
+    MY_SQL_USER
 )
 
 
@@ -18,5 +22,9 @@ __all__ = (
     "GROUP_ID",
     "SERVICE_NAME",
     "MAX_ARG_COUNT",
-    "API_VERSION"
+    "API_VERSION",
+    "MY_SQL_HOST",
+    "MY_SQL_PORT",
+    "MY_SQL_PSWD",
+    "MY_SQL_USER"
 )
