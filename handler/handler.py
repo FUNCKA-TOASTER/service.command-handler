@@ -63,7 +63,7 @@ class CommandHandler(ABCHandler):
         )
 
         if bool(tech_admin):
-            if event.get("from_id") == tech_admin[0][0]:
+            if event.get("user_id") == tech_admin[0][0]:
                 return 2
 
         user_lvl = db.execute.select(
