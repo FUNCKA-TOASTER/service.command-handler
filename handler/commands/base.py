@@ -1,3 +1,4 @@
+import re
 from vk_api import VkApi
 from .abc import ABCHandler
 
@@ -5,11 +6,10 @@ from .abc import ABCHandler
 class BaseCommand(ABCHandler):
     """Command handler base class.
     """
-    _permission_lvl = 0
-    COMMAND_NAME = "None"
+    _PERMISSION_LVL = 0
+    _COMMAND_NAME = "None"
 
     def __init__(self, api: VkApi):
-        #self.db = db
         self.api = api
 
 
@@ -28,4 +28,42 @@ class BaseCommand(ABCHandler):
         Returns:
             int: permission lvl.
         """
-        return self._permission_lvl
+        return self._PERMISSION_LVL
+
+
+    @property
+    def name(self) -> str:
+        """Returns the command name.
+
+        Returns:
+            str: command name.
+        """
+        return self._COMMAND_NAME
+
+
+    def is_tag(self, tag: str) -> bool:
+        """Takes a string as input, determines
+        is the line a VK user tag.
+
+        Args:
+            tag (str): The string that
+            is assumed to be the user tag.
+
+        Returns:
+            bool: Is tag?
+        """
+        pattern = r"^\[id[-+]?\d+\|\@?\w+\]"
+        return bool(re.search(pattern, tag))
+
+
+    def id_from_tag(self, tag: str) -> int:
+        """_summary_
+
+        Args:
+            tag (str): _description_
+
+        Returns:
+            int: _description_
+        """
+        sep_pos = tag.find("|")
+        return int(tag[3:sep_pos])
