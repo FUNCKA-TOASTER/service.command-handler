@@ -42,10 +42,6 @@ class DataBase(object):
         return self._preset
 
 
-print(config.MY_SQL_HOST)
-print(config.MY_SQL_PORT)
-print(config.MY_SQL_USER)
-print(config.MY_SQL_PSWD)
 
 db = DataBase(
     host=config.MY_SQL_HOST,
