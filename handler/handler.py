@@ -1,5 +1,6 @@
 from logger import logger
 import config
+from db import db
 from .abc import ABCHandler
 from .commands import command_list
 
@@ -9,9 +10,6 @@ class CommandHandler(ABCHandler):
     in the message and executing attached to each command
     actions.
     """
-    #TODO: integrate DB
-    # db = DataBase()
-
     async def _handle(self, event: dict, kwargs) -> bool:
         command_text: str = event.get("text")
         command_text_wo_prefix: str = command_text[1:]
@@ -29,11 +27,9 @@ class CommandHandler(ABCHandler):
 
             return False
 
-        #TODO: integrate DB
-        #selected = selected(self.db, super().api)
-        selected = selected(super().api)
+        selected = selected(super().api) 
 
-        user_lvl = 2 #self.__get_userlvl(event)
+        user_lvl = self.__get_userlvl(event)
         if selected.permission <= user_lvl:
             result = await selected(event, argument_list=arguments)
 
@@ -51,20 +47,29 @@ class CommandHandler(ABCHandler):
         return False
 
 
-    #TODO: integrate DB
-    # async def __get_userlvl(self, event: dict) -> int:
-    #     if event.from_id == config.TECH_ADMIN_ID:
-    #         return 2
+    async def __get_userlvl(self, event: dict) -> int:
+        tech_admin = db.execute.select(
+            schema="toaster_settings",
+            table="tech_admins",
+            fields=("user_id",),
+            user_id=event.get("from_id")
+        )
 
-    #     user_lvl = self.db.permissions.select(
-    #         fields=("user_permission",),
-    #         conv_id=event.peer_id
-    #     )
+        if bool(tech_admin):
+            if event.get("from_id") == tech_admin:
+                return 2
 
-    #     if bool(user_lvl):
-    #         return int(user_lvl[0][0])
+        user_lvl = db.execute.select(
+            schema="toaster",
+            table="permissions",
+            fields=("user_permission",),
+            conv_id=event.peer_id
+        )
 
-    #     return 0
+        if bool(user_lvl):
+            return int(user_lvl[0][0])
+
+        return 0
 
 
 
