@@ -1,10 +1,14 @@
 from .commands import (
     TestCommand,
+    MarkCommand,
+    PermissionCommand
 )
 
 
 command_list = {
-    TestCommand.COMMAND_NAME: TestCommand,
+    TestCommand.name: TestCommand,
+    PermissionCommand.name: PermissionCommand,
+    MarkCommand.name: MarkCommand
 }
 
 
