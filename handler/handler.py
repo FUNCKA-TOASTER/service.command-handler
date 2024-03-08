@@ -38,7 +38,7 @@ class CommandHandler(ABCHandler):
                        f"arg list <{arguments}> "
 
             if result:
-                log_text += f"triggered /{selected.COMMAND_NAME} command."
+                log_text += f"triggered /{selected.NAME} command."
             else:
                 log_text += "did not triggered any command."
 
