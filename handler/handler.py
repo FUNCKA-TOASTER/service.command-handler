@@ -12,6 +12,8 @@ class CommandHandler(ABCHandler):
     actions.
     """
     async def _handle(self, event: dict, kwargs) -> bool:
+        await self._delete_ownmessage(event)
+
         command_text: str = event.get("text")
         command_text_wo_prefix: str = command_text[1:]
 
@@ -40,8 +42,6 @@ class CommandHandler(ABCHandler):
 
             if result:
                 log_text += f"triggered /{selected.NAME} command."
-
-                await self._delete_ownmessage(event)
 
             else:
                 log_text += "did not triggered any command."
