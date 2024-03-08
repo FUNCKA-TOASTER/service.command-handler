@@ -30,7 +30,7 @@ class CommandHandler(ABCHandler):
         selected = selected(super().api)
 
         user_lvl = await self.__get_userlvl(event)
-        
+
         if selected.PERMISSION <= user_lvl:
             result = await selected(event, argument_list=arguments)
 
