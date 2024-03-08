@@ -27,7 +27,7 @@ class CommandHandler(ABCHandler):
 
             return False
 
-        selected = selected(super().api) 
+        selected = selected(super().api)
 
         user_lvl = self.__get_userlvl(event)
         if selected.permission <= user_lvl:
@@ -57,7 +57,7 @@ class CommandHandler(ABCHandler):
         )
 
         if bool(tech_admin):
-            if event.get("from_id") == tech_admin:
+            if event.get("from_id") == tech_admin[0][0]:
                 return 2
 
         user_lvl = db.execute.select(
