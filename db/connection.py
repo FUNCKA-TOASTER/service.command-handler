@@ -1,14 +1,13 @@
 """Module "db".
 """
 import MySQLdb
-from logger import logger
 
 
 class Connection(object):
     """
     This class provides connection to the MySQL database.
     """
-    async def __init__(self, host: str, port: int, user: str, password: str):
+    def __init__(self, host: str, port: int, user: str, password: str):
         try:
             self._connection = MySQLdb.connect(
                 host=host,
@@ -19,11 +18,11 @@ class Connection(object):
             self._connection.autocommit(True)
             self._cursor = self._connection.cursor()
 
-            await logger.debug(f"Connected to MySQL Server with <User: {user}>.")
+            print(f"Connected to MySQL Server with <User: {user}>.")
 
 
         except MySQLdb.Error as error:
-            await logger.debug(f"Failed to connect to MySQL Server: {error}")
+            print(f"Failed to connect to MySQL Server: {error}")
 
 
     @property
