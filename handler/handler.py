@@ -1,3 +1,4 @@
+from vk_api import VkApiError
 from logger import logger
 import config
 from db import db
@@ -39,6 +40,9 @@ class CommandHandler(ABCHandler):
 
             if result:
                 log_text += f"triggered /{selected.NAME} command."
+
+                await self._delete_ownmessage(event)
+
             else:
                 log_text += "did not triggered any command."
 
@@ -78,6 +82,18 @@ class CommandHandler(ABCHandler):
 
         return 0
 
+
+    async def _delete_ownmessage(self, event: dict):
+        try:
+            super().api.messages.delete(
+                delete_for_all=1,
+                peer_id=event.get("peer_id"),
+                cmids=event.get("cmid")
+            )
+
+        except VkApiError as error:
+            log_text = f"Could not delete own command message: {error}"
+            await logger.info(log_text)
 
 
 command_handler = CommandHandler()
