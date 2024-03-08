@@ -20,7 +20,8 @@ class CommandHandler(ABCHandler):
         command: str = arguments.pop(0)
 
         selected = command_list.get(command)
-
+        print(command)
+        print(command_list)
         if selected is None:
             log_text = f"Could not recognize command {command}"
             await logger.info(log_text)
