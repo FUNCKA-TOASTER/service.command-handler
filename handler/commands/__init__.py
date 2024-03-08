@@ -6,9 +6,9 @@ from .commands import (
 
 
 command_list = {
-    TestCommand.name: TestCommand,
-    PermissionCommand.name: PermissionCommand,
-    MarkCommand.name: MarkCommand
+    TestCommand.NAME: TestCommand,
+    PermissionCommand.NAME: PermissionCommand,
+    MarkCommand.NAME: MarkCommand
 }
 
 

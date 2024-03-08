@@ -14,11 +14,11 @@ class TestCommand(BaseCommand):
         Keyboard
         e.t.c
     """
-    _COMMAND_NAME = "test"
-    _PERMISSION_LVL = 2
+    PERMISSION = 2
+    NAME = "test"
 
     async def _handle(self, event: dict, kwargs) -> bool:
-        answer_text = f"Вызвана комманда <{self.name}> " \
+        answer_text = f"Вызвана комманда <{self.NAME}> " \
                       f"с аргументами {kwargs.get('argument_list')}."
 
         keyboard = (
@@ -67,8 +67,8 @@ class MarkCommand(BaseCommand):
         - Update the data about conversation.
         - Delete conversation mark.
     """
-    _COMMAND_NAME = "mark"
-    _PERMISSION_LVL = 2
+    PERMISSION = 2
+    NAME = "mark"
 
     async def _handle(self, event: dict, kwargs) -> bool:
         answer_text = "⚠️ Вы хотите пометить новую беседу? \n\n" \
@@ -149,8 +149,8 @@ class PermissionCommand(BaseCommand):
         - Set "Moderator" role.
         - Set "User" role.
     """
-    _COMMAND_NAME = "permission"
-    _PERMISSION_LVL = 2
+    PERMISSION = 2
+    NAME = "permission"
 
     async def _handle(self, event: dict, kwargs) -> bool:
         user_tag = kwargs.get('argument_list')[0]

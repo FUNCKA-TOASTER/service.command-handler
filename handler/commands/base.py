@@ -6,8 +6,8 @@ from .abc import ABCHandler
 class BaseCommand(ABCHandler):
     """Command handler base class.
     """
-    _PERMISSION_LVL = 0
-    _COMMAND_NAME = "None"
+    PERMISSION = 0
+    NAME = "None"
 
     def __init__(self, api: VkApi):
         self.api = api
@@ -18,27 +18,6 @@ class BaseCommand(ABCHandler):
         in log-convs.
         """
         # TODO: write me
-
-
-    @property
-    def permission(self) -> int:
-        """Returns the access level
-        to execute the command.
-
-        Returns:
-            int: permission lvl.
-        """
-        return self._PERMISSION_LVL
-
-
-    @property
-    def name(self) -> str:
-        """Returns the command name.
-
-        Returns:
-            str: command name.
-        """
-        return self._COMMAND_NAME
 
 
     def is_tag(self, tag: str) -> bool:

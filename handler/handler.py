@@ -30,7 +30,7 @@ class CommandHandler(ABCHandler):
         selected = selected(super().api)
 
         user_lvl = self.__get_userlvl(event)
-        if selected.permission <= user_lvl:
+        if selected.PERMISSION <= user_lvl:
             result = await selected(event, argument_list=arguments)
 
             log_text = f"Event <{event.get('event_id')}> with " \
