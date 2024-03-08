@@ -153,7 +153,12 @@ class PermissionCommand(BaseCommand):
     NAME = "permission"
 
     async def _handle(self, event: dict, kwargs) -> bool:
-        user_tag = kwargs.get('argument_list')[0]
+        args = kwargs.get('argument_list')
+
+        if not args:
+            return False
+
+        user_tag = args[0]
 
         if not self.is_tag(user_tag):
             return False
