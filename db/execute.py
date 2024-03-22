@@ -19,7 +19,7 @@ class Executer(object):
         self.cur = cursor
 
 
-    def select(self, schema:str , table: str,  fields: tuple = None, **rows) -> tuple:
+    def select(self, schema:str, table: str,  fields: tuple = None, **rows) -> tuple:
         """
         Accepts arguments for fields, comparisons, etc., 
         forms a database select query from them and returns the result of its execution.
@@ -59,7 +59,7 @@ class Executer(object):
         return result
 
 
-    def insert(self, schema:str , table: str, on_duplicate=None, **rows):
+    def insert(self, schema:str, table: str, on_duplicate=None, **rows):
         """
         Takes arguments for fields, comparisons, etc., 
         forms a database insert query from them and inserts data when it is executed.
@@ -92,7 +92,7 @@ class Executer(object):
         self.cur.execute(query)
 
 
-    def update(self, schema:str , table: str, new_data: dict, **rows):
+    def update(self, schema:str, table: str, new_data: dict, **rows):
         """
         Accepts arguments for fields, comparisons, etc.,
         forms a query from them to update the database
@@ -128,7 +128,7 @@ class Executer(object):
         self.cur.execute(query)
 
 
-    def delete(self, schema:str , table: str, **rows):
+    def delete(self, schema:str, table: str, **rows):
         """
         Takes arguments for fields, comparisons, etc.,
         forms a request from them to delete from the
@@ -154,6 +154,22 @@ class Executer(object):
 
         self.cur.execute(f'USE {schema};')
         self.cur.execute(query)
+
+
+    def raw(self, schema:str, query:str):
+        """Raw query executer.
+
+        Args:
+            schema (str): Schema name.
+            query (str): Query string.
+
+        Returns:
+            object: MySQL cursor object.
+        """
+        self.cur.execute(f'USE {schema};')
+        self.cur.execute(query)
+
+        return self.cur
 
 
     def _get_ratio(self, rows: dict) -> list:
