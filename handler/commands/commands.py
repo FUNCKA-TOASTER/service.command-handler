@@ -306,7 +306,7 @@ class SayCommand(BaseCommand):
         if not args:
             return False
 
-        answer_text = "".join(args)
+        answer_text = " ".join(args)
 
         self.api.messages.send(
             peer_id=event.get("peer_id"),
