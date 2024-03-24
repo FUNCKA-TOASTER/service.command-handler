@@ -318,8 +318,7 @@ class SayCommand(BaseCommand):
 
 class DeleteCommand(BaseCommand):
     """Delete command.
-    Sends a message from the face of the bot.
-    Maximum 10 words.
+    Deleting forwarded messages.
     """
     PERMISSION = 1
     NAME = "delete"
@@ -340,8 +339,7 @@ class DeleteCommand(BaseCommand):
 
             return True
 
-        else:
-            return False
+        return False
 
 
     async def _delete_message(self, cmid: int, peer_id: int):
@@ -355,3 +353,24 @@ class DeleteCommand(BaseCommand):
         except VkApiError as error:
             log_text = f"Could not delete <{cmid}> message: {error}"
             await logger.info(log_text)
+
+
+class CopyCommand(BaseCommand):
+    """Copy command.
+    Copying text of forwarded message.
+    """
+    PERMISSION = 1
+    NAME = "copy"
+
+    async def _handle(self, event: dict, kwargs) -> bool:
+        if event.get("reply"):
+            answer_text = event["reply"].get("text")
+            self.api.messages.send(
+                peer_id=event.get("peer_id"),
+                random_id=0,
+                message=answer_text
+            )
+
+            return True
+
+        return False
