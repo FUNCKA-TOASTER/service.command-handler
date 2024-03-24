@@ -2,7 +2,9 @@ from .commands import (
     TestCommand,
     MarkCommand,
     PermissionCommand,
-    GameCommand
+    GameCommand,
+    SayCommand,
+    DeleteCommand
 )
 
 
@@ -10,7 +12,9 @@ command_list = {
     TestCommand.NAME: TestCommand,
     PermissionCommand.NAME: PermissionCommand,
     MarkCommand.NAME: MarkCommand,
-    GameCommand.NAME: GameCommand
+    GameCommand.NAME: GameCommand,
+    SayCommand.NAME: SayCommand,
+    DeleteCommand.NAME: DeleteCommand
 }
 
 
