@@ -4,7 +4,8 @@ from .commands import (
     PermissionCommand,
     GameCommand,
     SayCommand,
-    DeleteCommand
+    DeleteCommand,
+    CopyCommand
 )
 
 
@@ -14,7 +15,8 @@ command_list = {
     MarkCommand.NAME: MarkCommand,
     GameCommand.NAME: GameCommand,
     SayCommand.NAME: SayCommand,
-    DeleteCommand.NAME: DeleteCommand
+    DeleteCommand.NAME: DeleteCommand,
+    CopyCommand.NAME: CopyCommand
 }
 
 
