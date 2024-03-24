@@ -333,8 +333,8 @@ class DeleteCommand(BaseCommand):
             return True
 
         elif event.get("forward"):
-            peer_id = event.get("peer_id")
             for msg in event["forward"]:
+                peer_id = msg.get("peer_id")
                 cmid = msg.get("conversation_message_id")
                 await self._delete_message(cmid, peer_id)
 
