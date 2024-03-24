@@ -224,3 +224,66 @@ class PermissionCommand(BaseCommand):
         )
 
         return True
+
+
+
+class GameCommand(BaseCommand):
+    """Game command.
+    Includes menu with the choice of the game.
+    Allows:
+        - Roll.
+        - Coindflip.
+    """
+    PERMISSION = 0
+    NAME = "game"
+
+    async def _handle(self, event: dict, kwargs) -> bool:
+        answer_text = "🎲 Потянуло на азарт? :)\n\n" \
+            "Выберите игру из списка ниже:"
+
+        keyboard = (
+            Keyboard(
+                inline=True,
+                one_time=False,
+                owner_id=event.get("user_id")
+            )
+            .add_row()
+            .add_button(
+                Callback(
+                    label="Рулетка",
+                    payload={
+                        "call_action": "game_roll"
+                    }
+                ),
+                ButtonColor.PRIMARY
+            )
+            .add_row()
+            .add_button(
+                Callback(
+                    label="Бросок монетки",
+                    payload={
+                        "call_action": "game_coinflip"
+                    }
+                ),
+                ButtonColor.PRIMARY
+            )
+            .add_row()
+            .add_button(
+                Callback(
+                    label="Отмена команды",
+                    payload={
+                        "call_action": "cancel_command"
+                    }
+                ),
+                ButtonColor.PRIMARY
+            )
+        )
+
+        self.api.messages.send(
+            peer_id=event.get("peer_id"),
+            random_id=0,
+            message=answer_text,
+            keyboard=keyboard.json
+        )
+
+        return True
