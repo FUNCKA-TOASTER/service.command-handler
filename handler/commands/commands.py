@@ -1,8 +1,10 @@
+from vk_api import VkApiError
 from tools.keyboards import (
     Keyboard,
     Callback,
     ButtonColor
 )
+from logger import logger
 from .base import BaseCommand
 
 
@@ -287,3 +289,69 @@ class GameCommand(BaseCommand):
         )
 
         return True
+
+
+
+class SayCommand(BaseCommand):
+    """Say command.
+    Sends a message from the face of the bot.
+    Maximum 10 words.
+    """
+    PERMISSION = 1
+    NAME = "say"
+
+    async def _handle(self, event: dict, kwargs) -> bool:
+        args = kwargs.get('argument_list')
+
+        if not args:
+            return False
+
+        answer_text = "".join(args)
+
+        self.api.messages.send(
+            peer_id=event.get("peer_id"),
+            random_id=0,
+            message=answer_text
+        )
+
+
+
+class DeleteCommand(BaseCommand):
+    """Delete command.
+    Sends a message from the face of the bot.
+    Maximum 10 words.
+    """
+    PERMISSION = 1
+    NAME = "delete"
+
+    async def _handle(self, event: dict, kwargs) -> bool:
+        if event.get("reply"):
+            cmid = event["reply"].get("conversation_message_id")
+            peer_id = event.get("peer_id")
+            await self._delete_message(cmid, peer_id)
+
+            return True
+
+        elif event.get("forward"):
+            peer_id = event.get("peer_id")
+            for msg in event["forward"]:
+                cmid = msg.get("conversation_message_id")
+                await self._delete_message(cmid, peer_id)
+
+            return True
+
+        else:
+            return False
+
+
+    async def _delete_message(self, cmid: int, peer_id: int):
+        try:
+            self.api.messages.delete(
+                delete_for_all=1,
+                peer_id=peer_id,
+                cmid=cmid
+            )
+
+        except VkApiError as error:
+            log_text = f"Could not delete <{cmid}> message: {error}"
+            await logger.info(log_text)
