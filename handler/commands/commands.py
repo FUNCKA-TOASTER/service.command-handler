@@ -275,7 +275,7 @@ class GameCommand(BaseCommand):
                         "call_action": "cancel_command"
                     }
                 ),
-                ButtonColor.PRIMARY
+                ButtonColor.NEGATIVE
             )
         )
 
