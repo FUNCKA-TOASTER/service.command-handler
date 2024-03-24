@@ -349,7 +349,7 @@ class DeleteCommand(BaseCommand):
             self.api.messages.delete(
                 delete_for_all=1,
                 peer_id=peer_id,
-                cmid=cmid
+                cmids=cmid
             )
 
         except VkApiError as error:
