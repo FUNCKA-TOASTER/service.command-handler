@@ -465,8 +465,9 @@ class SlowModeDelayCommand(BaseCommand):
             conv_id=event.get("peer_id")
         )
 
-        answer_text = "🚸 Задержка медленного режима для данного" \
-            f" чата установлена на {minutes_delay} минут(у)."
+        timename = self._get_timename(minutes_delay)
+        answer_text = "⚠️ Задержка медленного режима для данного" \
+            f" чата установлена на {minutes_delay} {timename}."
 
         self.api.messages.send(
             peer_id=event.get("peer_id"),
@@ -475,3 +476,18 @@ class SlowModeDelayCommand(BaseCommand):
         )
 
         return True
+
+
+    @staticmethod
+    def _get_timename(num) -> str:
+        timename = "минут"
+        if 11 <= num and num  <= 14:
+            timename = "минут"
+
+        elif num % 10 == 1:
+            timename = "минута"
+
+        elif 2 <= (num % 10) and (num % 10) <= 4:
+            timename = "минуты"
+
+        return timename
