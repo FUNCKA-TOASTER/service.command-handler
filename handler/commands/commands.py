@@ -485,7 +485,7 @@ class SlowModeDelayCommand(BaseCommand):
             timename = "минут"
 
         elif num % 10 == 1:
-            timename = "минута"
+            timename = "минуту"
 
         elif 2 <= (num % 10) and (num % 10) <= 4:
             timename = "минуты"
