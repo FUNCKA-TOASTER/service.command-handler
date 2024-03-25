@@ -5,7 +5,9 @@ from .commands import (
     GameCommand,
     SayCommand,
     DeleteCommand,
-    CopyCommand
+    CopyCommand,
+    SettingsCommand,
+    SlowModeDelayCommand
 )
 
 
@@ -16,7 +18,9 @@ command_list = {
     GameCommand.NAME: GameCommand,
     SayCommand.NAME: SayCommand,
     DeleteCommand.NAME: DeleteCommand,
-    CopyCommand.NAME: CopyCommand
+    CopyCommand.NAME: CopyCommand,
+    SettingsCommand.NAME: SettingsCommand,
+    SlowModeDelayCommand.NAME: SlowModeDelayCommand
 }
 
 
