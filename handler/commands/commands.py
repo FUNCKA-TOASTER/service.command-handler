@@ -4,6 +4,7 @@ from tools.keyboards import (
     Callback,
     ButtonColor
 )
+from db import db
 from logger import logger
 from .base import BaseCommand
 
@@ -376,9 +377,10 @@ class CopyCommand(BaseCommand):
         return False
 
 
+
 class SettingsCommand(BaseCommand):
-    """Copy command.
-    Copying text of forwarded message.
+    """Setting command.
+    Opens the settings selection menu.
     """
     PERMISSION = 2
     NAME = "settings"
@@ -433,3 +435,43 @@ class SettingsCommand(BaseCommand):
         return True
 
 
+
+class SlowModeDelayCommand(BaseCommand):
+    """Smb command.
+    It sets a slow mode delay in minutes.
+    """
+    PERMISSION = 1
+    NAME = "smb"
+
+    async def _handle(self, event: dict, kwargs) -> bool:
+        args = kwargs.get('argument_list')
+
+        if not args:
+            return False
+
+        minutes_delay: str = args[0]
+
+        if not minutes_delay.isnumeric():
+            return False
+
+        new_data = {
+            "delay": minutes_delay,
+        }
+
+        db.execute.update(
+            schema="toaster_settings",
+            table="slow_mode_delay",
+            new_data=new_data,
+            conv_id=event.get("peer_id")
+        )
+
+        answer_text = "🚸 Задержка медленного режима для данного" \
+            f" чата установлена на {minutes_delay} минут(у)."
+
+        self.api.messages.send(
+            peer_id=event.get("peer_id"),
+            random_id=0,
+            message=answer_text
+        )
+
+        return True
