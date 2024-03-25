@@ -437,11 +437,11 @@ class SettingsCommand(BaseCommand):
 
 
 class SlowModeDelayCommand(BaseCommand):
-    """Smb command.
+    """Smd command.
     It sets a slow mode delay in minutes.
     """
     PERMISSION = 1
-    NAME = "smb"
+    NAME = "smd"
 
     async def _handle(self, event: dict, kwargs) -> bool:
         args = kwargs.get('argument_list')
