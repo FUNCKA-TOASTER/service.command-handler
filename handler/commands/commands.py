@@ -374,3 +374,62 @@ class CopyCommand(BaseCommand):
             return True
 
         return False
+
+
+class SettingsCommand(BaseCommand):
+    """Copy command.
+    Copying text of forwarded message.
+    """
+    PERMISSION = 2
+    NAME = "settings"
+
+    async def _handle(self, event: dict, kwargs) -> bool:
+        answer_text = "🚸 Выберите необходимую группу настроек:"
+
+        keyboard = (
+            Keyboard(
+                inline=True,
+                one_time=False,
+                owner_id=event.get("user_id")
+            )
+            .add_row()
+            .add_button(
+                Callback(
+                    label="Фильтры",
+                    payload={
+                        "call_action": "filter_settings_page_1"
+                    }
+                ),
+                ButtonColor.PRIMARY
+            )
+            .add_button(
+                Callback(
+                    label="Системы",
+                    payload={
+                        "call_action": "systems_settings_page_1"
+                    }
+                ),
+                ButtonColor.PRIMARY
+            )
+            .add_row()
+            .add_button(
+                Callback(
+                    label="Отмена команды",
+                    payload={
+                        "call_action": "cancel_command"
+                    }
+                ),
+                ButtonColor.NEGATIVE
+            )
+        )
+
+        self.api.messages.send(
+            peer_id=event.get("peer_id"),
+            random_id=0,
+            message=answer_text,
+            keyboard=keyboard.json
+        )
+
+        return True
+
+
