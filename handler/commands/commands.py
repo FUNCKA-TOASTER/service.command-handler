@@ -399,7 +399,8 @@ class SettingsCommand(BaseCommand):
                 Callback(
                     label="Фильтры",
                     payload={
-                        "call_action": "filters_settings_page_1"
+                        "call_action": "filters_settings",
+                        "page": "1"
                     }
                 ),
                 ButtonColor.PRIMARY
@@ -408,7 +409,8 @@ class SettingsCommand(BaseCommand):
                 Callback(
                     label="Системы",
                     payload={
-                        "call_action": "systems_settings_page_1"
+                        "call_action": "systems_settings",
+                        "page": "1"
                     }
                 ),
                 ButtonColor.PRIMARY
