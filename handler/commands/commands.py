@@ -399,7 +399,7 @@ class SettingsCommand(BaseCommand):
                 Callback(
                     label="Фильтры",
                     payload={
-                        "call_action": "filter_settings_page_1"
+                        "call_action": "filters_settings_page_1"
                     }
                 ),
                 ButtonColor.PRIMARY
