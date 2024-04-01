@@ -467,7 +467,7 @@ class KickCommand(BaseCommand):
                 #     chat_id=event.get("chat_id"),
                 #     user_id=event.get("user_id")
                 # )
-                
+
                 query = f"""
                 INSERT INTO 
                     kicked
@@ -490,7 +490,10 @@ class KickCommand(BaseCommand):
                     query=query
                 )
 
+                return True
+
             except VkApiError:
-                ...
+                
+                return False
 
         return False
