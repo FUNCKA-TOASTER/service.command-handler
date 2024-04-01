@@ -440,3 +440,57 @@ class SlowModeDelayCommand(BaseCommand):
             timename = "минуты"
 
         return timename
+
+
+
+class KickCommand(BaseCommand):
+    """Kick command.
+    Permanently removes user from conversation.
+    """
+    PERMISSION = 2
+    NAME = "kick"
+
+    async def _handle(self, event: dict, kwargs) -> bool:
+        args = kwargs.get('argument_list')
+
+        user_id = None
+
+        if args and self.is_tag(args[0]):
+            user_id = self.id_from_tag(args[0])
+
+        elif event.get('reply', False):
+            user_id = event.get('reply').get("from_id")
+
+        if user_id is not None:
+            try:
+                # self.api.messages.removeChatUser(
+                #     chat_id=event.get("chat_id"),
+                #     user_id=event.get("user_id")
+                # )
+                
+                query = f"""
+                INSERT INTO 
+                    kicked
+                    (
+                        conv_id,
+                        user_id,
+                        user_name,
+                        kick_date
+                    )
+                VALUES
+                    (
+                        '{event.get("peer_id")}',
+                        '{user_id}',
+                        '{self.name_from_id(user_id)}',
+                        NOW()
+                    );
+                """
+                db.execute.raw(
+                    schema="toaster",
+                    query=query
+                )
+
+            except VkApiError:
+                ...
+
+        return False
