@@ -19,8 +19,9 @@ class BaseCommand(ABCHandler):
         """
         # TODO: write me
 
-
-    def is_tag(self, tag: str) -> bool:
+    
+    @staticmethod
+    def is_tag(tag: str) -> bool:
         """Takes a string as input, determines
         is the line a VK user tag.
 
@@ -35,7 +36,8 @@ class BaseCommand(ABCHandler):
         return bool(re.search(pattern, tag))
 
 
-    def id_from_tag(self, tag: str) -> int:
+    @staticmethod
+    def id_from_tag(tag: str) -> int:
         """_summary_
 
         Args:
@@ -46,3 +48,28 @@ class BaseCommand(ABCHandler):
         """
         sep_pos = tag.find("|")
         return int(tag[3:sep_pos])
+
+
+    def name_from_id(self, user_id) -> str:
+        """_summary_
+
+        Args:
+            user_id (_type_): _description_
+
+        Returns:
+            str: _description_
+        """
+        user_info = self.api.users.get(
+            user_ids=user_id,
+            fields=["domain"]
+        )
+
+        if not user_info:
+            return None
+
+        user_name = " ".join([
+            user_info[0].get("first_name"),
+            user_info[0].get("last_name")
+        ])
+
+        return user_name
