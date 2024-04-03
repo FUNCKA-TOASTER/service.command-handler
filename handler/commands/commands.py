@@ -485,10 +485,8 @@ class KickCommand(BaseCommand):
                         NOW()
                     )
                 ON DUPLICATE KEY UPDATE
-                    (
                         user_name = '{self.name_from_id(user_id)}',
-                        kick_date = NOW()
-                    );
+                        kick_date = NOW();
                 """
                 db.execute.raw(
                     schema="toaster",
