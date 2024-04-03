@@ -465,7 +465,7 @@ class KickCommand(BaseCommand):
             try:
                 self.api.messages.removeChatUser(
                     chat_id=event.get("chat_id"),
-                    user_id=event.get("user_id")
+                    user_id=user_id
                 )
 
                 query = f"""
