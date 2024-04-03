@@ -483,6 +483,11 @@ class KickCommand(BaseCommand):
                         '{user_id}',
                         '{self.name_from_id(user_id)}',
                         NOW()
+                    )
+                ON DUPLICATE KEY UPDATE
+                    (
+                        user_name = '{self.name_from_id(user_id)}',
+                        kick_date = NOW()
                     );
                 """
                 db.execute.raw(
