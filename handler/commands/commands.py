@@ -463,10 +463,10 @@ class KickCommand(BaseCommand):
 
         if user_id is not None:
             try:
-                # self.api.messages.removeChatUser(
-                #     chat_id=event.get("chat_id"),
-                #     user_id=event.get("user_id")
-                # )
+                self.api.messages.removeChatUser(
+                    chat_id=event.get("chat_id"),
+                    user_id=event.get("user_id")
+                )
 
                 query = f"""
                 INSERT INTO 
@@ -493,7 +493,6 @@ class KickCommand(BaseCommand):
                 return True
 
             except VkApiError:
-                
                 return False
 
         return False
