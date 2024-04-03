@@ -303,6 +303,7 @@ class DeleteCommand(BaseCommand):
             await logger.info(log_text)
 
 
+
 class CopyCommand(BaseCommand):
     """Copy command.
     Copying text of forwarded message.
@@ -450,6 +451,8 @@ class KickCommand(BaseCommand):
     PERMISSION = 2
     NAME = "kick"
 
+    #TODO: Добавить распознование владельца команды
+    # (Во избежание самокика)
     async def _handle(self, event: dict, kwargs) -> bool:
         args = kwargs.get('argument_list')
 
@@ -459,6 +462,7 @@ class KickCommand(BaseCommand):
             user_id = self.id_from_tag(args[0])
 
         elif event.get('reply', False):
+            #TODO: Добавить удаление сообщения нарушителя.
             user_id = event.get('reply').get("from_id")
 
         if user_id is not None:
