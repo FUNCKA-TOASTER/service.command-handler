@@ -32,8 +32,8 @@ class BaseCommand(ABCHandler):
         Returns:
             bool: Is tag?
         """
-        pattern = r"^\[id[-+]?\d+\|\@?*.*\]"
-        return bool(re.search(pattern, tag))
+        pattern = r"^\[id[-+]?\d+\|\@?.*\]"
+        return bool(re.findall(pattern, tag))
 
 
     @staticmethod
