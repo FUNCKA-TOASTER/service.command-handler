@@ -6,7 +6,7 @@ from .commands import (
     DeleteCommand,
     CopyCommand,
     SettingsCommand,
-    SlowModeDelayCommand,
+    DelayCommand,
     KickCommand
 )
 
@@ -19,7 +19,7 @@ command_list = {
     DeleteCommand.NAME: DeleteCommand,
     CopyCommand.NAME: CopyCommand,
     SettingsCommand.NAME: SettingsCommand,
-    SlowModeDelayCommand.NAME: SlowModeDelayCommand,
+    DelayCommand.NAME: DelayCommand,
     KickCommand.NAME: KickCommand
 }
 
