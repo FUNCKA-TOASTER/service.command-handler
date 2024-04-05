@@ -396,7 +396,7 @@ class DelayCommand(BaseCommand):
     It sets a slow mode delay in minutes.
     """
     PERMISSION = 1
-    NAME = "smd"
+    NAME = "delay"
 
     async def _handle(self, event: dict, kwargs) -> bool:
         keyboard = (
@@ -446,7 +446,6 @@ class DelayCommand(BaseCommand):
         )
 
         return True
-
 
 
 
