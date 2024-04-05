@@ -120,7 +120,7 @@ class PermissionCommand(BaseCommand):
 
         keyboard = (
             Keyboard(
-                inline=True, 
+                inline=True,
                 one_time=False,
                 owner_id=event.get("user_id")
             )
@@ -391,7 +391,7 @@ class SettingsCommand(BaseCommand):
 
 
 
-class SlowModeDelayCommand(BaseCommand):
+class DelayCommand(BaseCommand):
     """Smd command.
     It sets a slow mode delay in minutes.
     """
@@ -399,53 +399,54 @@ class SlowModeDelayCommand(BaseCommand):
     NAME = "smd"
 
     async def _handle(self, event: dict, kwargs) -> bool:
-        args = kwargs.get('argument_list')
-
-        if not args:
-            return False
-
-        minutes_delay: str = args[0]
-
-        if not minutes_delay.isnumeric():
-            return False
-
-        new_data = {
-            "delay": minutes_delay,
-        }
-
-        db.execute.update(
-            schema="toaster_settings",
-            table="slow_mode_delay",
-            new_data=new_data,
-            conv_id=event.get("peer_id")
+        keyboard = (
+            Keyboard(
+                inline=True,
+                one_time=False,
+                owner_id=event.get("user_id")
+            )
+            .add_row()
+            .add_button(
+                Callback(
+                    label="Медленный режим",
+                    payload={
+                        "call_action": "slow_mode_delay",
+                    }
+                ),
+                ButtonColor.PRIMARY
+            )
+            .add_button(
+                Callback(
+                    label="Возраст аккаунта",
+                    payload={
+                        "call_action": "account_age_delay",
+                    }
+                ),
+                ButtonColor.PRIMARY
+            )
+            .add_row()
+            .add_button(
+                Callback(
+                    label="Отмена команды",
+                    payload={
+                        "call_action": "cancel_command"
+                    }
+                ),
+                ButtonColor.NEGATIVE
+            )
         )
 
-        timename = self._get_timename(int(minutes_delay))
-        answer_text = "⚠️ Задержка медленного режима для данного" \
-            f" чата установлена на {minutes_delay} {timename}."
+        answer_text = "🚸 Выберите настройку:"
 
         self.api.messages.send(
             peer_id=event.get("peer_id"),
             random_id=0,
-            message=answer_text
+            message=answer_text,
+            keyboard=keyboard.json
         )
 
         return True
 
-
-    @staticmethod
-    def _get_timename(num: int) -> str:
-        timename = "минут"
-        if 11 <= num and num <= 14:
-            timename = "минут"
-
-        elif num % 10 == 1:
-            timename = "минуту"
-
-        elif 2 <= (num % 10) and (num % 10) <= 4:
-            timename = "минуты"
-
-        return timename
 
 
 
