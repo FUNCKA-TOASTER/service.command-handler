@@ -19,7 +19,7 @@ class BaseCommand(ABCHandler):
         """
         # TODO: write me
 
-    
+
     @staticmethod
     def is_tag(tag: str) -> bool:
         """Takes a string as input, determines
@@ -32,7 +32,7 @@ class BaseCommand(ABCHandler):
         Returns:
             bool: Is tag?
         """
-        pattern = r"^\[id[-+]?\d+\|\@?\w+\]"
+        pattern = r"^\[id[-+]?\d+\|\@?*.*\]"
         return bool(re.search(pattern, tag))
 
 
