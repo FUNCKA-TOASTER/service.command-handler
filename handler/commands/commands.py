@@ -35,7 +35,8 @@ class MarkCommand(BaseCommand):
                 Callback(
                     label="CHAT",
                     payload={
-                        "call_action": "mark_as_chat"
+                        "call_action": "set_mark",
+                        "mark": "CHAT"
                     }
                 ),
                 ButtonColor.POSITIVE
@@ -44,7 +45,8 @@ class MarkCommand(BaseCommand):
                 Callback(
                     label="LOG",
                     payload={
-                        "call_action": "mark_as_log"
+                        "call_action": "set_mark",
+                        "mark": "LOG"
                     }
                 ),
                 ButtonColor.POSITIVE
@@ -127,7 +129,8 @@ class PermissionCommand(BaseCommand):
                 Callback(
                     label="Модератор",
                     payload={
-                        "call_action": "set_moderator_permission",
+                        "call_action": "set_permission",
+                        "permission": 1,
                         "target": self.id_from_tag(user_tag)
                     }
                 ),
@@ -137,7 +140,8 @@ class PermissionCommand(BaseCommand):
                 Callback(
                     label="Администратор",
                     payload={
-                        "call_action": "set_administrator_permission",
+                        "call_action": "set_permission",
+                        "permission": 2,
                         "target": self.id_from_tag(user_tag)
                     }
                 ),
@@ -147,7 +151,8 @@ class PermissionCommand(BaseCommand):
                 Callback(
                     label="Пользователь",
                     payload={
-                        "call_action": "set_user_permission",
+                        "call_action": "set_permission",
+                        "permission": 0,
                         "target": self.id_from_tag(user_tag)
                     }
                 ),
