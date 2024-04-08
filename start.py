@@ -1,11 +1,12 @@
 """Service "toaster.comman-handling-service".
 About:
     ...
-    
+
 Author:
     Oidaho (Ruslan Bashinskii)
     oidahomain@gmail.com
 """
+
 import asyncio
 from consumer import consumer
 from handler import command_handler
@@ -13,8 +14,7 @@ from logger import logger
 
 
 async def main():
-    """Entry point.
-    """
+    """Entry point."""
     log_text = "Awaiting command events..."
     await logger.info(log_text)
 
@@ -23,7 +23,6 @@ async def main():
         await logger.info(log_text)
 
         await command_handler(data)
-
 
 
 if __name__ == "__main__":

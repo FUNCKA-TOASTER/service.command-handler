@@ -7,7 +7,7 @@ from .commands import (
     CopyCommand,
     SettingsCommand,
     DelayCommand,
-    KickCommand
+    KickCommand,
 )
 
 
@@ -20,10 +20,8 @@ command_list = {
     CopyCommand.NAME: CopyCommand,
     SettingsCommand.NAME: SettingsCommand,
     DelayCommand.NAME: DelayCommand,
-    KickCommand.NAME: KickCommand
+    KickCommand.NAME: KickCommand,
 }
 
 
-__all__ = (
-    "command_list",
-)
+__all__ = ("command_list",)

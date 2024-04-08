@@ -2,6 +2,7 @@
 About:
     Service configurations and settings.
 """
+
 from .config import (
     QUEUE_BROKER_IP,
     TOKEN,
@@ -12,7 +13,7 @@ from .config import (
     MY_SQL_HOST,
     MY_SQL_PORT,
     MY_SQL_PSWD,
-    MY_SQL_USER
+    MY_SQL_USER,
 )
 
 
@@ -26,5 +27,5 @@ __all__ = (
     "MY_SQL_HOST",
     "MY_SQL_PORT",
     "MY_SQL_PSWD",
-    "MY_SQL_USER"
+    "MY_SQL_USER",
 )

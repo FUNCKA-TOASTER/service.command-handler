@@ -11,21 +11,24 @@ class CommandHandler(ABCHandler):
     in the message and executing attached to each command
     actions.
     """
+
     async def _handle(self, event: dict, kwargs) -> bool:
         await self._delete_ownmessage(event)
 
         command_text: str = event.get("text")
         command_text_wo_prefix: str = command_text[1:]
 
-        #command arguments
-        arguments: list = command_text_wo_prefix.split(" ")[0:config.MAX_ARG_COUNT+1]
-        #command name
+        # command arguments
+        arguments: list = command_text_wo_prefix.split(" ")[
+            0 : config.MAX_ARG_COUNT + 1
+        ]
+        # command name
         command: str = arguments.pop(0)
 
         selected = command_list.get(command)
 
         if selected is None:
-            log_text = f"Could not recognize command \"{command}\""
+            log_text = f'Could not recognize command "{command}"'
             await logger.info(log_text)
 
             return False
@@ -37,8 +40,9 @@ class CommandHandler(ABCHandler):
         if selected.PERMISSION <= user_lvl:
             result = await selected(event, argument_list=arguments)
 
-            log_text = f"Event <{event.get('event_id')}> with " \
-                       f"arg list <{arguments}> "
+            log_text = (
+                f"Event <{event.get('event_id')}> with " f"arg list <{arguments}> "
+            )
 
             if result:
                 log_text += f"triggered /{selected.NAME} command."
@@ -50,12 +54,13 @@ class CommandHandler(ABCHandler):
             return result
 
         else:
-            log_text = f"User {event.get('user_name')} have" \
-            " not permissions to execute this command."
+            log_text = (
+                f"User {event.get('user_name')} have"
+                " not permissions to execute this command."
+            )
             await logger.info(log_text)
 
             return False
-
 
     async def __get_userlvl(self, event: dict) -> int:
         tech_admin = db.execute.select(
@@ -63,7 +68,7 @@ class CommandHandler(ABCHandler):
             table="staff",
             fields=("user_id",),
             user_id=event.get("user_id"),
-            staff_role="TECH"
+            staff_role="TECH",
         )
 
         if bool(tech_admin):
@@ -74,7 +79,7 @@ class CommandHandler(ABCHandler):
             schema="toaster",
             table="permissions",
             fields=("user_permission",),
-            conv_id=event.get("peer_id")
+            conv_id=event.get("peer_id"),
         )
 
         if bool(user_lvl):
@@ -82,13 +87,10 @@ class CommandHandler(ABCHandler):
 
         return 0
 
-
     async def _delete_ownmessage(self, event: dict):
         try:
             super().api.messages.delete(
-                delete_for_all=1,
-                peer_id=event.get("peer_id"),
-                cmids=event.get("cmid")
+                delete_for_all=1, peer_id=event.get("peer_id"), cmids=event.get("cmid")
             )
 
         except VkApiError as error:
