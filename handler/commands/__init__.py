@@ -8,6 +8,7 @@ from .commands import (
     SettingsCommand,
     DelayCommand,
     KickCommand,
+    AddCurseWordCommand,
 )
 
 
@@ -21,6 +22,7 @@ command_list = {
     SettingsCommand.NAME: SettingsCommand,
     DelayCommand.NAME: DelayCommand,
     KickCommand.NAME: KickCommand,
+    AddCurseWordCommand.NAME: AddCurseWordCommand,
 }
 
 

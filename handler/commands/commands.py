@@ -338,14 +338,18 @@ class DelayCommand(BaseCommand):
             .add_button(
                 Callback(
                     label="Медленный режим",
-                    payload={"call_action": "slow_mode_delay",},
+                    payload={
+                        "call_action": "slow_mode_delay",
+                    },
                 ),
                 ButtonColor.PRIMARY,
             )
             .add_button(
                 Callback(
                     label="Возраст аккаунта",
-                    payload={"call_action": "account_age_delay",},
+                    payload={
+                        "call_action": "account_age_delay",
+                    },
                 ),
                 ButtonColor.PRIMARY,
             )
@@ -393,6 +397,9 @@ class KickCommand(BaseCommand):
             user_id = event.get("reply").get("from_id")
 
         if user_id is not None:
+            if user_id == event.get("user_id"):
+                return False
+
             try:
                 self.api.messages.removeChatUser(
                     chat_id=event.get("chat_id"), user_id=user_id
@@ -424,5 +431,30 @@ class KickCommand(BaseCommand):
 
             except VkApiError:
                 return False
+
+        return False
+
+
+class AddCurseWordCommand(BaseCommand):
+    """ACW command.
+    Adding new word to curse filtering.
+    """
+
+    PERMISSION = 2
+    NAME = "acw"
+
+    async def _handle(self, event: dict, kwargs) -> bool:
+        args = kwargs.get("argument_list")
+
+        if args:
+            new_word = args[0]
+
+            db.execute.insert(
+                schema="toaster_settings",
+                table="cursed_words",
+                on_duplicate="update",
+                conv_id=event.get("conv_id"),
+                word=new_word,
+            )
 
         return False
