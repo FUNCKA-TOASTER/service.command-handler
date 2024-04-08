@@ -9,6 +9,7 @@ from .commands import (
     DelayCommand,
     KickCommand,
     AddCurseWordCommand,
+    AddURLFilterPatternCommand,
 )
 
 
@@ -23,6 +24,7 @@ command_list = {
     DelayCommand.NAME: DelayCommand,
     KickCommand.NAME: KickCommand,
     AddCurseWordCommand.NAME: AddCurseWordCommand,
+    AddURLFilterPatternCommand.NAME: AddURLFilterPatternCommand,
 }
 
 

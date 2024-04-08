@@ -460,3 +460,32 @@ class AddCurseWordCommand(BaseCommand):
             return True
 
         return False
+
+
+class AddURLFilterPatternCommand(BaseCommand):
+    """AUFP command"""
+
+    PERMISSION = 2
+    NAME = "aufp"
+
+    async def _handle(self, event: dict, kwargs) -> bool:
+        args = kwargs.get("argument_list")
+
+        if args:
+            pattern_type = args[0]
+            pattern_status = args[1]
+            pattern = args[2]
+
+            db.execute.insert(
+                schema="toaster_settings",
+                table="url_filter",
+                on_duplicate="update",
+                conv_id=event.get("peer_id"),
+                type=pattern_type,
+                status=pattern_status,
+                pattern=pattern,
+            )
+
+            return True
+
+        return False
