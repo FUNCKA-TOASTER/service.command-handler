@@ -453,7 +453,7 @@ class AddCurseWordCommand(BaseCommand):
                 schema="toaster_settings",
                 table="cursed_words",
                 on_duplicate="update",
-                conv_id=event.get("conv_id"),
+                conv_id=event.get("peer_id"),
                 word=new_word,
             )
 
