@@ -457,4 +457,6 @@ class AddCurseWordCommand(BaseCommand):
                 word=new_word,
             )
 
+            return True
+
         return False
