@@ -435,6 +435,7 @@ class KickCommand(BaseCommand):
         return False
 
 
+# TODO: В дальнейшем придумать, как сделать более лаконично.
 class AddCurseWordCommand(BaseCommand):
     """ACW command.
     Adding new word to curse filtering.
@@ -462,6 +463,7 @@ class AddCurseWordCommand(BaseCommand):
         return False
 
 
+# TODO: В дальнейшем придумать, как сделать более лаконично.
 class AddURLFilterPatternCommand(BaseCommand):
     """AUFP command"""
 
