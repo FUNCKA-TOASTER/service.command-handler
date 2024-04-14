@@ -26,7 +26,7 @@ command_list = {
     KickCommand.NAME: KickCommand,
     AddCurseWordCommand.NAME: AddCurseWordCommand,
     AddURLFilterPatternCommand.NAME: AddURLFilterPatternCommand,
-    ExpireCommand.NAME: AddURLFilterPatternCommand,
+    ExpireCommand.NAME: ExpireCommand,
 }
 
 
