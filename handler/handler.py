@@ -35,7 +35,7 @@ class CommandHandler(ABCHandler):
 
         selected = selected(super().api)
 
-        user_lvl = await self.__get_userlvl(event)
+        user_lvl = await self._get_userlvl(event)
 
         if selected.PERMISSION <= user_lvl:
             result = await selected(event, argument_list=arguments)
@@ -62,7 +62,7 @@ class CommandHandler(ABCHandler):
 
             return False
 
-    async def __get_userlvl(self, event: dict) -> int:
+    async def _get_userlvl(self, event: dict) -> int:
         tech_admin = db.execute.select(
             schema="toaster_settings",
             table="staff",
