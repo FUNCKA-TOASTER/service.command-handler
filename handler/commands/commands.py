@@ -8,6 +8,7 @@ from .base import BaseCommand
 class MarkCommand(BaseCommand):
     PERMISSION = 2
     NAME = "mark"
+    MARK = ("UNDEFINED", "LOG", "CHAT")
 
     async def _handle(self, event: dict, kwargs) -> bool:
         answer_text = (
@@ -64,6 +65,7 @@ class MarkCommand(BaseCommand):
 class PermissionCommand(BaseCommand):
     PERMISSION = 2
     NAME = "permission"
+    MARK = ("LOG", "CHAT")
 
     async def _handle(self, event: dict, kwargs) -> bool:
         args = kwargs.get("argument_list")
@@ -139,6 +141,7 @@ class PermissionCommand(BaseCommand):
 class GameCommand(BaseCommand):
     PERMISSION = 0
     NAME = "game"
+    MARK = ("CHAT",)
 
     async def _handle(self, event: dict, kwargs) -> bool:
         answer_text = "🎲 Потянуло на азарт? :)\n\n" "Выберите игру из списка ниже:"
@@ -179,6 +182,7 @@ class GameCommand(BaseCommand):
 class SayCommand(BaseCommand):
     PERMISSION = 1
     NAME = "say"
+    MARK = ("LOG", "CHAT")
 
     async def _handle(self, event: dict, kwargs) -> bool:
         args = kwargs.get("argument_list")
@@ -196,6 +200,7 @@ class SayCommand(BaseCommand):
 class DeleteCommand(BaseCommand):
     PERMISSION = 1
     NAME = "delete"
+    MARK = ("LOG", "CHAT")
 
     async def _handle(self, event: dict, kwargs) -> bool:
         if event.get("reply"):
@@ -227,6 +232,7 @@ class DeleteCommand(BaseCommand):
 class CopyCommand(BaseCommand):
     PERMISSION = 1
     NAME = "copy"
+    MARK = ("LOG", "CHAT")
 
     async def _handle(self, event: dict, kwargs) -> bool:
         if event.get("reply"):
@@ -243,6 +249,7 @@ class CopyCommand(BaseCommand):
 class SettingsCommand(BaseCommand):
     PERMISSION = 2
     NAME = "settings"
+    MARK = ("CHAT",)
 
     async def _handle(self, event: dict, kwargs) -> bool:
         answer_text = "🚸 Выберите необходимую группу настроек:"
@@ -286,6 +293,7 @@ class SettingsCommand(BaseCommand):
 class DelayCommand(BaseCommand):
     PERMISSION = 2
     NAME = "delay"
+    MARK = ("CHAT",)
 
     async def _handle(self, event: dict, kwargs) -> bool:
         keyboard = (
@@ -333,6 +341,7 @@ class DelayCommand(BaseCommand):
 class ExpireCommand(BaseCommand):
     PERMISSION = 2
     NAME = "expire"
+    MARK = ("CHAT",)
 
     async def _handle(self, event: dict, kwargs) -> bool:
         keyboard = (
@@ -391,6 +400,7 @@ class ExpireCommand(BaseCommand):
 class KickCommand(BaseCommand):
     PERMISSION = 2
     NAME = "kick"
+    MARK = ("CHAT",)
 
     # TODO: Добавить распознование владельца команды
     # (Во избежание самокика)
@@ -449,6 +459,7 @@ class KickCommand(BaseCommand):
 class AddCurseWordCommand(BaseCommand):
     PERMISSION = 2
     NAME = "acw"
+    MARK = ("CHAT",)
 
     async def _handle(self, event: dict, kwargs) -> bool:
         args = kwargs.get("argument_list")
@@ -473,6 +484,7 @@ class AddCurseWordCommand(BaseCommand):
 class AddURLFilterPatternCommand(BaseCommand):
     PERMISSION = 2
     NAME = "aufp"
+    MARK = ("CHAT",)
 
     async def _handle(self, event: dict, kwargs) -> bool:
         args = kwargs.get("argument_list")
