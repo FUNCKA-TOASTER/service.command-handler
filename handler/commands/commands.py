@@ -6,14 +6,6 @@ from .base import BaseCommand
 
 
 class MarkCommand(BaseCommand):
-    """Mark command.
-    Initializes conversation marking process.
-    Allows:
-        - To mark conversation as "CHAT" or "LOG".
-        - Update the data about conversation.
-        - Delete conversation mark.
-    """
-
     PERMISSION = 2
     NAME = "mark"
 
@@ -70,14 +62,6 @@ class MarkCommand(BaseCommand):
 
 
 class PermissionCommand(BaseCommand):
-    """Permission command.
-    Sets new permission role to user.
-    Allows:
-        - Set "Administrator" role.
-        - Set "Moderator" role.
-        - Set "User" role.
-    """
-
     PERMISSION = 2
     NAME = "permission"
 
@@ -153,13 +137,6 @@ class PermissionCommand(BaseCommand):
 
 
 class GameCommand(BaseCommand):
-    """Game command.
-    Includes menu with the choice of the game.
-    Allows:
-        - Roll.
-        - Coindflip.
-    """
-
     PERMISSION = 0
     NAME = "game"
 
@@ -200,11 +177,6 @@ class GameCommand(BaseCommand):
 
 
 class SayCommand(BaseCommand):
-    """Say command.
-    Sends a message from the face of the bot.
-    Maximum 10 words.
-    """
-
     PERMISSION = 1
     NAME = "say"
 
@@ -222,10 +194,6 @@ class SayCommand(BaseCommand):
 
 
 class DeleteCommand(BaseCommand):
-    """Delete command.
-    Deleting forwarded messages.
-    """
-
     PERMISSION = 1
     NAME = "delete"
 
@@ -257,10 +225,6 @@ class DeleteCommand(BaseCommand):
 
 
 class CopyCommand(BaseCommand):
-    """Copy command.
-    Copying text of forwarded message.
-    """
-
     PERMISSION = 1
     NAME = "copy"
 
@@ -277,10 +241,6 @@ class CopyCommand(BaseCommand):
 
 
 class SettingsCommand(BaseCommand):
-    """Setting command.
-    Opens the settings selection menu.
-    """
-
     PERMISSION = 2
     NAME = "settings"
 
@@ -324,11 +284,7 @@ class SettingsCommand(BaseCommand):
 
 
 class DelayCommand(BaseCommand):
-    """Smd command.
-    It sets a slow mode delay in minutes.
-    """
-
-    PERMISSION = 1
+    PERMISSION = 2
     NAME = "delay"
 
     async def _handle(self, event: dict, kwargs) -> bool:
@@ -374,11 +330,65 @@ class DelayCommand(BaseCommand):
         return True
 
 
-class KickCommand(BaseCommand):
-    """Kick command.
-    Permanently removes user from conversation.
-    """
+class ExpireCommand(BaseCommand):
+    PERMISSION = 2
+    NAME = "expire"
 
+    async def _handle(self, event: dict, kwargs) -> bool:
+        keyboard = (
+            Keyboard(inline=True, one_time=False, owner_id=event.get("user_id"))
+            .add_row()
+            .add_button(
+                Callback(
+                    label="Зеленая зона",
+                    payload={
+                        "call_action": "green_zone_delay",
+                    },
+                ),
+                ButtonColor.PRIMARY,
+            )
+            .add_row()
+            .add_button(
+                Callback(
+                    label="Жёлтая зона",
+                    payload={
+                        "call_action": "yellow_zone_delay",
+                    },
+                ),
+                ButtonColor.PRIMARY,
+            )
+            .add_row()
+            .add_button(
+                Callback(
+                    label="Красная зона",
+                    payload={
+                        "call_action": "red_zone_delay",
+                    },
+                ),
+                ButtonColor.PRIMARY,
+            )
+            .add_row()
+            .add_button(
+                Callback(
+                    label="Отмена команды", payload={"call_action": "cancel_command"}
+                ),
+                ButtonColor.NEGATIVE,
+            )
+        )
+
+        answer_text = "🚸 Выберите зону:"
+
+        self.api.messages.send(
+            peer_id=event.get("peer_id"),
+            random_id=0,
+            message=answer_text,
+            keyboard=keyboard.json,
+        )
+
+        return True
+
+
+class KickCommand(BaseCommand):
     PERMISSION = 2
     NAME = "kick"
 
@@ -437,10 +447,6 @@ class KickCommand(BaseCommand):
 
 # TODO: В дальнейшем придумать, как сделать более лаконично.
 class AddCurseWordCommand(BaseCommand):
-    """ACW command.
-    Adding new word to curse filtering.
-    """
-
     PERMISSION = 2
     NAME = "acw"
 
@@ -465,8 +471,6 @@ class AddCurseWordCommand(BaseCommand):
 
 # TODO: В дальнейшем придумать, как сделать более лаконично.
 class AddURLFilterPatternCommand(BaseCommand):
-    """AUFP command"""
-
     PERMISSION = 2
     NAME = "aufp"
 
