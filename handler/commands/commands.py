@@ -402,8 +402,6 @@ class KickCommand(BaseCommand):
     NAME = "kick"
     MARK = ("CHAT",)
 
-    # TODO: Добавить распознование владельца команды
-    # (Во избежание самокика)
     async def _handle(self, event: dict, kwargs) -> bool:
         args = kwargs.get("argument_list")
 
@@ -469,7 +467,7 @@ class AddCurseWordCommand(BaseCommand):
 
             db.execute.insert(
                 schema="toaster_settings",
-                table="cursed_words",
+                table="curse_words",
                 on_duplicate="update",
                 conv_id=event.get("peer_id"),
                 word=new_word,
