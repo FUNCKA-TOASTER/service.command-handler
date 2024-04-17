@@ -6,16 +6,9 @@ from .base import BaseCommand
 
 
 class MarkCommand(BaseCommand):
-    """Mark command.
-    Initializes conversation marking process.
-    Allows:
-        - To mark conversation as "CHAT" or "LOG".
-        - Update the data about conversation.
-        - Delete conversation mark.
-    """
-
     PERMISSION = 2
     NAME = "mark"
+    MARK = ("UNDEFINED", "LOG", "CHAT")
 
     async def _handle(self, event: dict, kwargs) -> bool:
         answer_text = (
@@ -70,16 +63,9 @@ class MarkCommand(BaseCommand):
 
 
 class PermissionCommand(BaseCommand):
-    """Permission command.
-    Sets new permission role to user.
-    Allows:
-        - Set "Administrator" role.
-        - Set "Moderator" role.
-        - Set "User" role.
-    """
-
     PERMISSION = 2
     NAME = "permission"
+    MARK = ("LOG", "CHAT")
 
     async def _handle(self, event: dict, kwargs) -> bool:
         args = kwargs.get("argument_list")
@@ -153,15 +139,9 @@ class PermissionCommand(BaseCommand):
 
 
 class GameCommand(BaseCommand):
-    """Game command.
-    Includes menu with the choice of the game.
-    Allows:
-        - Roll.
-        - Coindflip.
-    """
-
     PERMISSION = 0
     NAME = "game"
+    MARK = ("CHAT",)
 
     async def _handle(self, event: dict, kwargs) -> bool:
         answer_text = "🎲 Потянуло на азарт? :)\n\n" "Выберите игру из списка ниже:"
@@ -200,13 +180,9 @@ class GameCommand(BaseCommand):
 
 
 class SayCommand(BaseCommand):
-    """Say command.
-    Sends a message from the face of the bot.
-    Maximum 10 words.
-    """
-
     PERMISSION = 1
     NAME = "say"
+    MARK = ("LOG", "CHAT")
 
     async def _handle(self, event: dict, kwargs) -> bool:
         args = kwargs.get("argument_list")
@@ -222,12 +198,9 @@ class SayCommand(BaseCommand):
 
 
 class DeleteCommand(BaseCommand):
-    """Delete command.
-    Deleting forwarded messages.
-    """
-
     PERMISSION = 1
     NAME = "delete"
+    MARK = ("LOG", "CHAT")
 
     async def _handle(self, event: dict, kwargs) -> bool:
         if event.get("reply"):
@@ -257,12 +230,9 @@ class DeleteCommand(BaseCommand):
 
 
 class CopyCommand(BaseCommand):
-    """Copy command.
-    Copying text of forwarded message.
-    """
-
     PERMISSION = 1
     NAME = "copy"
+    MARK = ("LOG", "CHAT")
 
     async def _handle(self, event: dict, kwargs) -> bool:
         if event.get("reply"):
@@ -277,12 +247,9 @@ class CopyCommand(BaseCommand):
 
 
 class SettingsCommand(BaseCommand):
-    """Setting command.
-    Opens the settings selection menu.
-    """
-
     PERMISSION = 2
     NAME = "settings"
+    MARK = ("CHAT",)
 
     async def _handle(self, event: dict, kwargs) -> bool:
         answer_text = "🚸 Выберите необходимую группу настроек:"
@@ -324,12 +291,9 @@ class SettingsCommand(BaseCommand):
 
 
 class DelayCommand(BaseCommand):
-    """Smd command.
-    It sets a slow mode delay in minutes.
-    """
-
-    PERMISSION = 1
+    PERMISSION = 2
     NAME = "delay"
+    MARK = ("CHAT",)
 
     async def _handle(self, event: dict, kwargs) -> bool:
         keyboard = (
@@ -374,16 +338,70 @@ class DelayCommand(BaseCommand):
         return True
 
 
-class KickCommand(BaseCommand):
-    """Kick command.
-    Permanently removes user from conversation.
-    """
+class ExpireCommand(BaseCommand):
+    PERMISSION = 2
+    NAME = "expire"
+    MARK = ("CHAT",)
 
+    async def _handle(self, event: dict, kwargs) -> bool:
+        keyboard = (
+            Keyboard(inline=True, one_time=False, owner_id=event.get("user_id"))
+            .add_row()
+            .add_button(
+                Callback(
+                    label="Зеленая зона",
+                    payload={
+                        "call_action": "green_zone_delay",
+                    },
+                ),
+                ButtonColor.PRIMARY,
+            )
+            .add_row()
+            .add_button(
+                Callback(
+                    label="Жёлтая зона",
+                    payload={
+                        "call_action": "yellow_zone_delay",
+                    },
+                ),
+                ButtonColor.PRIMARY,
+            )
+            .add_row()
+            .add_button(
+                Callback(
+                    label="Красная зона",
+                    payload={
+                        "call_action": "red_zone_delay",
+                    },
+                ),
+                ButtonColor.PRIMARY,
+            )
+            .add_row()
+            .add_button(
+                Callback(
+                    label="Отмена команды", payload={"call_action": "cancel_command"}
+                ),
+                ButtonColor.NEGATIVE,
+            )
+        )
+
+        answer_text = "🚸 Выберите зону:"
+
+        self.api.messages.send(
+            peer_id=event.get("peer_id"),
+            random_id=0,
+            message=answer_text,
+            keyboard=keyboard.json,
+        )
+
+        return True
+
+
+class KickCommand(BaseCommand):
     PERMISSION = 2
     NAME = "kick"
+    MARK = ("CHAT",)
 
-    # TODO: Добавить распознование владельца команды
-    # (Во избежание самокика)
     async def _handle(self, event: dict, kwargs) -> bool:
         args = kwargs.get("argument_list")
 
@@ -435,13 +453,11 @@ class KickCommand(BaseCommand):
         return False
 
 
+# TODO: В дальнейшем придумать, как сделать более лаконично.
 class AddCurseWordCommand(BaseCommand):
-    """ACW command.
-    Adding new word to curse filtering.
-    """
-
     PERMISSION = 2
     NAME = "acw"
+    MARK = ("CHAT",)
 
     async def _handle(self, event: dict, kwargs) -> bool:
         args = kwargs.get("argument_list")
@@ -451,7 +467,7 @@ class AddCurseWordCommand(BaseCommand):
 
             db.execute.insert(
                 schema="toaster_settings",
-                table="cursed_words",
+                table="curse_words",
                 on_duplicate="update",
                 conv_id=event.get("peer_id"),
                 word=new_word,
@@ -462,11 +478,11 @@ class AddCurseWordCommand(BaseCommand):
         return False
 
 
+# TODO: В дальнейшем придумать, как сделать более лаконично.
 class AddURLFilterPatternCommand(BaseCommand):
-    """AUFP command"""
-
     PERMISSION = 2
     NAME = "aufp"
+    MARK = ("CHAT",)
 
     async def _handle(self, event: dict, kwargs) -> bool:
         args = kwargs.get("argument_list")

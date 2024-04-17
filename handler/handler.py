@@ -35,7 +35,17 @@ class CommandHandler(ABCHandler):
 
         selected = selected(super().api)
 
-        user_lvl = await self.__get_userlvl(event)
+        conversation_mark = await self._get_conv_mark(event)
+
+        if conversation_mark not in selected.MARK:
+            log_text = (
+                f'Could not execute command in "{conversation_mark}" conversation'
+            )
+            await logger.info(log_text)
+
+            return False
+
+        user_lvl = await self._get_userlvl(event)
 
         if selected.PERMISSION <= user_lvl:
             result = await selected(event, argument_list=arguments)
@@ -62,7 +72,7 @@ class CommandHandler(ABCHandler):
 
             return False
 
-    async def __get_userlvl(self, event: dict) -> int:
+    async def _get_userlvl(self, event: dict) -> int:
         tech_admin = db.execute.select(
             schema="toaster_settings",
             table="staff",
@@ -96,6 +106,21 @@ class CommandHandler(ABCHandler):
         except VkApiError as error:
             log_text = f"Could not delete own command message: {error}"
             await logger.info(log_text)
+
+    async def _get_conv_mark(self, event: dict):
+        fields = ("conv_mark",)
+        mark = db.execute.select(
+            schema="toaster",
+            table="conversations",
+            fields=fields,
+            conv_id=event.get("peer_id"),
+        )
+        already_marked = bool(mark)
+
+        if already_marked:
+            return mark[0][0]
+
+        return "UNDEFINED"
 
 
 command_handler = CommandHandler()

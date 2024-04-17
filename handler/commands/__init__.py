@@ -10,6 +10,7 @@ from .commands import (
     KickCommand,
     AddCurseWordCommand,
     AddURLFilterPatternCommand,
+    ExpireCommand,
 )
 
 
@@ -25,6 +26,7 @@ command_list = {
     KickCommand.NAME: KickCommand,
     AddCurseWordCommand.NAME: AddCurseWordCommand,
     AddURLFilterPatternCommand.NAME: AddURLFilterPatternCommand,
+    ExpireCommand.NAME: ExpireCommand,
 }
 
 

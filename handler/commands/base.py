@@ -8,6 +8,7 @@ class BaseCommand(ABCHandler):
 
     PERMISSION = 0
     NAME = "None"
+    MARK = ()
 
     def __init__(self, api: VkApi):
         self.api = api
