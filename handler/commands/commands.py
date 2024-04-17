@@ -447,7 +447,7 @@ class AddCurseWordCommand(BaseCommand):
         args = kwargs.get("argument_list")
 
         if args:
-            new_word = args[0]
+            new_word = args[0].lower()
 
             db.execute.insert(
                 schema="toaster_settings",
@@ -472,9 +472,9 @@ class AddURLFilterPatternCommand(BaseCommand):
         args = kwargs.get("argument_list")
 
         if args:
-            pattern_type = args[0]
-            pattern_status = args[1]
-            pattern = args[2]
+            pattern_type = args[0].lower()
+            pattern_status = args[1].lower()
+            pattern = args[2].lower()
 
             db.execute.insert(
                 schema="toaster_settings",
