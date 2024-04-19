@@ -205,24 +205,26 @@ class DeleteCommand(BaseCommand):
 
     async def _handle(self, event: dict, kwargs) -> bool:
         if event.get("reply"):
-            message_ids = [str(event["reply"].get("id"))]
+            cmids = [str(event["reply"].get("conversation_message_id"))]
 
         elif event.get("forward"):
-            message_ids = [str(msg.get("id")) for msg in event["forward"]]
+            cmids = [
+                str(msg.get("conversation_message_id")) for msg in event["forward"]
+            ]
 
         else:
             return False
 
-        await self._delete_message(message_ids)
+        await self._delete_message(cmids, event.get("peer_id"))
         return True
 
-    async def _delete_message(self, message_ids: list):
+    async def _delete_message(self, cmids: list, peer_id: int):
         try:
-            ids = ",".join(message_ids)
-            self.api.messages.delete(delete_for_all=1, message_ids=ids)
+            ids = ",".join(cmids)
+            self.api.messages.delete(delete_for_all=1, cmids=ids, peer_id=peer_id)
 
         except VkApiError as error:
-            log_text = f"Could not delete <{message_ids}> message: {error}"
+            log_text = f"Could not delete <{cmids}> message: {error}"
             await logger.info(log_text)
 
 
