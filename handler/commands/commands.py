@@ -205,10 +205,10 @@ class DeleteCommand(BaseCommand):
 
     async def _handle(self, event: dict, kwargs) -> bool:
         if event.get("reply"):
-            message_ids = [event["reply"].get("id")]
+            message_ids = [str(event["reply"].get("id"))]
 
         elif event.get("forward"):
-            message_ids = [msg.get("id") for msg in event["forward"]]
+            message_ids = [str(msg.get("id")) for msg in event["forward"]]
 
         else:
             return False
