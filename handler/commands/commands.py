@@ -469,6 +469,8 @@ class WarnCommand(BaseCommand):
             else:
                 warns = 1
 
+            target_cmid = None
+
         elif event.get("reply", False):
             user_id = event.get("reply").get("from_id")
             if len(args):
@@ -476,12 +478,14 @@ class WarnCommand(BaseCommand):
             else:
                 warns = 1
 
+            target_cmid = event.get("reply").get("conversation_message_id")
+
         if user_id is not None:
             if user_id == event.get("user_id"):
                 return False
 
             user_name = self.name_from_id(user_id)
-            await producer.initiate_warn(event, warns, user_id, user_name)
+            await producer.initiate_warn(event, warns, user_id, user_name, target_cmid)
 
             return True
 
