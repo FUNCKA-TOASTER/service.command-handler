@@ -218,7 +218,7 @@ class DeleteCommand(BaseCommand):
 
     async def _delete_message(self, message_ids: list):
         try:
-            ids = ", ".join(message_ids)
+            ids = ",".join(message_ids)
             self.api.messages.delete(delete_for_all=1, message_ids=ids)
 
         except VkApiError as error:
