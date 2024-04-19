@@ -396,6 +396,65 @@ class ExpireCommand(BaseCommand):
         return True
 
 
+class PunishCommand(BaseCommand):
+    PERMISSION = 2
+    NAME = "punish"
+    MARK = ("CHAT",)
+
+    async def _handle(self, event: dict, kwargs) -> bool:
+        keyboard = (
+            Keyboard(inline=True, one_time=False, owner_id=event.get("user_id"))
+            .add_row()
+            .add_button(
+                Callback(
+                    label="Зеленая зона",
+                    payload={
+                        "call_action": "green_zone_delay",
+                    },
+                ),
+                ButtonColor.PRIMARY,
+            )
+            .add_row()
+            .add_button(
+                Callback(
+                    label="Жёлтая зона",
+                    payload={
+                        "call_action": "yellow_zone_delay",
+                    },
+                ),
+                ButtonColor.PRIMARY,
+            )
+            .add_row()
+            .add_button(
+                Callback(
+                    label="Красная зона",
+                    payload={
+                        "call_action": "red_zone_delay",
+                    },
+                ),
+                ButtonColor.PRIMARY,
+            )
+            .add_row()
+            .add_button(
+                Callback(
+                    label="Отмена команды", payload={"call_action": "cancel_command"}
+                ),
+                ButtonColor.NEGATIVE,
+            )
+        )
+
+        answer_text = "🚸 Выберите зону:"
+
+        self.api.messages.send(
+            peer_id=event.get("peer_id"),
+            random_id=0,
+            message=answer_text,
+            keyboard=keyboard.json,
+        )
+
+        return True
+
+
 class KickCommand(BaseCommand):
     PERMISSION = 2
     NAME = "kick"
