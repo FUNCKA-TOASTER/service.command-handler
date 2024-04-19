@@ -2,6 +2,7 @@ from vk_api import VkApiError
 from tools.keyboards import Keyboard, Callback, ButtonColor
 from db import db
 from logger import logger
+from producer import producer
 from .base import BaseCommand
 
 
@@ -444,6 +445,40 @@ class KickCommand(BaseCommand):
 
             except VkApiError:
                 return False
+
+        return False
+
+
+class WarnCommand(BaseCommand):
+    PERMISSION = 1
+    NAME = "warn"
+    MARK = ("CHAT",)
+
+    async def _handle(self, event: dict, kwargs) -> bool:
+        args = kwargs.get("argument_list")
+
+        user_id = None
+
+        if args and self.is_tag(args[0]):
+            user_id = self.id_from_tag(args[0])
+            if len(args) > 1:
+                warns = int(args[1]) if args[1].isnumeric() else 1
+            else:
+                warns = 1
+
+        elif event.get("reply", False):
+            user_id = event.get("reply").get("from_id")
+            if len(args):
+                warns = int(args[0]) if args[0].isnumeric() else 1
+            else:
+                warns = 1
+
+        if user_id is not None:
+            if user_id == event.get("user_id"):
+                return False
+
+            user_name = self.name_from_id(user_id)
+            producer.initiate_warn(event, warns, user_id, user_name)
 
         return False
 
