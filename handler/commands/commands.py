@@ -481,7 +481,9 @@ class WarnCommand(BaseCommand):
                 return False
 
             user_name = self.name_from_id(user_id)
-            producer.initiate_warn(event, warns, user_id, user_name)
+            await producer.initiate_warn(event, warns, user_id, user_name)
+
+            return True
 
         return False
 
