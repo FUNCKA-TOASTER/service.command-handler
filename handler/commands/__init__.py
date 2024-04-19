@@ -11,6 +11,7 @@ from .commands import (
     AddCurseWordCommand,
     AddURLFilterPatternCommand,
     ExpireCommand,
+    WarnCommand,
 )
 
 
@@ -27,6 +28,7 @@ command_list = {
     AddCurseWordCommand.NAME: AddCurseWordCommand,
     AddURLFilterPatternCommand.NAME: AddURLFilterPatternCommand,
     ExpireCommand.NAME: ExpireCommand,
+    WarnCommand.NAME: WarnCommand,
 }
 
 
