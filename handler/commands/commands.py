@@ -396,41 +396,28 @@ class ExpireCommand(BaseCommand):
         return True
 
 
-class PunishCommand(BaseCommand):
+class PunishmentCommand(BaseCommand):
     PERMISSION = 2
-    NAME = "punish"
+    NAME = "punishment"
     MARK = ("CHAT",)
 
     async def _handle(self, event: dict, kwargs) -> bool:
+        answer_text = "🚸 Выберите необходимую группу настроек:"
+
         keyboard = (
             Keyboard(inline=True, one_time=False, owner_id=event.get("user_id"))
             .add_row()
             .add_button(
                 Callback(
-                    label="Зеленая зона",
-                    payload={
-                        "call_action": "green_zone_delay",
-                    },
+                    label="Фильтры",
+                    payload={"call_action": "filters_settings", "page": "1"},
                 ),
                 ButtonColor.PRIMARY,
             )
-            .add_row()
             .add_button(
                 Callback(
-                    label="Жёлтая зона",
-                    payload={
-                        "call_action": "yellow_zone_delay",
-                    },
-                ),
-                ButtonColor.PRIMARY,
-            )
-            .add_row()
-            .add_button(
-                Callback(
-                    label="Красная зона",
-                    payload={
-                        "call_action": "red_zone_delay",
-                    },
+                    label="Системы",
+                    payload={"call_action": "systems_settings", "page": "1"},
                 ),
                 ButtonColor.PRIMARY,
             )
@@ -442,8 +429,6 @@ class PunishCommand(BaseCommand):
                 ButtonColor.NEGATIVE,
             )
         )
-
-        answer_text = "🚸 Выберите зону:"
 
         self.api.messages.send(
             peer_id=event.get("peer_id"),
@@ -551,6 +536,7 @@ class WarnCommand(BaseCommand):
         return False
 
 
+# TODO:
 class UnwarnCommand(BaseCommand):
     PERMISSION = 1
     NAME = "unwarn"
