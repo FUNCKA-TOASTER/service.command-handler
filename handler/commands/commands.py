@@ -551,6 +551,15 @@ class WarnCommand(BaseCommand):
         return False
 
 
+class UnwarnCommand(BaseCommand):
+    PERMISSION = 1
+    NAME = "unwarn"
+    MARK = ("CHAT",)
+
+    async def _handle(self, event: dict, kwargs) -> bool:
+        return True
+
+
 # TODO: В дальнейшем придумать, как сделать более лаконично.
 class AddCurseWordCommand(BaseCommand):
     PERMISSION = 2
