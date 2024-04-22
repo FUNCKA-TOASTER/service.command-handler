@@ -396,8 +396,6 @@ class ExpireCommand(BaseCommand):
         return True
 
 
-# TODO: Добавить в список __init__
-# TODO: Реализовать функционал для кнопок
 class PunishmentCommand(BaseCommand):
     PERMISSION = 2
     NAME = "punishment"
