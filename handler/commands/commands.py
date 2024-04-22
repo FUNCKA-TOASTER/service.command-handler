@@ -396,6 +396,8 @@ class ExpireCommand(BaseCommand):
         return True
 
 
+# TODO: Добавить в список __init__
+# TODO: Реализовать функционал для кнопок
 class PunishmentCommand(BaseCommand):
     PERMISSION = 2
     NAME = "punishment"
@@ -410,14 +412,14 @@ class PunishmentCommand(BaseCommand):
             .add_button(
                 Callback(
                     label="Фильтры",
-                    payload={"call_action": "filters_settings", "page": "1"},
+                    payload={"call_action": "filters_punishment", "page": "1"},
                 ),
                 ButtonColor.PRIMARY,
             )
             .add_button(
                 Callback(
                     label="Системы",
-                    payload={"call_action": "systems_settings", "page": "1"},
+                    payload={"call_action": "systems_punishment", "page": "1"},
                 ),
                 ButtonColor.PRIMARY,
             )
@@ -536,7 +538,8 @@ class WarnCommand(BaseCommand):
         return False
 
 
-# TODO:
+# TODO: Добавить в список __init__
+# TODO: Напиши меня
 class UnwarnCommand(BaseCommand):
     PERMISSION = 1
     NAME = "unwarn"
