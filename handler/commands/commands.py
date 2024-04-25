@@ -608,7 +608,7 @@ class ProfileCommand(BaseCommand):
 
     async def _handle(self, event: dict, kwargs) -> bool:
         answer_text = (
-            f"🚸 Профиль: [{event.get('user_name')}|id{event.het('user_id')}] \n"
+            f"🚸 Профиль: [{event.get('user_name')}|id{event.get('user_id')}] \n"
         )
 
         warn_info = self._get_warns(event)
