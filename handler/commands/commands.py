@@ -617,7 +617,7 @@ class ProfileCommand(BaseCommand):
             answer_text += f"Предупреждения: {warn_count} \n"
             answer_text += f"Истекает: {warn_expire} \n"
         else:
-            answer_text += "Предупреждения: 0"
+            answer_text += "Предупреждения: 0 \n"
 
         answer_text += "-- \n"
 
