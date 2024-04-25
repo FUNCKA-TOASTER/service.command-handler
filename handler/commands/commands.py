@@ -616,15 +616,15 @@ class ProfileCommand(BaseCommand):
             warn_count, warn_expire = warn_info
             answer_text += f"Предупреждения: {warn_count} \n"
             answer_text += f"Истекает: {warn_expire} \n"
-            answer_text += "--- \n"
         else:
             answer_text += "Предупреждения: 0"
+
+        answer_text += "-- \n"
 
         queue_expire = self._get_queue(event)
         if queue_expire:
             answer_text += "В очереди: Да \n"
             answer_text += f"Истекает: {queue_expire} \n"
-            answer_text += "--- \n"
         else:
             answer_text += "В очереди: Нет"
 
