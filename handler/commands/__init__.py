@@ -14,6 +14,7 @@ from .commands import (
     WarnCommand,
     PunishmentCommand,
     ProfileCommand,
+    UnwarnCommand,
 )
 
 
@@ -33,6 +34,7 @@ command_list = {
     WarnCommand.NAME: WarnCommand,
     PunishmentCommand.NAME: PunishmentCommand,
     ProfileCommand.NAME: ProfileCommand,
+    UnwarnCommand.NAME: UnwarnCommand,
 }
 
 

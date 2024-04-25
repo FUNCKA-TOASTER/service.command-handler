@@ -536,15 +536,38 @@ class WarnCommand(BaseCommand):
         return False
 
 
-# TODO: Добавить в список __init__
-# TODO: Напиши меня
 class UnwarnCommand(BaseCommand):
     PERMISSION = 1
     NAME = "unwarn"
     MARK = ("CHAT",)
 
     async def _handle(self, event: dict, kwargs) -> bool:
-        return True
+        args = kwargs.get("argument_list")
+
+        user_id = None
+
+        if args and self.is_tag(args[0]):
+            user_id = self.id_from_tag(args[0])
+            if len(args) > 1:
+                warns = int(args[1]) if args[1].isnumeric() else 1
+            else:
+                warns = 1
+
+        elif event.get("reply", False):
+            user_id = event.get("reply").get("from_id")
+            if len(args):
+                warns = int(args[0]) if args[0].isnumeric() else 1
+            else:
+                warns = 1
+
+        if user_id is not None:
+            target_cmid = None
+            user_name = self.name_from_id(user_id)
+            await producer.initiate_warn(event, -warns, user_id, user_name, target_cmid)
+
+            return True
+
+        return False
 
 
 # TODO: В дальнейшем придумать, как сделать более лаконично.
