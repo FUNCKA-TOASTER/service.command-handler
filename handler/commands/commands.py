@@ -599,3 +599,71 @@ class AddURLFilterPatternCommand(BaseCommand):
             return True
 
         return False
+
+
+class ProfileCommand(BaseCommand):
+    PERMISSION = 0
+    NAME = "profile"
+    MARK = ("CHAT",)
+
+    async def _handle(self, event: dict, kwargs) -> bool:
+        answer_text = (
+            f"🚸 Профиль: [{event.get('user_name')}|id{event.het('user_id')}] \n"
+        )
+
+        warn_info = self._get_warns(event)
+        if warn_info:
+            warn_count, warn_expire = warn_info
+            answer_text += f"Предупреждения: {warn_count} \n"
+            answer_text += f"Истекает: {warn_expire} \n"
+            answer_text += "--- \n"
+        else:
+            answer_text += "Предупреждения: 0"
+
+        queue_expire = self._get_queue(event)
+        if queue_expire:
+            answer_text += "В очереди: Да \n"
+            answer_text += f"Истекает: {queue_expire} \n"
+            answer_text += "--- \n"
+        else:
+            answer_text += "В очереди: Нет"
+
+        keyboard = (
+            Keyboard(inline=True, one_time=False, owner_id=event.get("user_id"))
+            .add_row()
+            .add_button(
+                Callback(label="Закрыть", payload={"call_action": "cancel_command"}),
+                ButtonColor.NEGATIVE,
+            )
+        )
+
+        self.api.messages.send(
+            peer_id=event.get("peer_id"),
+            random_id=0,
+            message=answer_text,
+            keyboard=keyboard.json,
+        )
+
+        return True
+
+    def _get_warns(self, event) -> tuple:
+        result = db.execute.select(
+            schema="toaster",
+            table="warn_points",
+            fields=("points", "expire"),
+            conv_id=event.get("peer_id"),
+            user_id=event.get("user_id"),
+        )
+
+        return result[0] if result else ()
+
+    def _get_queue(self, event) -> str:
+        result = db.execute.select(
+            schema="toaster",
+            table="slow_mode_queue",
+            fields=("prohibited_until",),
+            conv_id=event.get("peer_id"),
+            user_id=event.get("user_id"),
+        )
+
+        return result[0][0] if result else ""
