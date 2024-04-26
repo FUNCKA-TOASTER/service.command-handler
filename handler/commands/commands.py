@@ -302,7 +302,8 @@ class DelayCommand(BaseCommand):
                 Callback(
                     label="Медленный режим",
                     payload={
-                        "call_action": "slow_mode_delay",
+                        "call_action": "change_delay",
+                        "setting": "slow_mode",
                     },
                 ),
                 ButtonColor.PRIMARY,
@@ -311,7 +312,19 @@ class DelayCommand(BaseCommand):
                 Callback(
                     label="Возраст аккаунта",
                     payload={
-                        "call_action": "account_age_delay",
+                        "call_action": "change_delay",
+                        "setting": "slow_mode",
+                    },
+                ),
+                ButtonColor.PRIMARY,
+            )
+            .add_row()
+            .add_button(
+                Callback(
+                    label="Медленный режим",
+                    payload={
+                        "call_action": "change_delay",
+                        "setting": "menu_session",
                     },
                 ),
                 ButtonColor.PRIMARY,
