@@ -329,7 +329,7 @@ class DelayCommand(BaseCommand):
             .add_row()
             .add_button(
                 Callback(
-                    label="Медленный режим",
+                    label="Срок сессий",
                     payload={
                         "call_action": "change_delay",
                         "setting": "menu_session",
