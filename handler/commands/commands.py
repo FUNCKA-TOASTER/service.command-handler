@@ -53,12 +53,14 @@ class MarkCommand(BaseCommand):
             )
         )
 
-        self.api.messages.send(
+        msg = self.api.messages.send(
             peer_id=event.get("peer_id"),
             random_id=0,
             message=answer_text,
             keyboard=keyboard.json,
         )
+
+        self.initiate_session(event.get("peer_id"), msg.get("response"))
 
         return True
 
