@@ -36,7 +36,11 @@ class BaseCommand(ABCHandler):
 
         return user_name
 
-    def initiate_session(self, conv_id: int, cmid: int) -> None:
+    def initiate_session(self, conv_id: int, message_id: int) -> None:
+        cmid = self.api.messages.getById(message_ids=message_id)["items"][0][
+            "conversation_message_id"
+        ]
+        cmid = int(cmid)
         interval = db.execute.select(
             schema="toaster_settings",
             table="delay",
