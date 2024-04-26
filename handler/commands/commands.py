@@ -53,14 +53,14 @@ class MarkCommand(BaseCommand):
             )
         )
 
-        msg = self.api.messages.send(
+        cmid = self.api.messages.send(
             peer_id=event.get("peer_id"),
             random_id=0,
             message=answer_text,
             keyboard=keyboard.json,
         )
 
-        self.initiate_session(event.get("peer_id"), msg.get("response"))
+        self.initiate_session(event.get("peer_id"), cmid)
 
         return True
 
@@ -131,12 +131,14 @@ class PermissionCommand(BaseCommand):
             )
         )
 
-        self.api.messages.send(
+        cmid = self.api.messages.send(
             peer_id=event.get("peer_id"),
             random_id=0,
             message=answer_text,
             keyboard=keyboard.json,
         )
+
+        self.initiate_session(event.get("peer_id"), cmid)
 
         return True
 
@@ -172,12 +174,14 @@ class GameCommand(BaseCommand):
             )
         )
 
-        self.api.messages.send(
+        cmid = self.api.messages.send(
             peer_id=event.get("peer_id"),
             random_id=0,
             message=answer_text,
             keyboard=keyboard.json,
         )
+
+        self.initiate_session(event.get("peer_id"), cmid)
 
         return True
 
@@ -281,12 +285,14 @@ class SettingsCommand(BaseCommand):
             )
         )
 
-        self.api.messages.send(
+        cmid = self.api.messages.send(
             peer_id=event.get("peer_id"),
             random_id=0,
             message=answer_text,
             keyboard=keyboard.json,
         )
+
+        self.initiate_session(event.get("peer_id"), cmid)
 
         return True
 
@@ -342,12 +348,14 @@ class DelayCommand(BaseCommand):
 
         answer_text = "🚸 Выберите настройку:"
 
-        self.api.messages.send(
+        cmid = self.api.messages.send(
             peer_id=event.get("peer_id"),
             random_id=0,
             message=answer_text,
             keyboard=keyboard.json,
         )
+
+        self.initiate_session(event.get("peer_id"), cmid)
 
         return True
 
@@ -404,12 +412,14 @@ class ExpireCommand(BaseCommand):
 
         answer_text = "🚸 Выберите зону:"
 
-        self.api.messages.send(
+        cmid = self.api.messages.send(
             peer_id=event.get("peer_id"),
             random_id=0,
             message=answer_text,
             keyboard=keyboard.json,
         )
+
+        self.initiate_session(event.get("peer_id"), cmid)
 
         return True
 
@@ -448,12 +458,14 @@ class PunishmentCommand(BaseCommand):
             )
         )
 
-        self.api.messages.send(
+        cmid = self.api.messages.send(
             peer_id=event.get("peer_id"),
             random_id=0,
             message=answer_text,
             keyboard=keyboard.json,
         )
+
+        self.initiate_session(event.get("peer_id"), cmid)
 
         return True
 
@@ -678,12 +690,14 @@ class ProfileCommand(BaseCommand):
             )
         )
 
-        self.api.messages.send(
+        cmid = self.api.messages.send(
             peer_id=event.get("peer_id"),
             random_id=0,
             message=answer_text,
             keyboard=keyboard.json,
         )
+
+        self.initiate_session(event.get("peer_id"), cmid)
 
         return True
 
