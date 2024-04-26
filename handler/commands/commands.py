@@ -363,7 +363,8 @@ class ExpireCommand(BaseCommand):
                 Callback(
                     label="Зеленая зона",
                     payload={
-                        "call_action": "green_zone_delay",
+                        "call_action": "change_delay",
+                        "setting": "green_zone",
                     },
                 ),
                 ButtonColor.PRIMARY,
@@ -373,7 +374,8 @@ class ExpireCommand(BaseCommand):
                 Callback(
                     label="Жёлтая зона",
                     payload={
-                        "call_action": "yellow_zone_delay",
+                        "call_action": "change_delay",
+                        "setting": "yellow_zone",
                     },
                 ),
                 ButtonColor.PRIMARY,
@@ -383,7 +385,8 @@ class ExpireCommand(BaseCommand):
                 Callback(
                     label="Красная зона",
                     payload={
-                        "call_action": "red_zone_delay",
+                        "call_action": "change_delay",
+                        "setting": "red_zone",
                     },
                 ),
                 ButtonColor.PRIMARY,
