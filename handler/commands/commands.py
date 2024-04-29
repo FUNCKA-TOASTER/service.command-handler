@@ -61,6 +61,7 @@ class MarkCommand(BaseCommand):
         )
 
         self.initiate_session(event.get("peer_id"), cmid)
+        await producer.command_alert(event, self.NAME)
 
         return True
 
@@ -139,6 +140,7 @@ class PermissionCommand(BaseCommand):
         )
 
         self.initiate_session(event.get("peer_id"), cmid)
+        await producer.command_alert(event, self.NAME)
 
         return True
 
@@ -182,6 +184,7 @@ class GameCommand(BaseCommand):
         )
 
         self.initiate_session(event.get("peer_id"), cmid)
+        await producer.command_alert(event, self.NAME)
 
         return True
 
@@ -202,6 +205,7 @@ class SayCommand(BaseCommand):
         self.api.messages.send(
             peer_id=event.get("peer_id"), random_id=0, message=answer_text
         )
+        await producer.command_alert(event, self.NAME)
 
 
 class DeleteCommand(BaseCommand):
@@ -222,6 +226,8 @@ class DeleteCommand(BaseCommand):
             return False
 
         await self._delete_message(cmids, event.get("peer_id"))
+        await producer.command_alert(event, self.NAME)
+
         return True
 
     async def _delete_message(self, cmids: list, peer_id: int):
@@ -245,7 +251,7 @@ class CopyCommand(BaseCommand):
             self.api.messages.send(
                 peer_id=event.get("peer_id"), random_id=0, message=answer_text
             )
-
+            await producer.command_alert(event, self.NAME)
             return True
 
         return False
@@ -293,7 +299,7 @@ class SettingsCommand(BaseCommand):
         )
 
         self.initiate_session(event.get("peer_id"), cmid)
-
+        await producer.command_alert(event, self.NAME)
         return True
 
 
@@ -356,7 +362,7 @@ class DelayCommand(BaseCommand):
         )
 
         self.initiate_session(event.get("peer_id"), cmid)
-
+        await producer.command_alert(event, self.NAME)
         return True
 
 
@@ -420,7 +426,7 @@ class ExpireCommand(BaseCommand):
         )
 
         self.initiate_session(event.get("peer_id"), cmid)
-
+        await producer.command_alert(event, self.NAME)
         return True
 
 
@@ -466,7 +472,7 @@ class PunishmentCommand(BaseCommand):
         )
 
         self.initiate_session(event.get("peer_id"), cmid)
-
+        await producer.command_alert(event, self.NAME)
         return True
 
 
@@ -517,7 +523,7 @@ class KickCommand(BaseCommand):
                         kick_date = NOW();
                 """
                 db.execute.raw(schema="toaster", query=query)
-
+                await producer.command_alert(event, self.NAME)
                 return True
 
             except VkApiError:
@@ -560,7 +566,7 @@ class WarnCommand(BaseCommand):
 
             user_name = self.name_from_id(user_id)
             await producer.initiate_warn(event, warns, user_id, user_name, target_cmid)
-
+            await producer.command_alert(event, self.NAME)
             return True
 
         return False
@@ -594,7 +600,7 @@ class UnwarnCommand(BaseCommand):
             target_cmid = None
             user_name = self.name_from_id(user_id)
             await producer.initiate_warn(event, -warns, user_id, user_name, target_cmid)
-
+            await producer.command_alert(event, self.NAME)
             return True
 
         return False
@@ -619,7 +625,7 @@ class AddCurseWordCommand(BaseCommand):
                 conv_id=event.get("peer_id"),
                 word=new_word,
             )
-
+            await producer.command_alert(event, self.NAME)
             return True
 
         return False
@@ -648,7 +654,7 @@ class AddURLFilterPatternCommand(BaseCommand):
                 status=pattern_status,
                 pattern=pattern,
             )
-
+            await producer.command_alert(event, self.NAME)
             return True
 
         return False
@@ -698,7 +704,7 @@ class ProfileCommand(BaseCommand):
         )
 
         self.initiate_session(event.get("peer_id"), cmid)
-
+        await producer.command_alert(event, self.NAME)
         return True
 
     def _get_warns(self, event) -> tuple:

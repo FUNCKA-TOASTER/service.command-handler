@@ -10,9 +10,7 @@ class CustomProducer(Producer):
     to be pushed into a queue inside RabbitMQ.
     """
 
-    event_queues = {
-        "warn": "warns",
-    }
+    event_queues = {"warn": "warns", "alert": "alerts"}
 
     async def initiate_warn(self, event, warns, target, target_name, target_cmid):
         queue = self.event_queues["warn"]
@@ -27,6 +25,17 @@ class CustomProducer(Producer):
             "cmid": event.get("cmid"),
             "warn_count": warns,
             "target_message_cmid": target_cmid,
+        }
+        await self._send_data(data, queue)
+
+    async def command_alert(self, event, command_name):
+        queue = self.event_queues["alert"]
+        data = {
+            "alert_type": "command",
+            "user_id": event.get("user_id"),
+            "user_name": event.get("user_name"),
+            "peer_name": event.get("peer_name"),
+            "command_name": command_name,
         }
         await self._send_data(data, queue)
 
