@@ -498,6 +498,7 @@ class KickCommand(BaseCommand):
                 return False
 
             try:
+                user_name = self.name_from_id(user_id)
                 self.api.messages.removeChatUser(
                     chat_id=event.get("chat_id"), user_id=user_id
                 )
@@ -519,11 +520,12 @@ class KickCommand(BaseCommand):
                         NOW()
                     )
                 ON DUPLICATE KEY UPDATE
-                        user_name = '{self.name_from_id(user_id)}',
+                        user_name = '{user_name}',
                         kick_date = NOW();
                 """
                 db.execute.raw(schema="toaster", query=query)
                 await producer.command_alert(event, self.NAME)
+                await producer.kick_alert(event, user_id, user_name)
                 return True
 
             except VkApiError:
