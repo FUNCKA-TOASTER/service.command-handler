@@ -30,7 +30,7 @@ class CustomProducer(Producer):
 
     async def command_alert(self, event, command_name, cmids: list = None):
         queue = self.event_queues["alert"]
-        forward = ", ".join(cmids)
+        forward = ", ".join(cmids) if cmids else None
         data = {
             "alert_type": "command",
             "user_id": event.get("user_id"),
@@ -44,7 +44,7 @@ class CustomProducer(Producer):
 
     async def kick_alert(self, event, target_id, target_name, cmids: list = None):
         queue = self.event_queues["alert"]
-        forward = ", ".join(cmids)
+        forward = ", ".join(cmids) if cmids else None
         data = {
             "alert_type": "command",
             "user_id": target_id,

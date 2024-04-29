@@ -224,8 +224,8 @@ class DeleteCommand(BaseCommand):
         else:
             return False
 
-        await self._delete_message(cmids, event.get("peer_id"))
         await producer.command_alert(event, self.NAME, cmids)
+        await self._delete_message(cmids, event.get("peer_id"))
 
         return True
 
@@ -247,7 +247,7 @@ class CopyCommand(BaseCommand):
     async def _handle(self, event: dict, kwargs) -> bool:
         if event.get("reply"):
             answer_text = event["reply"].get("text")
-            reply_cmids = event["reply"].get("conversation_message_id")
+            reply_cmids = [event["reply"].get("conversation_message_id")]
             self.api.messages.send(
                 peer_id=event.get("peer_id"), random_id=0, message=answer_text
             )
@@ -493,7 +493,7 @@ class KickCommand(BaseCommand):
         elif event.get("reply", False):
             # TODO: Добавить удаление сообщения нарушителя.
             user_id = event.get("reply").get("from_id")
-            reply_cmids = event["reply"].get("conversation_message_id")
+            reply_cmids = [event["reply"].get("conversation_message_id")]
 
         if user_id is not None:
             if user_id == event.get("user_id"):
@@ -564,7 +564,7 @@ class WarnCommand(BaseCommand):
                 warns = 1
 
             target_cmid = event["reply"].get("conversation_message_id")
-            reply_cmids = target_cmid
+            reply_cmids = [target_cmid]
 
         if user_id is not None:
             if user_id == event.get("user_id"):
