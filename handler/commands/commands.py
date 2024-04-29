@@ -215,17 +215,19 @@ class DeleteCommand(BaseCommand):
     async def _handle(self, event: dict, kwargs) -> bool:
         if event.get("reply"):
             cmids = [str(event["reply"].get("conversation_message_id"))]
+            reply_msgids = event["reply"].get("id")
 
         elif event.get("forward"):
             cmids = [
                 str(msg.get("conversation_message_id")) for msg in event["forward"]
             ]
+            reply_msgids = ", ".join([msg.get("id") for msg in event["forward"]])
 
         else:
             return False
 
         await self._delete_message(cmids, event.get("peer_id"))
-        await producer.command_alert(event, self.NAME)
+        await producer.command_alert(event, self.NAME, reply_msgids)
 
         return True
 
@@ -247,10 +249,11 @@ class CopyCommand(BaseCommand):
     async def _handle(self, event: dict, kwargs) -> bool:
         if event.get("reply"):
             answer_text = event["reply"].get("text")
+            reply_msgids = event["reply"].get("id")
             self.api.messages.send(
                 peer_id=event.get("peer_id"), random_id=0, message=answer_text
             )
-            await producer.command_alert(event, self.NAME)
+            await producer.command_alert(event, self.NAME, reply_msgids)
             return True
 
         return False
@@ -487,10 +490,12 @@ class KickCommand(BaseCommand):
 
         if args and self.is_tag(args[0]):
             user_id = self.id_from_tag(args[0])
+            reply_msgids = None
 
         elif event.get("reply", False):
             # TODO: Добавить удаление сообщения нарушителя.
             user_id = event.get("reply").get("from_id")
+            reply_msgids = event["reply"].get("id")
 
         if user_id is not None:
             if user_id == event.get("user_id"):
@@ -524,7 +529,7 @@ class KickCommand(BaseCommand):
                 """
                 db.execute.raw(schema="toaster", query=query)
                 await producer.command_alert(event, self.NAME)
-                await producer.kick_alert(event, user_id, user_name)
+                await producer.kick_alert(event, user_id, user_name, reply_msgids)
                 return True
 
             except VkApiError:
@@ -551,6 +556,7 @@ class WarnCommand(BaseCommand):
                 warns = 1
 
             target_cmid = None
+            reply_msgids = None
 
         elif event.get("reply", False):
             user_id = event.get("reply").get("from_id")
@@ -560,6 +566,7 @@ class WarnCommand(BaseCommand):
                 warns = 1
 
             target_cmid = event.get("reply").get("conversation_message_id")
+            reply_msgids = event["reply"].get("id")
 
         if user_id is not None:
             if user_id == event.get("user_id"):
@@ -567,7 +574,7 @@ class WarnCommand(BaseCommand):
 
             user_name = self.name_from_id(user_id)
             await producer.initiate_warn(event, warns, user_id, user_name, target_cmid)
-            await producer.command_alert(event, self.NAME)
+            await producer.command_alert(event, self.NAME, reply_msgids)
             return True
 
         return False
