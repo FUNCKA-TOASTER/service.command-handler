@@ -28,7 +28,7 @@ class CustomProducer(Producer):
         }
         await self._send_data(data, queue)
 
-    async def command_alert(self, event, command_name):
+    async def command_alert(self, event, command_name, forward=None):
         queue = self.event_queues["alert"]
         data = {
             "alert_type": "command",
@@ -36,10 +36,11 @@ class CustomProducer(Producer):
             "user_name": event.get("user_name"),
             "peer_name": event.get("peer_name"),
             "command_name": command_name,
+            "forward": forward,
         }
         await self._send_data(data, queue)
 
-    async def kick_alert(self, event, target_id, target_name):
+    async def kick_alert(self, event, target_id, target_name, forward=None):
         queue = self.event_queues["alert"]
         data = {
             "alert_type": "command",
@@ -48,6 +49,7 @@ class CustomProducer(Producer):
             "peer_name": event.get("peer_name"),
             "moderator_name": event.get("user_id"),
             "moderator_id": event.get("user_name"),
+            "forward": forward,
         }
         await self._send_data(data, queue)
 
