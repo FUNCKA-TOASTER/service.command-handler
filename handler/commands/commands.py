@@ -53,14 +53,13 @@ class MarkCommand(BaseCommand):
             )
         )
 
-        cmid = self.api.messages.send(
+        self.api.messages.send(
             peer_id=event.get("peer_id"),
             random_id=0,
             message=answer_text,
             keyboard=keyboard.json,
         )
 
-        self.initiate_session(event.get("peer_id"), cmid)
         await producer.command_alert(event, self.NAME)
 
         return True
