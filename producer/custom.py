@@ -44,7 +44,7 @@ class CustomProducer(Producer):
     async def kick_alert(self, event, target_id, target_name):
         queue = self.event_queues["alert"]
         data = {
-            "alert_type": "command",
+            "alert_type": "kick",
             "user_id": target_id,
             "user_name": target_name,
             "peer_name": event.get("peer_name"),
