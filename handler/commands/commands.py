@@ -326,7 +326,7 @@ class DelayCommand(BaseCommand):
                     label="Возраст аккаунта",
                     payload={
                         "call_action": "change_delay",
-                        "setting": "slow_mode",
+                        "setting": "account_age",
                     },
                 ),
                 ButtonColor.PRIMARY,
