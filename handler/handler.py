@@ -90,6 +90,7 @@ class CommandHandler(ABCHandler):
             table="permissions",
             fields=("user_permission",),
             conv_id=event.get("peer_id"),
+            user_id=event.get("user_id"),
         )
 
         if bool(user_lvl):
