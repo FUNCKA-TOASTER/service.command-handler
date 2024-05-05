@@ -53,8 +53,8 @@ class MarkCommand(BaseCommand):
             )
         )
 
-        self.api.messages.send(
-            peer_id=event.get("peer_id"),
+        send_info = self.api.messages.send(
+            peer_ids=event.get("peer_id"),
             random_id=0,
             message=answer_text,
             keyboard=keyboard.json,
@@ -131,14 +131,16 @@ class PermissionCommand(BaseCommand):
             )
         )
 
-        cmid = self.api.messages.send(
-            peer_id=event.get("peer_id"),
+        send_info = self.api.messages.send(
+            peer_ids=event.get("peer_id"),
             random_id=0,
             message=answer_text,
             keyboard=keyboard.json,
         )
 
-        self.initiate_session(event.get("peer_id"), cmid)
+        peer_id, cmid = send_info[0]["peer_id"], send_info[0]["conversation_message_id"]
+        self.initiate_session(peer_id, cmid)
+
         await producer.command_alert(event, self.NAME)
 
         return True
@@ -175,14 +177,16 @@ class GameCommand(BaseCommand):
             )
         )
 
-        cmid = self.api.messages.send(
-            peer_id=event.get("peer_id"),
+        send_info = self.api.messages.send(
+            peer_ids=event.get("peer_id"),
             random_id=0,
             message=answer_text,
             keyboard=keyboard.json,
         )
 
-        self.initiate_session(event.get("peer_id"), cmid)
+        peer_id, cmid = send_info[0]["peer_id"], send_info[0]["conversation_message_id"]
+        self.initiate_session(peer_id, cmid)
+
         await producer.command_alert(event, self.NAME)
 
         return True
@@ -202,7 +206,7 @@ class SayCommand(BaseCommand):
         answer_text = " ".join(args)
 
         self.api.messages.send(
-            peer_id=event.get("peer_id"), random_id=0, message=answer_text
+            peer_ids=event.get("peer_id"), random_id=0, message=answer_text
         )
         await producer.command_alert(event, self.NAME)
 
@@ -248,7 +252,7 @@ class CopyCommand(BaseCommand):
         if event.get("reply"):
             answer_text = event["reply"].get("text")
             self.api.messages.send(
-                peer_id=event.get("peer_id"), random_id=0, message=answer_text
+                peer_ids=event.get("peer_id"), random_id=0, message=answer_text
             )
             await producer.command_alert(event, self.NAME)
             return True
@@ -290,14 +294,16 @@ class SettingsCommand(BaseCommand):
             )
         )
 
-        cmid = self.api.messages.send(
-            peer_id=event.get("peer_id"),
+        send_info = self.api.messages.send(
+            peer_ids=event.get("peer_id"),
             random_id=0,
             message=answer_text,
             keyboard=keyboard.json,
         )
 
-        self.initiate_session(event.get("peer_id"), cmid)
+        peer_id, cmid = send_info[0]["peer_id"], send_info[0]["conversation_message_id"]
+        self.initiate_session(peer_id, cmid)
+
         await producer.command_alert(event, self.NAME)
         return True
 
@@ -353,14 +359,16 @@ class DelayCommand(BaseCommand):
 
         answer_text = "🚸 Выберите настройку:"
 
-        cmid = self.api.messages.send(
-            peer_id=event.get("peer_id"),
+        send_info = self.api.messages.send(
+            peer_ids=event.get("peer_id"),
             random_id=0,
             message=answer_text,
             keyboard=keyboard.json,
         )
 
-        self.initiate_session(event.get("peer_id"), cmid)
+        peer_id, cmid = send_info[0]["peer_id"], send_info[0]["conversation_message_id"]
+        self.initiate_session(peer_id, cmid)
+
         await producer.command_alert(event, self.NAME)
         return True
 
@@ -417,14 +425,16 @@ class ExpireCommand(BaseCommand):
 
         answer_text = "🚸 Выберите зону:"
 
-        cmid = self.api.messages.send(
-            peer_id=event.get("peer_id"),
+        send_info = self.api.messages.send(
+            peer_ids=event.get("peer_id"),
             random_id=0,
             message=answer_text,
             keyboard=keyboard.json,
         )
 
-        self.initiate_session(event.get("peer_id"), cmid)
+        peer_id, cmid = send_info[0]["peer_id"], send_info[0]["conversation_message_id"]
+        self.initiate_session(peer_id, cmid)
+
         await producer.command_alert(event, self.NAME)
         return True
 
@@ -463,14 +473,16 @@ class PunishmentCommand(BaseCommand):
             )
         )
 
-        cmid = self.api.messages.send(
-            peer_id=event.get("peer_id"),
+        send_info = self.api.messages.send(
+            peer_ids=event.get("peer_id"),
             random_id=0,
             message=answer_text,
             keyboard=keyboard.json,
         )
 
-        self.initiate_session(event.get("peer_id"), cmid)
+        peer_id, cmid = send_info[0]["peer_id"], send_info[0]["conversation_message_id"]
+        self.initiate_session(peer_id, cmid)
+
         await producer.command_alert(event, self.NAME)
         return True
 
@@ -698,7 +710,7 @@ class ProfileCommand(BaseCommand):
         )
 
         cmid = self.api.messages.send(
-            peer_id=event.get("peer_id"),
+            peer_ids=event.get("peer_id"),
             random_id=0,
             message=answer_text,
             keyboard=keyboard.json,
