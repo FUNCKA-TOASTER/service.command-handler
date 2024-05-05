@@ -709,14 +709,16 @@ class ProfileCommand(BaseCommand):
             )
         )
 
-        cmid = self.api.messages.send(
+        send_info = self.api.messages.send(
             peer_ids=event.get("peer_id"),
             random_id=0,
             message=answer_text,
             keyboard=keyboard.json,
         )
 
-        self.initiate_session(event.get("peer_id"), cmid)
+        peer_id, cmid = send_info[0]["peer_id"], send_info[0]["conversation_message_id"]
+        self.initiate_session(peer_id, cmid)
+
         await producer.command_alert(event, self.NAME)
         return True
 
