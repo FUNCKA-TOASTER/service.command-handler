@@ -49,8 +49,8 @@ class CustomProducer(Producer):
             "user_name": target_name,
             "peer_name": event.get("peer_name"),
             "peer_id": event.get("peer_id"),
-            "moderator_name": event.get("user_id"),
-            "moderator_id": event.get("user_name"),
+            "moderator_name": event.get("user_name"),
+            "moderator_id": event.get("user_id"),
         }
         await self._send_data(data, queue)
 
