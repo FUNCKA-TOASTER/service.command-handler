@@ -535,6 +535,7 @@ class KickCommand(BaseCommand):
                         kick_date = NOW();
                 """
                 db.execute.raw(schema="toaster", query=query)
+                await producer.initiate_warn(event, 0, user_id, user_name, 0)
                 await producer.command_alert(event, self.NAME)
                 await producer.kick_alert(event, user_id, user_name)
                 return True
