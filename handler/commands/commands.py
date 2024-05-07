@@ -488,7 +488,7 @@ class PunishmentCommand(BaseCommand):
 
 
 class KickCommand(BaseCommand):
-    PERMISSION = 2
+    PERMISSION = 1
     NAME = "kick"
     MARK = ("CHAT",)
 
