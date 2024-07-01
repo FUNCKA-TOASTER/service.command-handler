@@ -1,0 +1,26 @@
+[tool.poetry]
+package-mode = false
+name = "toaster.command-handling-service"
+version = "0.2.0"
+description = "Microservice of the TOASTER bot, responsible for processing and calling commands."
+repository = "https://github.com/STALCRAFT-FUNCKA/toaster.command-handling-service"
+documentation = "https://github.com/STALCRAFT-FUNCKA/TOASTER/wiki"
+authors = [
+    "Oidaho <oidahomain@gmail.com>"
+]
+license = "GNU GENERAL PUBLIC LICENSE | Version 3, 29 June 2007"
+readme = "README.md"
+packages = []
+
+
+[tool.poetry.dependencies]
+python = "^3.10"
+dill = "^0.3.8"
+vk-api = "^11.9.9"
+redis = "^5.0.7"
+colorama = "^0.4.6"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
