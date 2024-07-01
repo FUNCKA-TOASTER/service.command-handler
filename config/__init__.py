@@ -24,6 +24,7 @@ from .config import (
     DBMS_PSWD,  # DBMS password
     DBMS_USER,  # DBMS user name
     DBMS_NAME,  # Name of the used DBMS
+    DBMS_DRIVER,  # Driver for DBMS
 )
 
 
@@ -40,4 +41,5 @@ __all__ = (
     "DBMS_PSWD",
     "DBMS_USER",
     "DBMS_NAME",
+    "DBMS_DRIVER",
 )

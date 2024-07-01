@@ -46,3 +46,6 @@ DBMS_PSWD = os.getenv("SQL_PSWD")
 
 # Name of the used DBMS
 DBMS_NAME = "mysql"
+
+# Driver for DBMS
+DBMS_DRIVER = "pymysql"
