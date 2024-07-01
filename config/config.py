@@ -17,6 +17,9 @@ SERVICE_NAME = "toaster.command-handling-service"
 # Address of the message broker
 BROKER_ADDR = "172.18.0.40"
 
+# Broker subscription channel name
+CHANNEL_NAME = "command"
+
 # API token obtained from environment variable
 TOKEN: str = os.getenv("TOKEN")
 

@@ -13,6 +13,7 @@ About:
 
 from .config import (
     BROKER_ADDR,  # Address of the message broker
+    CHANNEL_NAME,  # Broker subscription channel name
     TOKEN,  # API token
     GROUP_ID,  # ID of the group
     SERVICE_NAME,  # Name of the service
@@ -28,6 +29,7 @@ from .config import (
 
 __all__ = (
     "BROKER_ADDR",
+    "CHANNEL_NAME",
     "TOKEN",
     "GROUP_ID",
     "SERVICE_NAME",
