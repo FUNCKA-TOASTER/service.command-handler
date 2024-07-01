@@ -19,12 +19,9 @@ from .config import (
     SERVICE_NAME,  # Name of the service
     MAX_ARG_COUNT,  # Maxcount of arguments
     API_VERSION,  # Version of the API
-    DBMS_HOST,  # DBMS Host address
-    DBMS_PORT,  # DBMS port
-    DBMS_PSWD,  # DBMS password
-    DBMS_USER,  # DBMS user name
     DBMS_NAME,  # Name of the used DBMS
     DBMS_DRIVER,  # Driver for DBMS
+    DBMS_CREDS,  # Driver for DBMS
 )
 
 
@@ -36,10 +33,7 @@ __all__ = (
     "SERVICE_NAME",
     "MAX_ARG_COUNT",
     "API_VERSION",
-    "DBMS_HOST",
-    "DBMS_PORT",
-    "DBMS_PSWD",
-    "DBMS_USER",
     "DBMS_NAME",
     "DBMS_DRIVER",
+    "DBMS_CREDS",
 )

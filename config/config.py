@@ -10,6 +10,7 @@ About:
 """
 
 import os
+from toaster.database import Credentials
 
 # Service name used for identification
 SERVICE_NAME = "toaster.command-handling-service"
@@ -32,20 +33,16 @@ API_VERSION: str = "5.199"
 # Max count of arguments in command
 MAX_ARG_COUNT = 10
 
-# Host Address for DBMS
-DBMS_HOST = os.getenv("SQL_HOST")
-
-# Port for DBMS
-DBMS_PORT = int(os.getenv("SQL_PORT"))
-
-# User for DBMS
-DBMS_USER = os.getenv("SQL_USER")
-
-# Password for DBMS user
-DBMS_PSWD = os.getenv("SQL_PSWD")
-
 # Name of the used DBMS
 DBMS_NAME = "mysql"
 
 # Driver for DBMS
 DBMS_DRIVER = "pymysql"
+
+# DBMS credentials that includes host, port, user, password.
+DBMS_CREDS = Credentials(
+    host=os.getenv("SQL_HOST"),
+    port=int(os.getenv("SQL_PORT")),
+    user=os.getenv("SQL_USER"),
+    pswd=os.getenv("SQL_PSWD"),
+)
