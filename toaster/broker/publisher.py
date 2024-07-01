@@ -11,13 +11,13 @@ About:
     objects, and publishing them to specified channels.
 """
 
-from redis import Redis
 import dill as pickle
 from typing import (
     NoReturn,
     ByteString,
     Any,
 )
+from .connection import Connection
 
 
 class Publisher:
@@ -38,7 +38,12 @@ class Publisher:
     def __init__(
         self, host: str = "localhost", port: int = 6379, db: int = 0
     ) -> NoReturn:
-        self.client = Redis(host=host, port=port, db=db)
+        con = Connection(
+            host=host,
+            port=port,
+            db=db,
+        )
+        self.client = con.client
 
     # TODO: make logs
     # TODO: handle possible exeptions

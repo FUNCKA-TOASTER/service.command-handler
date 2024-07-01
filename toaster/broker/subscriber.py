@@ -11,13 +11,13 @@ About:
     to channels, and listening for messages.
 """
 
-from redis import Redis
 import dill as pickle
 from typing import (
     NoReturn,
     Any,
     ByteString,
 )
+from .connection import Connection
 
 
 class Subscriber:
@@ -39,7 +39,12 @@ class Subscriber:
     def __init__(
         self, host: str = "localhost", port: int = 6379, db: int = 0
     ) -> NoReturn:
-        r = Redis(host=host, port=port, db=db)
+        con = Connection(
+            host=host,
+            port=port,
+            db=db,
+        )
+        r = con.client
         self.client = r.pubsub()
 
     # TODO: Make logs
