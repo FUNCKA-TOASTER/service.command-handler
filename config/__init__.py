@@ -21,7 +21,7 @@ from .config import (
     API_VERSION,  # Version of the API
     DBMS_NAME,  # Name of the used DBMS
     DBMS_DRIVER,  # Driver for DBMS
-    DBMS_CREDS,  # Driver for DBMS
+    DBMS_CREDS,  # DBMS credentials includes host, port, user, password.
 )
 
 
