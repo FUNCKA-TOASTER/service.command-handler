@@ -1,29 +1,34 @@
 """Service "toaster.comman-handling-service".
-About:
-    ...
 
-Author:
-    Oidaho (Ruslan Bashinskii)
-    oidahomain@gmail.com
+File:
+    start.py
+
+
+About:
+    This service is responsible for receiving custom
+    events from the Redis channel "command", processing
+    these events, and executing actions based on the
+    command name specified in the event text.
 """
 
-import asyncio
-from consumer import consumer
-from handler import command_handler
-from logger import logger
+from toaster.broker import Subscriber
+from toaster.logger import Logger
+from handler import CommandHandler
+import config
 
 
-async def main():
+def main():
     """Entry point."""
-    log_text = "Awaiting command events..."
-    await logger.info(log_text)
 
-    for data in consumer.listen_queue("commands"):
-        log_text = f"Recived new coomand: {data}"
-        await logger.info(log_text)
+    subscriber = Subscriber(host=config.BROKER_ADDR)
+    logger = Logger()
+    handler = CommandHandler()
 
-        await command_handler(data)
+    logger.info("Waiting for events...")
+    for event in subscriber.listen(channel_name=config.CHANNEL_NAME):
+        logger.info(f"Recived new event: {event}")
+        handler(event)
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
