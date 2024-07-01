@@ -19,6 +19,7 @@ dill = "^0.3.8"
 vk-api = "^11.9.9"
 redis = "^5.0.7"
 colorama = "^0.4.6"
+sqlalchemy = "^2.0.31"
 
 
 [build-system]
