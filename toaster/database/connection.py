@@ -38,3 +38,11 @@ class Connection:
     @property
     def engine(self) -> Engine:
         return self._engine
+
+
+# TODO: Переделать в функцию, возвращающую URI и не более.
+# Функционал инициализации engine увести в класс Database.
+
+
+def build_connection_uri():
+    pass
