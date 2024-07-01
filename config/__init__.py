@@ -1,31 +1,41 @@
 """Module "config".
+
+File:
+    __init__.py
+
 About:
-    Service configurations and settings.
+    This file initializes the configuration variables
+    used throughout the service. It imports and exposes
+    key configuration constants such as API token,
+    service name, and other settings required for proper
+    operation.
 """
 
 from .config import (
-    QUEUE_BROKER_IP,
-    TOKEN,
-    GROUP_ID,
-    SERVICE_NAME,
-    MAX_ARG_COUNT,
-    API_VERSION,
-    MY_SQL_HOST,
-    MY_SQL_PORT,
-    MY_SQL_PSWD,
-    MY_SQL_USER,
+    BROKER_ADDR,  # Address of the message broker
+    TOKEN,  # API token
+    GROUP_ID,  # ID of the group
+    SERVICE_NAME,  # Name of the service
+    MAX_ARG_COUNT,  # Maxcount of arguments
+    API_VERSION,  # Version of the API
+    DBMS_HOST,  # DBMS Host address
+    DBMS_PORT,  # DBMS port
+    DBMS_PSWD,  # DBMS password
+    DBMS_USER,  # DBMS user name
+    DBMS_NAME,  # Name of the used DBMS
 )
 
 
 __all__ = (
-    "QUEUE_BROKER_IP",
+    "BROKER_ADDR",
     "TOKEN",
     "GROUP_ID",
     "SERVICE_NAME",
     "MAX_ARG_COUNT",
     "API_VERSION",
-    "MY_SQL_HOST",
-    "MY_SQL_PORT",
-    "MY_SQL_PSWD",
-    "MY_SQL_USER",
+    "DBMS_HOST",
+    "DBMS_PORT",
+    "DBMS_PSWD",
+    "DBMS_USER",
+    "DBMS_NAME",
 )
