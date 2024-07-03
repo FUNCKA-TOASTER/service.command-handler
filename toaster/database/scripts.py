@@ -1,29 +1,41 @@
-from sqlalchemy.orm import sessionmaker
-
-# TODO: Сделать какую-то оболочку над кастомными скриптами
-# Вероятнее всего декоратор @script
-# Который в контексте функции будет вызывать Session maker, и передавать сессию в декорируемый обьект
+from typing import Callable, Optional
+from .database import Database
 
 
-# Функция для создания сессии
-def create_session():
-    Session = sessionmaker(bind=engine)
-    session = Session()
-    return session
+def script(func: Callable, auto_commit: bool = True) -> Callable:
+    """A decorator that implements a custom script wrapper.
 
+    The decorator allows you to mark a function
+    as a custom script for sqlalchemy. Using
+    this mechanism, you can conveniently call
+    the desired set of actions in the right place.
+    It is enough only to transfer the instance of
+    the database class to the script.
 
-# Декоратор @script
-def script(func):
-    def wrapper(*args, **kwargs):
-        session = create_session()
+    Example: ::
+
+        @script(auto_commit=False)
+        def add_user(session: Session, name: str, age: int):
+            new_user = User(name=name, age=age)
+            session.add(new_user)
+            session.commit()
+    """
+
+    def wrapper(db_instance: Database, *args, **kwargs) -> Optional:
+        session = db_instance.make_session()
         try:
             result = func(session, *args, **kwargs)
-            session.commit()  # Коммитим изменения в базу данных
+
+            if auto_commit:
+                session.commit()
+
             return result
-        except Exception as e:
-            session.rollback()  # Откатываем транзакцию в случае ошибки
-            raise e
+
+        except Exception as error:
+            session.rollback()
+            raise error
+
         finally:
-            session.close()  # Закрываем сессию
+            session.close()
 
     return wrapper

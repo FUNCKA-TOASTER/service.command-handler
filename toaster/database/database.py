@@ -8,28 +8,26 @@ About:
 """
 
 from typing import NoReturn, Any
-from .credentials import Credentials
-from .connection import Connection
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
 
 class Database:
     """DOCSTRING"""
 
-    def __init__(
-        self,
-        dialect: str,
-        driver: str,
-        database: str,
-        creds: Credentials,
-        debug: bool = False,
-    ) -> NoReturn:
-        con = Connection(
-            dialect=dialect, driver=driver, database=database, creds=creds, debug=debug
-        )
-        self._engine = con.engine
+    def __init__(self, connection_uri: str, debug: bool = False):
+        self._engine = create_engine(connection_uri)
+        self._session = sessionmaker(bind=self._engine, autoflush=False)
 
     def create_tables(self, base: Any) -> NoReturn:
         base.metadata.create_all(self._engine)
 
     def drop_tables(self, base: Any) -> NoReturn:
         base.metadata.drop_all(self._engine)
+
+    @property
+    def engine(self):
+        return self._engine
+
+    def make_session(self):
+        return self.session()

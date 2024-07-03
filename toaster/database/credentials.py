@@ -17,3 +17,11 @@ class Credentials(NamedTuple):
     port: int
     user: str
     pswd: str
+
+
+class Setup(NamedTuple):
+    """DOCSTRING"""
+
+    dialect: str
+    driver: str
+    database: str
