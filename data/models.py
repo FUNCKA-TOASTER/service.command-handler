@@ -1,5 +1,6 @@
 from datetime import datetime
-from sqlalchemy.orm import Mapped, mapped_column, declarative_base
+from toaster.database import BaseModel
+from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.dialects.mysql import (
     TINYINT,
     BIGINT,
@@ -19,22 +20,9 @@ from .enums import (
 
 from .annotated import UUID, BPID
 
-BaseModel = declarative_base()
 
 # TODO: Прописать ondelete в местах, где это нужно
-
-
 # Таблицы основных элементов
-class User(BaseModel):
-    __tablename__ = "users"
-
-    id: Mapped[int] = mapped_column(BIGINT, primary_key=True)
-    bpid: Mapped[BPID]
-    first_name: Mapped[str] = mapped_column(VARCHAR(100))
-    last_name: Mapped[str] = mapped_column(VARCHAR(100))
-    url: Mapped[str] = mapped_column(VARCHAR(255))
-
-
 class Peer(BaseModel):
     __tablename__ = "peers"
 
@@ -67,14 +55,6 @@ class Session(BaseModel):
     bpid: Mapped[BPID]
     cmid: Mapped[int] = mapped_column(BIGINT, primary_key=True)
     expired: Mapped[datetime] = mapped_column(DATETIME)
-
-
-class Message(BaseModel):
-    __tablename__ = "messages"
-
-    bpid: Mapped[BPID]
-    uuid: Mapped[UUID]
-    count: Mapped[int] = mapped_column(BIGINT)
 
 
 class Queue(BaseModel):
