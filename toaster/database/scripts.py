@@ -1,8 +1,9 @@
+import sys
 from typing import Callable, Optional, Any
 from .database import Database
 
 
-def script(auto_commit: bool = True) -> Callable:
+def script(auto_commit: bool = True, debug: bool = False) -> Callable:
     """A decorator that implements a custom script wrapper.
 
     The decorator allows you to mark a function
@@ -43,7 +44,9 @@ def script(auto_commit: bool = True) -> Callable:
 
             except Exception as error:
                 session.rollback()
-                raise error
+
+                if debug:
+                    handle_exception(error, func)
 
             finally:
                 session.close()
@@ -51,3 +54,12 @@ def script(auto_commit: bool = True) -> Callable:
         return wrapper
 
     return decorator
+
+
+def handle_exception(error: Exception, func: Callable) -> None:
+    text = (
+        f"Script <{func.__name__}> execution failed. "
+        "Transaction rolled back. \n"
+        f"ErrorMessage: {error}"
+    )
+    sys.stdout.write(text)
