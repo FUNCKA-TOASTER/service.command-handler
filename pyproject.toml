@@ -8,7 +8,7 @@ documentation = "https://github.com/STALCRAFT-FUNCKA/TOASTER/wiki"
 authors = [
     "Oidaho <oidahomain@gmail.com>"
 ]
-license = "GNU GENERAL PUBLIC LICENSE | Version 3, 29 June 2007"
+license = "GPL-3.0-only"
 readme = "README.md"
 packages = []
 
