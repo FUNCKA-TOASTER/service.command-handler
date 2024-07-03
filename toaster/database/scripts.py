@@ -1,4 +1,4 @@
-from typing import Callable, Optional
+from typing import Callable, Optional, Any
 from .database import Database
 
 
@@ -19,9 +19,18 @@ def script(func: Callable, auto_commit: bool = True) -> Callable:
             new_user = User(name=name, age=age)
             session.add(new_user)
             session.commit()
+
+        @script(auto_commit=False)
+        def ge_user(session: Session, id: int):
+            user = session.get(User, {"id": id})
+            return user
+
+        # But calling requires Database instance
+        add_user(db, name="Vasya", age=15)
+        get_user(db, id=25611)
     """
 
-    def wrapper(db_instance: Database, *args, **kwargs) -> Optional:
+    def wrapper(db_instance: Database, *args, **kwargs) -> Optional[Any]:
         session = db_instance.make_session()
         try:
             result = func(session, *args, **kwargs)
