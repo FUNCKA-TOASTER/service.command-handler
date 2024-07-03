@@ -2,8 +2,8 @@ from datetime import datetime
 from enum import Enum
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, declarative_base
-from sqlalchemy.dialects.mysql import TINYINT
-from sqlalchemy.types import (
+from sqlalchemy.dialects.mysql import (
+    TINYINT,
     BIGINT,
     INTEGER,
     VARCHAR,
@@ -14,13 +14,14 @@ from sqlalchemy.types import (
 BaseModel = declarative_base()
 
 # TODO: Прописать ondelete в местах, где это нужно
+# TODO: Задать Annotated для повторяющихся типов
 
 
 # Таблицы основных элементов
 class User(BaseModel):
     __tablename__ = "users"
 
-    uuid: Mapped[int] = mapped_column(BIGINT, primary_key=True)
+    id: Mapped[int] = mapped_column(BIGINT, primary_key=True)
     bpid: Mapped[int] = mapped_column(
         BIGINT, ForeignKey("peers.bpid"), primary_key=True
     )
@@ -37,7 +38,7 @@ class PeerMark(Enum):
 class Peer(BaseModel):
     __tablename__ = "peers"
 
-    bpid: Mapped[int] = mapped_column(BIGINT, primary_key=True, unique=True)
+    id: Mapped[int] = mapped_column(BIGINT, primary_key=True, unique=True)
     name: Mapped[str] = mapped_column(VARCHAR(255))
     mark: Mapped[PeerMark]
 
