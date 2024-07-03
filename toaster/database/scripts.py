@@ -2,7 +2,7 @@ from typing import Callable, Optional, Any
 from .database import Database
 
 
-def script(func: Callable, auto_commit: bool = True) -> Callable:
+def script(auto_commit: bool = True) -> Callable:
     """A decorator that implements a custom script wrapper.
 
     The decorator allows you to mark a function
@@ -30,21 +30,24 @@ def script(func: Callable, auto_commit: bool = True) -> Callable:
         get_user(db, id=25611)
     """
 
-    def wrapper(db_instance: Database, *args, **kwargs) -> Optional[Any]:
-        session = db_instance.make_session()
-        try:
-            result = func(session, *args, **kwargs)
+    def decorator(func: Callable) -> Callable:
+        def wrapper(db_instance: Database, *args, **kwargs) -> Optional[Any]:
+            session = db_instance.make_session()
+            try:
+                result = func(session, *args, **kwargs)
 
-            if auto_commit:
-                session.commit()
+                if auto_commit:
+                    session.commit()
 
-            return result
+                return result
 
-        except Exception as error:
-            session.rollback()
-            raise error
+            except Exception as error:
+                session.rollback()
+                raise error
 
-        finally:
-            session.close()
+            finally:
+                session.close()
 
-    return wrapper
+        return wrapper
+
+    return decorator
