@@ -37,7 +37,7 @@ MAX_ARG_COUNT = 10
 ALCHEMY_SETUP = Setup(
     dialect="mysql",
     driver="pymysql",
-    database="test",
+    database="toaster_dev",  # TODO: Позже заменить на toaster
 )
 
 # DBMS credentials that includes host, port, user, password.
