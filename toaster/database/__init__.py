@@ -10,7 +10,14 @@ About:
 from .credentials import Credentials, Setup
 from .connection import build_connection_uri
 from .scripts import script
-from .database import Database
+from .database import Database, BaseModel
 
 
-__all__ = ("build_connection_uri", "script", "Credentials", "Setup", "Database")
+__all__ = (
+    "build_connection_uri",
+    "script",
+    "Credentials",
+    "Setup",
+    "Database",
+    "BaseModel",
+)
