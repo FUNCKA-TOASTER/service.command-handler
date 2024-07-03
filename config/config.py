@@ -10,7 +10,7 @@ About:
 """
 
 import os
-from toaster.database import Credentials
+from toaster.database import Credentials, Setup
 
 # Service name used for identification
 SERVICE_NAME = "toaster.command-handling-service"
@@ -33,11 +33,12 @@ API_VERSION: str = "5.199"
 # Max count of arguments in command
 MAX_ARG_COUNT = 10
 
-# Name of the used DBMS
-DBMS_NAME = "mysql"
-
-# Driver for DBMS
-DBMS_DRIVER = "pymysql"
+# Setup for sqlalchemy. Driver, Database and DBMS.
+ALCHEMY_SETUP = Setup(
+    dialect="mysql",
+    driver="pymysql",
+    database="test",
+)
 
 # DBMS credentials that includes host, port, user, password.
 DBMS_CREDS = Credentials(

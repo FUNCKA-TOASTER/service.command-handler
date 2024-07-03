@@ -19,8 +19,7 @@ from .config import (
     SERVICE_NAME,  # Name of the service
     MAX_ARG_COUNT,  # Maxcount of arguments
     API_VERSION,  # Version of the API
-    DBMS_NAME,  # Name of the used DBMS
-    DBMS_DRIVER,  # Driver for DBMS
+    ALCHEMY_SETUP,  # Setup for sqlalchemy. Driver, Database and DBMS.
     DBMS_CREDS,  # DBMS credentials includes host, port, user, password.
 )
 
@@ -33,7 +32,6 @@ __all__ = (
     "SERVICE_NAME",
     "MAX_ARG_COUNT",
     "API_VERSION",
-    "DBMS_NAME",
-    "DBMS_DRIVER",
+    "ALCHEMY_SETUP",
     "DBMS_CREDS",
 )
