@@ -11,26 +11,12 @@ About:
 """
 
 from redis import Redis
-from typing import NoReturn
+from toaster.credentials import RedisCredentials
 
 
-class Connection:
-    """A class to manage connection to a Redis server.
-
-    Description:
-        This class initializes a connection to a Redis server
-        using the provided host, port, and database index.
-        It provides a property to access the Redis client.
-
-    Attributes:
-        client (Redis): The Redis client used for interacting with the Redis server.
-    """
-
-    def __init__(
-        self, host: str = "localhost", port: int = 6379, db: int = 0
-    ) -> NoReturn:
-        self.client = Redis(host=host, port=port, db=db)
-
-    @property
-    def client(self) -> Redis:
-        return self.client
+def build_connection(creds: RedisCredentials) -> Redis:
+    return Redis(
+        host=creds.host,
+        port=creds.port,
+        db=creds.db,
+    )

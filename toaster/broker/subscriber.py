@@ -11,13 +11,9 @@ About:
     to channels, and listening for messages.
 """
 
+from typing import Any, ByteString
 import dill as pickle
-from typing import (
-    NoReturn,
-    Any,
-    ByteString,
-)
-from .connection import Connection
+from redis import Redis
 
 
 class Subscriber:
@@ -26,26 +22,10 @@ class Subscriber:
     Descriprion:
         Class for subscribing to Redis channels and deserializing
         incoming messages.
-
-    Args:
-        host (str): Redis server hostname (default is "localhost").
-        port (int): Redis server port (default is 6379).
-        db (int): Redis database index (default is 0).
-
-    Attributes:
-        client (Redis): Redis client instance.
     """
 
-    def __init__(
-        self, host: str = "localhost", port: int = 6379, db: int = 0
-    ) -> NoReturn:
-        con = Connection(
-            host=host,
-            port=port,
-            db=db,
-        )
-        r = con.client
-        self.client = r.pubsub()
+    def __init__(self, client: Redis) -> None:
+        self.client = client.pubsub()
 
     # TODO: Make logs
     # TODO: handle possible exeptions
