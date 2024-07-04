@@ -10,7 +10,7 @@ About:
 """
 
 import os
-from toaster.database import Credentials, Setup
+from toaster.credentials import AlchemyCredentials, AlchemySetup
 
 # Service name used for identification
 SERVICE_NAME = "toaster.command-handling-service"
@@ -34,14 +34,14 @@ API_VERSION: str = "5.199"
 MAX_ARG_COUNT = 10
 
 # Setup for sqlalchemy. Driver, Database and DBMS.
-ALCHEMY_SETUP = Setup(
+ALCHEMY_SETUP = AlchemySetup(
     dialect="mysql",
     driver="pymysql",
     database="toaster_dev",  # TODO: Позже заменить на toaster
 )
 
 # DBMS credentials that includes host, port, user, password.
-DBMS_CREDS = Credentials(
+DBMS_CREDS = AlchemyCredentials(
     host=os.getenv("SQL_HOST"),
     port=int(os.getenv("SQL_PORT")),
     user=os.getenv("SQL_USER"),
