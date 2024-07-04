@@ -1,3 +1,19 @@
+"""Module "database".
+
+File:
+    scripts.py
+
+About:
+    This module provides a decorator for marking
+    functions as custom scripts for SQLAlchemy.
+    The `script` decorator facilitates the execution
+    of database operations within a managed session,
+    with options for automatic commit and debugging.
+    It simplifies the process of writing and calling
+    scripts that interact with the database by encapsulating
+    session management and error handling.
+"""
+
 import sys
 from typing import Callable, Optional, Any
 from .database import Database
@@ -46,7 +62,7 @@ def script(auto_commit: bool = True, debug: bool = False) -> Callable:
                 session.rollback()
 
                 if debug:
-                    handle_exception(error, func)
+                    _handle_exception(error, func)
 
             finally:
                 session.close()
@@ -56,7 +72,7 @@ def script(auto_commit: bool = True, debug: bool = False) -> Callable:
     return decorator
 
 
-def handle_exception(error: Exception, func: Callable) -> None:
+def _handle_exception(error: Exception, func: Callable) -> None:
     text = (
         f"Script <{func.__name__}> execution failed. "
         "Transaction rolled back. \n"

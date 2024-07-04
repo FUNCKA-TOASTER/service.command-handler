@@ -1,10 +1,12 @@
-"""Module "credentials".
+"""
+Module "credentials".
 
 File:
     credentials.py
 
 About:
-    ...
+    This module provides importable classes for handling
+    database credentials and setup configurations.
 """
 
 from .credentials import (
@@ -14,7 +16,7 @@ from .credentials import (
 )
 
 __all__ = (
-    "AlchemyCredentials",
-    "AlchemySetup",
-    "RedisCredentials",
+    "AlchemyCredentials",  # To store credentials required for SQLAlchemy database connections.
+    "AlchemySetup",  # To store setup configurations for SQLAlchemy databases.
+    "RedisCredentials",  # To store credentials required for Redis server connections.
 )
