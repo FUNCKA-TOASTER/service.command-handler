@@ -8,10 +8,10 @@ About:
 """
 
 from urllib.parse import quote
-from .credentials import Credentials, Setup
+from toaster.credentials import AlchemySetup, AlchemyCredentials
 
 
-def build_connection_uri(setup: Setup, creds: Credentials) -> str:
+def build_connection_uri(setup: AlchemySetup, creds: AlchemyCredentials) -> str:
     return (
         f"{setup.dialect}+{setup.driver}://"
         f"{quote(creds.user)}:{quote(creds.pswd)}@"
