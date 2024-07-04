@@ -50,11 +50,10 @@ class RedisCredentials(NamedTuple):
     Attributes:
         host (str): The hostname of the Redis server.
         port (int): The port number on which the Redis server is listening.
-        user (str): The username for authentication.
-        pswd (str): The password for authentication.
+        db (int): The database number.
     """
 
     host: str
     port: int
-    user: str
-    pswd: str
+    db: int
+
