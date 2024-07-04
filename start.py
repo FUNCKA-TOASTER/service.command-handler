@@ -13,7 +13,8 @@ About:
 
 from toaster.broker import Subscriber, build_connection
 from toaster.logger import Logger
-from handler import CommandHandler
+
+# from handler import CommandHandler
 import config
 
 
@@ -22,12 +23,12 @@ def main():
 
     subscriber = Subscriber(client=build_connection(config.REDIS_CREDS))
     logger = Logger()
-    handler = CommandHandler()
+    # handler = CommandHandler()
 
     logger.info("Waiting for events...")
     for event in subscriber.listen(channel_name=config.CHANNEL_NAME):
         logger.info(f"Recived new event: {event}")
-        handler(event)
+        # handler(event)
 
 
 if __name__ == "__main__":
