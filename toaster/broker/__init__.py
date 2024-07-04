@@ -13,6 +13,7 @@ About:
 
 from .publisher import Publisher
 from .subscriber import Subscriber
+from .connection import build_connection
 
 
-__all__ = ("Publisher", "Subscriber")
+__all__ = ("Publisher", "Subscriber", "build_connection")
