@@ -12,7 +12,7 @@ About:
 """
 
 from .config import (
-    BROKER_ADDR,  # Address of the message broker
+    REDIS_CREDS,  # Redis (broker) credentials
     CHANNEL_NAME,  # Broker subscription channel name
     TOKEN,  # API token
     GROUP_ID,  # ID of the group
@@ -25,7 +25,7 @@ from .config import (
 
 
 __all__ = (
-    "BROKER_ADDR",
+    "REDIS_CREDS",
     "CHANNEL_NAME",
     "TOKEN",
     "GROUP_ID",

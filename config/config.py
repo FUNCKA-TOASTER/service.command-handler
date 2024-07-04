@@ -10,13 +10,14 @@ About:
 """
 
 import os
-from toaster.credentials import AlchemyCredentials, AlchemySetup
+from toaster.credentials import (
+    AlchemyCredentials,
+    AlchemySetup,
+    RedisCredentials,
+)
 
 # Service name used for identification
 SERVICE_NAME = "toaster.command-handling-service"
-
-# Address of the message broker
-BROKER_ADDR = "172.18.0.40"
 
 # Broker subscription channel name
 CHANNEL_NAME = "command"
@@ -32,6 +33,13 @@ API_VERSION: str = "5.199"
 
 # Max count of arguments in command
 MAX_ARG_COUNT = 10
+
+# Redis (broker) credentials
+REDIS_CREDS = RedisCredentials(
+    host="172.18.0.40",
+    port=6379,
+    db=0,
+)
 
 # Setup for sqlalchemy. Driver, Database and DBMS.
 ALCHEMY_SETUP = AlchemySetup(
