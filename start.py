@@ -27,7 +27,7 @@ def main():
 
     logger.info("Waiting for events...")
     for event in subscriber.listen(channel_name=config.CHANNEL_NAME):
-        logger.info(f"Recived new event: {event}")
+        logger.info(f"Recived new event: \n{event}")
         # handler(event)
 
 
