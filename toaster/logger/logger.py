@@ -13,7 +13,7 @@ About:
 
 import logging
 import config
-from typing import NoReturn, TypeVar
+from typing import TypeVar
 from .formatters import get_formatter
 
 
@@ -40,7 +40,7 @@ class Logger(metaclass=Singleton):
         logger (logging.Logger): Logger instance initialized with the service name from config..
     """
 
-    def __init__(self) -> NoReturn:
+    def __init__(self) -> None:
         self.logger = logging.getLogger(config.SERVICE_NAME)
 
         stream_handler = logging.StreamHandler()
@@ -49,7 +49,7 @@ class Logger(metaclass=Singleton):
         self.logger.addHandler(stream_handler)
         self.logger.setLevel(logging.DEBUG)
 
-    def info(self, text: str) -> NoReturn:
+    def info(self, text: str) -> None:
         """Logs an informational message.
 
         Args:
@@ -58,7 +58,7 @@ class Logger(metaclass=Singleton):
 
         self.logger.info(text)
 
-    def debug(self, text: str) -> NoReturn:
+    def debug(self, text: str) -> None:
         """Logs a debug message.
 
         Args:
@@ -67,7 +67,7 @@ class Logger(metaclass=Singleton):
 
         self.logger.debug(text)
 
-    def warning(self, text: str) -> NoReturn:
+    def warning(self, text: str) -> None:
         """Logs a warning message.
 
         Args:
@@ -76,7 +76,7 @@ class Logger(metaclass=Singleton):
 
         self.logger.warning(text)
 
-    def error(self, text: str) -> NoReturn:
+    def error(self, text: str) -> None:
         """Logs an error message.
 
         Args:
@@ -85,7 +85,7 @@ class Logger(metaclass=Singleton):
 
         self.logger.error(text)
 
-    def critical(self, text: str) -> NoReturn:
+    def critical(self, text: str) -> None:
         """Logs a critical message.
 
         Args:
