@@ -1,4 +1,4 @@
-"""Module "database".
+"""Module "credentials".
 
 File:
     credentials.py
@@ -10,7 +10,7 @@ About:
 from typing import NamedTuple
 
 
-class Credentials(NamedTuple):
+class AlchemyCredentials(NamedTuple):
     """DOCSTRING"""
 
     host: str
@@ -19,9 +19,18 @@ class Credentials(NamedTuple):
     pswd: str
 
 
-class Setup(NamedTuple):
+class AlchemySetup(NamedTuple):
     """DOCSTRING"""
 
     dialect: str
     driver: str
     database: str
+
+
+class RedisCredentials(NamedTuple):
+    """DOCSTRING"""
+
+    host: str
+    port: int
+    user: str
+    pswd: str
