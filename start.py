@@ -11,7 +11,7 @@ About:
     command name specified in the event text.
 """
 
-from toaster.broker import Subscriber
+from toaster.broker import Subscriber, build_connection
 from toaster.logger import Logger
 from handler import CommandHandler
 import config
@@ -20,7 +20,7 @@ import config
 def main():
     """Entry point."""
 
-    subscriber = Subscriber(host=config.BROKER_ADDR)
+    subscriber = Subscriber(client=build_connection(config.REDIS_CREDS))
     logger = Logger()
     handler = CommandHandler()
 
