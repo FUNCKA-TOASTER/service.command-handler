@@ -46,4 +46,4 @@ class Subscriber:
 
     @staticmethod
     def __deserialize(data: ByteString) -> Any:
-        return pickle.loads(data=data)
+        return pickle.loads(str=data)
