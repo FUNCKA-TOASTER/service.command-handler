@@ -17,7 +17,7 @@ class CommandHandler:
         try:
             name, args = self._recognize_command(event)
             if self._execute(name, args, event):
-                logger.info(f"Command '{name}' executed.")
+                logger.info(f"Command '{name}' executed with args {args}.")
 
         except Exception as error:
             logger.error(error)
@@ -26,9 +26,10 @@ class CommandHandler:
             self._delete_own_message(event)
 
     def _execute(self, name: str, args: List[str], event: Event) -> ExecResult:
+        logger.debug(command_list)
         selected = command_list.get(name)
         if selected is None:
-            raise KeyError(f'Could not recognize command "{name}"')
+            raise KeyError(f"Could not recognize command '{name}'")
 
         comamnd_obj = selected(self._get_api())
         return comamnd_obj(name, args, event)
