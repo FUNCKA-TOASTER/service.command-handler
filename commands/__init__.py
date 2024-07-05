@@ -4,7 +4,7 @@ from .commands import (
 
 
 command_list = {
-    TestCommand.name: TestCommand,
+    TestCommand.NAME: TestCommand,
 }
 
 

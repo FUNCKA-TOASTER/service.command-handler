@@ -20,10 +20,6 @@ class BaseCommand(ABC):
     def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
         """DOCSTRING"""
 
-    @property
-    def name(self):
-        return self.NAME
-
     @staticmethod
     def is_tag(tag: str) -> bool:
         pattern = r"^\[id[-+]?\d+\|\@?.*\]"
