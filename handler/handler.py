@@ -1,124 +1,49 @@
-from vk_api import VkApiError
-from logger import logger
+from typing import Tuple, List, NoReturn, Optional, Any
+from loguru import logger
+from vk_api import VkApi
+from toaster.broker.events import Event
+from commands import command_list
 import config
-from db import db
-from .abc import ABCHandler
-from .commands import command_list
 
 
-class CommandHandler(ABCHandler):
-    """Event handler class that recognizes commands
-    in the message and executing attached to each command
-    actions.
-    """
+CommandData = Tuple[str, List[str]]
 
-    def _handle(self, event: dict, kwargs) -> bool:
-        self._delete_ownmessage(event)
 
-        command_text: str = event.get("text")
-        command_text_wo_prefix: str = command_text[1:]
+class CommandHandler:
+    """DOCSTRING"""
 
-        # command arguments
-        arguments: list = command_text_wo_prefix.split(" ")[
-            0 : config.MAX_ARG_COUNT + 1
-        ]
-        # command name
-        command: str = arguments.pop(0)
-
-        selected = command_list.get(command)
-
-        if selected is None:
-            log_text = f'Could not recognize command "{command}"'
-            logger.info(log_text)
-
-            return False
-
-        selected = selected(super().api)
-
-        conversation_mark = self._get_conv_mark(event)
-
-        if conversation_mark not in selected.MARK:
-            log_text = (
-                f'Could not execute command in "{conversation_mark}" conversation'
-            )
-            logger.info(log_text)
-
-            return False
-
-        user_lvl = self._get_userlvl(event)
-
-        if selected.PERMISSION <= user_lvl:
-            result = selected(event, argument_list=arguments)
-
-            log_text = (
-                f"Event <{event.get('event_id')}> with " f"arg list <{arguments}> "
-            )
-
-            if result:
-                log_text += f"triggered /{selected.NAME} command."
-
-            else:
-                log_text += "did not triggered any command."
-
-            logger.info(log_text)
-            return result
-
-        else:
-            log_text = (
-                f"User {event.get('user_name')} have"
-                " not permissions to execute this command."
-            )
-            logger.info(log_text)
-
-            return False
-
-    def _get_userlvl(self, event: dict) -> int:
-        tech_admin = db.execute.select(
-            schema="toaster_settings",
-            table="staff",
-            fields=("user_id",),
-            user_id=event.get("user_id"),
-            staff_role="TECH",
-        )
-
-        if bool(tech_admin):
-            if event.get("user_id") == tech_admin[0][0]:
-                return 2
-
-        user_lvl = db.execute.select(
-            schema="toaster",
-            table="permissions",
-            fields=("user_permission",),
-            conv_id=event.get("peer_id"),
-            user_id=event.get("user_id"),
-        )
-
-        if bool(user_lvl):
-            return int(user_lvl[0][0])
-
-        return 0
-
-    def _delete_ownmessage(self, event: dict):
+    def __call__(self, event: Event) -> None:
         try:
-            super().api.messages.delete(
-                delete_for_all=1, peer_id=event.get("peer_id"), cmids=event.get("cmid")
-            )
+            command_data = self._recognize_command(event)
+            self._execute(**command_data)
 
-        except VkApiError as error:
-            log_text = f"Could not delete own command message: {error}"
-            logger.info(log_text)
+        except Exception as error:
+            logger.error(error)
 
-    def _get_conv_mark(self, event: dict):
-        fields = ("conv_mark",)
-        mark = db.execute.select(
-            schema="toaster",
-            table="conversations",
-            fields=fields,
-            conv_id=event.get("peer_id"),
+    # TODO: В будущем система взаимодействия с обьектом команды будет изменена
+    # Так что это надо будет поправить.
+    def _execute(self, name: str, args: List[str], event: Event) -> Optional[NoReturn]:
+        selected = command_list.get(name)
+        if selected is None:
+            raise KeyError(f'Could not recognize command "{name}"')
+
+        comamnd_obj = selected(self._get_api())
+        comamnd_obj(event, argument_list=args)
+
+    def _recognize_command(self, event: Event) -> CommandData:
+        command_text = event.message.text
+        if not command_text:
+            raise ValueError("Message does not contain any text.")
+
+        command_text_wo_prefix = command_text[1:]
+        arguments = command_text_wo_prefix.split(" ")[0 : config.MAX_ARG_COUNT + 1]
+        command = arguments.pop(0)
+
+        return (command, arguments)
+
+    def _get_api(self) -> Any:
+        session = VkApi(
+            token=config.TOKEN,
+            api_version=config.API_VERSION,
         )
-        already_marked = bool(mark)
-
-        if already_marked:
-            return mark[0][0]
-
-        return "UNDEFINED"
+        self.api = session.get_api()
