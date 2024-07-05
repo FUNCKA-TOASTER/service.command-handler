@@ -23,8 +23,7 @@ class CommandHandler:
             logger.error(error)
 
         finally:
-            pass
-            # self._delete_own_message(event)
+            self._delete_own_message(event)
 
     def _execute(self, name: str, args: List[str], event: Event) -> ExecResult:
         selected = command_list.get(name)
