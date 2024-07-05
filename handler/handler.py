@@ -23,15 +23,13 @@ class CommandHandler:
         finally:
             self._delete_own_message(event)
 
-    # TODO: В будущем система взаимодействия с обьектом команды будет изменена
-    # Так что это надо будет поправить.
     def _execute(self, name: str, args: List[str], event: Event) -> Optional[NoReturn]:
         selected = command_list.get(name)
         if selected is None:
             raise KeyError(f'Could not recognize command "{name}"')
 
         comamnd_obj = selected(self._get_api())
-        comamnd_obj(event, argument_list=args)
+        comamnd_obj(name, args, event)
 
     def _recognize_command(self, event: Event) -> CommandData:
         command_text = event.message.text
