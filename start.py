@@ -23,7 +23,7 @@ def setup_logger() -> None:
     logger.add(
         sys.stdout,
         colorize=True,
-        format="<red>{module}</red> | <green>{time:YYYY-MM-DD HH:mm:ss}</green> | <level>{level}</level> | {message}",
+        format="<green>{time:YYYY-MM-DD HH:mm:ss}</green> | <red>{module}</red> | <level>{level}</level> | {message}",
         level="DEBUG",
     )
 
