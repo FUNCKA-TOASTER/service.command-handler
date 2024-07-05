@@ -1,4 +1,4 @@
-from typing import Tuple, List, NoReturn, Optional, Any
+from typing import Tuple, List, NoReturn, Optional, Any, Union
 from loguru import logger
 from vk_api import VkApi, VkApiError
 from toaster.broker.events import Event
@@ -7,6 +7,7 @@ import config
 
 
 CommandData = Tuple[str, List[str]]
+ExecResult = Optional[Union[bool, NoReturn]]
 
 
 class CommandHandler:
@@ -15,7 +16,8 @@ class CommandHandler:
     def __call__(self, event: Event) -> None:
         try:
             name, args = self._recognize_command(event)
-            self._execute(name, args, event)
+            if self._execute(name, args, event):
+                logger.info(f"Command '{name}' executed.")
 
         except Exception as error:
             logger.error(error)
@@ -23,13 +25,13 @@ class CommandHandler:
         finally:
             self._delete_own_message(event)
 
-    def _execute(self, name: str, args: List[str], event: Event) -> Optional[NoReturn]:
+    def _execute(self, name: str, args: List[str], event: Event) -> ExecResult:
         selected = command_list.get(name)
         if selected is None:
             raise KeyError(f'Could not recognize command "{name}"')
 
         comamnd_obj = selected(self._get_api())
-        comamnd_obj(name, args, event)
+        return comamnd_obj(name, args, event)
 
     def _recognize_command(self, event: Event) -> CommandData:
         command_text = event.message.text
