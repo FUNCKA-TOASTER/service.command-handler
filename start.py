@@ -31,6 +31,7 @@ def setup_logger() -> None:
 def main():
     """Entry point."""
 
+    setup_logger()
     subscriber = Subscriber(client=build_connection(config.REDIS_CREDS))
     handler = CommandHandler()
 
