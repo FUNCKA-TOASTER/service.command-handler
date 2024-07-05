@@ -14,6 +14,7 @@ About:
 from typing import ByteString, Any
 import dill as pickle
 from redis import Redis
+from loguru import logger
 
 
 class Publisher:
@@ -27,7 +28,6 @@ class Publisher:
     def __init__(self, client: Redis) -> None:
         self.client = client
 
-    # TODO: make logs
     # TODO: handle possible exeptions
     def publish(self, obj: Any, channel_name: str) -> int:
         """Publishes a serialized object to a Redis channel.
@@ -40,6 +40,7 @@ class Publisher:
             int: Status code indicating the result of the publish operation.
         """
 
+        logger.info(f"Sending object: {obj}")
         data = self.__serialize(obj)
         status = self.client.publish(channel_name, data)
 

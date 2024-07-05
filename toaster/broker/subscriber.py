@@ -14,6 +14,7 @@ About:
 from typing import Any, ByteString
 import dill as pickle
 from redis import Redis
+from loguru import logger
 
 
 class Subscriber:
@@ -27,7 +28,6 @@ class Subscriber:
     def __init__(self, client: Redis) -> None:
         self.client = client.pubsub()
 
-    # TODO: Make logs
     # TODO: handle possible exeptions
     def listen(self, channel_name: str) -> Any:
         """Listens to messages on a specified Redis channel and deserializes them.
@@ -40,9 +40,12 @@ class Subscriber:
         """
 
         self.client.subscribe(channel_name)
+        logger.info("Waiting for events...")
         for event in self.client.listen():
             if event.get("type") == "message":
-                yield self.__deserialize(event.get("data"))
+                deserialized = self.__deserialize(event.get("data"))
+                logger.info(f"Recived new event: \n{deserialized}")
+                yield deserialized
 
     @staticmethod
     def __deserialize(data: ByteString) -> Any:

@@ -17,6 +17,7 @@ from typing import Any
 from functools import singledispatch
 from sqlalchemy import create_engine, Engine
 from sqlalchemy.orm import Session, sessionmaker, declarative_base
+from loguru import logger
 
 
 BaseModel = declarative_base()
@@ -38,11 +39,13 @@ class Database:
     @singledispatch
     def create_tables(self) -> None:
         """Creates all tables defined in the SQLAlchemy base model (BaseModel)."""
+        logger.info("Creating tables...")
         BaseModel.metadata.create_all(self._engine)
 
     @singledispatch
     def drop_tables(self) -> None:
         """Drops all tables defined in the SQLAlchemy base model (BaseModel)."""
+        logger.info("Droping tables...")
         BaseModel.metadata.create_all(self._engine)
 
     @create_tables.register

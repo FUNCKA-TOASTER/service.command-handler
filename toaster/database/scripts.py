@@ -14,8 +14,8 @@ About:
     session management and error handling.
 """
 
-import sys
 from typing import Callable, Optional, Any
+from loguru import logger
 from .database import Database
 
 
@@ -78,4 +78,4 @@ def _handle_exception(error: Exception, func: Callable) -> None:
         "Transaction rolled back. \n"
         f"ErrorMessage: {error}"
     )
-    sys.stdout.write(text)
+    logger.error(text)
