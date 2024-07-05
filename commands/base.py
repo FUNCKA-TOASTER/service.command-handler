@@ -22,7 +22,7 @@ class BaseCommand(ABC):
 
     @property
     def name(self):
-        return self.name
+        return self.NAME
 
     @staticmethod
     def is_tag(tag: str) -> bool:
