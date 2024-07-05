@@ -1,6 +1,6 @@
 from typing import Tuple, List, NoReturn, Optional, Any
 from loguru import logger
-from vk_api import VkApi
+from vk_api import VkApi, VkApiError
 from toaster.broker.events import Event
 from commands import command_list
 import config
@@ -14,11 +14,14 @@ class CommandHandler:
 
     def __call__(self, event: Event) -> None:
         try:
-            command_data = self._recognize_command(event)
-            self._execute(**command_data)
+            name, args = self._recognize_command(event)
+            self._execute(name, args, event)
 
         except Exception as error:
             logger.error(error)
+
+        finally:
+            self._delete_own_message(event)
 
     # TODO: В будущем система взаимодействия с обьектом команды будет изменена
     # Так что это надо будет поправить.
@@ -41,9 +44,21 @@ class CommandHandler:
 
         return (command, arguments)
 
+    def _delete_own_message(self, event: Event):
+        try:
+            api = self._get_api()
+            api.messages.delete(
+                delete_for_all=1,
+                peer_id=event.peer.bpid,
+                cmids=event.message.cmid,
+            )
+
+        except VkApiError as error:
+            logger.info(f"Could not delete own command message: {error}")
+
     def _get_api(self) -> Any:
         session = VkApi(
             token=config.TOKEN,
             api_version=config.API_VERSION,
         )
-        self.api = session.get_api()
+        return session.get_api()
