@@ -9,7 +9,7 @@ class TestCommand(BaseCommand):
 
     NAME = "test"
 
-    def _handle(self, event: Event, args: Optional[List[str]]) -> bool:
+    def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
         answer_text = "⚠️ Тестовая команда!"
 
         answer = self.api.messages.send(
