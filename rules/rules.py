@@ -1,7 +1,7 @@
 from typing import List, Optional, Iterable
 from toaster.broker.events import Event
 from data import TOASTER_DB
-from data import (
+from data.scripts import (
     get_peer_mark,
     get_user_permission,
 )
