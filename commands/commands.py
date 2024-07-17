@@ -51,7 +51,7 @@ class Mark(BaseCommand):
             .add_button(
                 Callback(
                     label="Обновить данные беседы",
-                    payload={"action_name": "update_conv_data"},
+                    payload={"action_name": "update_peer_data"},
                 ),
                 ButtonColor.SECONDARY,
             )
