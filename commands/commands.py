@@ -8,7 +8,7 @@ from .base import BaseCommand
 
 @requires_mark(PeerMark.CHAT)
 @requires_permission(UserPermission.moderator)
-class TestCommand(BaseCommand):
+class Test(BaseCommand):
     NAME = "test"
 
     def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
@@ -23,7 +23,7 @@ class TestCommand(BaseCommand):
         return True
 
 
-class MarkCommand(BaseCommand):
+class Mark(BaseCommand):
     NAME = "mark"
 
     def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
