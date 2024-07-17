@@ -67,7 +67,7 @@ class Mark(BaseCommand):
         )
 
         answer = self.api.messages.send(
-            peer_ids=event.get("peer_id"),
+            peer_ids=event.peer.bpid,
             random_id=0,
             message=answer_text,
             keyboard=keyboard.json,
