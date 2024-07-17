@@ -101,10 +101,9 @@ class Permission(BaseCommand):
             )
             .add_button(
                 Callback(
-                    label="Пользователь",
+                    label="Сбросить",
                     payload={
-                        "action_name": "set_permission",
-                        "permission": 0,
+                        "action_name": "drop_permission",
                         "target": self.id_from_tag(user_tag),
                     },
                 ),
