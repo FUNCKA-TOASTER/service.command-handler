@@ -6,7 +6,6 @@ from data.scripts import (
     get_peer_mark,
     get_user_permission,
 )
-from loguru import logger
 
 
 def requires_permission(permission_lvl: UserPermission):
@@ -19,7 +18,6 @@ def requires_permission(permission_lvl: UserPermission):
 
             def wrapper(name: str, args: Optional[List[str]], event: Event):
                 user_permission = get_user_permission(TOASTER_DB, event)
-                logger.debug(f"{user_permission} {permission_lvl.value}")
                 if user_permission >= permission_lvl.value:
                     return obj(name, args, event)
 
@@ -33,7 +31,6 @@ def requires_permission(permission_lvl: UserPermission):
 
             def new_call(self, name: str, args: Optional[List[str]], event: Event):
                 user_permission = get_user_permission(TOASTER_DB, event)
-                logger.debug(f"{user_permission} {permission_lvl.value}")
                 if user_permission >= permission_lvl.value:
                     return original(self, name, args, event)
 
@@ -56,7 +53,6 @@ def requires_mark(peer_mark: PeerMark):
 
             def wrapper(name: str, args: Optional[List[str]], event: Event):
                 mark = get_peer_mark(TOASTER_DB, event)
-                logger.debug(f"{mark} {peer_mark.value}")
                 if mark == peer_mark.value:
                     return obj(name, args, event)
 
@@ -70,7 +66,6 @@ def requires_mark(peer_mark: PeerMark):
 
             def new_call(self, name: str, args: Optional[List[str]], event: Event):
                 mark = get_peer_mark(TOASTER_DB, event)
-                logger.debug(f"{mark} {peer_mark.value}")
                 if mark == peer_mark.value:
                     return original(self, name, args, event)
 
