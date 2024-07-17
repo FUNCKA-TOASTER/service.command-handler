@@ -33,7 +33,8 @@ class CommandHandler:
         comamnd_obj = selected(self._get_api())
         return comamnd_obj(name, args, event)
 
-    def _recognize_command(self, event: Event) -> CommandData:
+    @staticmethod
+    def _recognize_command(event: Event) -> CommandData:
         command_text = event.message.text
         if not command_text:
             raise ValueError("Message does not contain any text.")

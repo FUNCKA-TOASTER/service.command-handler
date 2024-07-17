@@ -3,7 +3,6 @@
 File:
     start.py
 
-
 About:
     This service is responsible for receiving custom
     events from the Redis channel "command", processing
