@@ -9,8 +9,6 @@ from .base import BaseCommand
 @requires_mark(PeerMark.CHAT)
 @requires_permission(UserPermission.moderator)
 class TestCommand(BaseCommand):
-    """DOCSTRING"""
-
     NAME = "test"
 
     def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
@@ -28,24 +26,24 @@ class TestCommand(BaseCommand):
 class MarkCommand(BaseCommand):
     NAME = "mark"
 
-    async def _handle(self, event: dict, kwargs) -> bool:
+    def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
         answer_text = (
-            "⚠️ Вы хотите пометить новую беседу? \n\n"
+            "⚠️ Вы хотите задать метку беседе? \n\n"
             "Выберите необходимое дествие из меню ниже:"
         )
 
         keyboard = (
-            Keyboard(inline=True, one_time=False, owner_id=event.get("user_id"))
+            Keyboard(inline=True, one_time=False, owner_id=event.user.uuid)
             .add_row()
             .add_button(
                 Callback(
-                    label="CHAT", payload={"call_action": "set_mark", "mark": "CHAT"}
+                    label="CHAT", payload={"action_name": "set_mark", "mark": "CHAT"}
                 ),
                 ButtonColor.POSITIVE,
             )
             .add_button(
                 Callback(
-                    label="LOG", payload={"call_action": "set_mark", "mark": "LOG"}
+                    label="LOG", payload={"action_name": "set_mark", "mark": "LOG"}
                 ),
                 ButtonColor.POSITIVE,
             )
@@ -53,19 +51,17 @@ class MarkCommand(BaseCommand):
             .add_button(
                 Callback(
                     label="Обновить данные беседы",
-                    payload={"call_action": "update_conv_data"},
+                    payload={"action_name": "update_conv_data"},
                 ),
                 ButtonColor.SECONDARY,
             )
             .add_row()
             .add_button(
-                Callback(label="Сбросить метку", payload={"call_action": "drop_mark"}),
+                Callback(label="Сбросить метку", payload={"action_name": "drop_mark"}),
                 ButtonColor.NEGATIVE,
             )
             .add_button(
-                Callback(
-                    label="Отмена команды", payload={"call_action": "cancel_command"}
-                ),
+                Callback(label="Закрыть", payload={"action_name": "close_menu"}),
                 ButtonColor.NEGATIVE,
             )
         )

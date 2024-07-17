@@ -16,7 +16,7 @@ def requires_permission(permission_lvl: int):
                 if event[0] >= permission_lvl:
                     return obj(name, args, event)
                 else:
-                    raise Exception(exception_message)
+                    raise PermissionError(exception_message)
 
             return wrapper
 
@@ -27,7 +27,7 @@ def requires_permission(permission_lvl: int):
                 if event[0] >= permission_lvl:
                     return original(self, name, args, event)
                 else:
-                    raise Exception(exception_message)
+                    raise PermissionError(exception_message)
 
             obj.__call__ = new_call
             return obj
@@ -49,7 +49,7 @@ def requires_mark(peer_mark: str):
                 if event[1] == peer_mark:
                     return obj(name, args, event)
                 else:
-                    raise Exception(exception_message)
+                    raise RuntimeError(exception_message)
 
             return wrapper
 
@@ -60,7 +60,7 @@ def requires_mark(peer_mark: str):
                 if event[1] == peer_mark:
                     return original(self, name, args, event)
                 else:
-                    raise Exception(exception_message)
+                    raise RuntimeError(exception_message)
 
             obj.__call__ = new_call
             return obj
