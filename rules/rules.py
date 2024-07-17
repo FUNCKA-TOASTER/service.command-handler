@@ -1,20 +1,25 @@
 from typing import List, Optional, Iterable
 from toaster.broker.events import Event
+from data import TOASTER_DB
+from data import (
+    get_peer_mark,
+    get_user_permission,
+)
 
 
 def requires_permission(permission_lvl: int):
     """DOCSTRING"""
 
-    # TODO: Сделать нормальные сообщения
-    exception_message = "Лвл малый!"
+    exception_message = "Access rejected. Low level of access rights."
 
     def decorator(obj: object):
         if not isinstance(obj, type):
 
             def wrapper(name: str, args: Optional[List[str]], event: Event):
-                # TODO: Тут должны быть скрипты из алхимии для получения прав пользователя
-                if event[0] >= permission_lvl:
+                user_permission = get_user_permission(TOASTER_DB, event)
+                if user_permission >= permission_lvl:
                     return obj(name, args, event)
+
                 else:
                     raise PermissionError(exception_message)
 
@@ -24,8 +29,10 @@ def requires_permission(permission_lvl: int):
             original = obj.__call__
 
             def new_call(self, name: str, args: Optional[List[str]], event: Event):
-                if event[0] >= permission_lvl:
+                user_permission = get_user_permission(TOASTER_DB, event)
+                if user_permission >= permission_lvl:
                     return original(self, name, args, event)
+
                 else:
                     raise PermissionError(exception_message)
 
@@ -38,16 +45,16 @@ def requires_permission(permission_lvl: int):
 def requires_mark(peer_mark: str):
     """DOCSTRING"""
 
-    # TODO: Сделать нормальные сообщения
-    exception_message = "Не та метка!"
+    exception_message = "Command execution aborted. Wrong peer mark."
 
     def decorator(obj: object):
         if not isinstance(obj, type):
 
             def wrapper(name: str, args: Optional[List[str]], event: Event):
-                # TODO: Тут должны быть скрипты из алхимии для получения метки беседы
-                if event[1] == peer_mark:
+                mark = get_peer_mark(TOASTER_DB, event)
+                if mark == peer_mark:
                     return obj(name, args, event)
+
                 else:
                     raise RuntimeError(exception_message)
 
@@ -57,8 +64,10 @@ def requires_mark(peer_mark: str):
             original = obj.__call__
 
             def new_call(self, name: str, args: Optional[List[str]], event: Event):
-                if event[1] == peer_mark:
+                mark = get_peer_mark(TOASTER_DB, event)
+                if mark == peer_mark:
                     return original(self, name, args, event)
+
                 else:
                     raise RuntimeError(exception_message)
 
