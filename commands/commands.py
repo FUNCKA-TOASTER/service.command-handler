@@ -23,6 +23,7 @@ class Test(BaseCommand):
         return True
 
 
+@requires_permission(UserPermission.administrator)
 class Mark(BaseCommand):
     NAME = "mark"
 
