@@ -6,23 +6,6 @@ from data import UserPermission, PeerMark
 from .base import BaseCommand
 
 
-@requires_mark(PeerMark.CHAT)
-@requires_permission(UserPermission.moderator)
-class Test(BaseCommand):
-    NAME = "test"
-
-    def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
-        answer_text = "⚠️ Тестовая команда!"
-
-        answer = self.api.messages.send(
-            peer_ids=event.peer.bpid,
-            random_id=0,
-            message=answer_text,
-        )
-
-        return True
-
-
 @requires_permission(UserPermission.administrator)
 class Mark(BaseCommand):
     NAME = "mark"
@@ -73,5 +56,75 @@ class Mark(BaseCommand):
             message=answer_text,
             keyboard=keyboard.json,
         )
+
+        return True
+
+
+@requires_mark(PeerMark.CHAT)
+@requires_permission(UserPermission.administrator)
+class Permission(BaseCommand):
+    NAME = "permission"
+
+    def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
+        if not args or not self.is_tag(user_tag := args[0]):
+            return False
+
+        answer_text = (
+            f"⚠️ Уровни доступа пользователя {user_tag} \n\n"
+            "Выберите необходимое дествие из меню ниже:"
+        )
+
+        keyboard = (
+            Keyboard(inline=True, one_time=False, owner_id=event.user.uuid)
+            .add_row()
+            .add_button(
+                Callback(
+                    label="Модератор",
+                    payload={
+                        "action_name": "set_permission",
+                        "permission": 1,
+                        "target": self.id_from_tag(user_tag),
+                    },
+                ),
+                ButtonColor.POSITIVE,
+            )
+            .add_button(
+                Callback(
+                    label="Администратор",
+                    payload={
+                        "action_name": "set_permission",
+                        "permission": 2,
+                        "target": self.id_from_tag(user_tag),
+                    },
+                ),
+                ButtonColor.POSITIVE,
+            )
+            .add_button(
+                Callback(
+                    label="Пользователь",
+                    payload={
+                        "action_name": "set_permission",
+                        "permission": 0,
+                        "target": self.id_from_tag(user_tag),
+                    },
+                ),
+                ButtonColor.NEGATIVE,
+            )
+            .add_row()
+            .add_button(
+                Callback(label="Закрыть", payload={"action_name": "close_menu"}),
+                ButtonColor.NEGATIVE,
+            )
+        )
+
+        send_info = self.api.messages.send(
+            peer_ids=event.peer.bpid,
+            random_id=0,
+            message=answer_text,
+            keyboard=keyboard.json,
+        )
+
+        # TODO: Создать сессию меню
+        # TODO: Алерт о вызове команды
 
         return True
