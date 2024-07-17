@@ -31,7 +31,7 @@ def requires_permission(permission_lvl: UserPermission):
 
             def new_call(self, name: str, args: Optional[List[str]], event: Event):
                 user_permission = get_user_permission(TOASTER_DB, event)
-                if user_permission >= permission_lvl:
+                if user_permission >= permission_lvl.value:
                     return original(self, name, args, event)
 
                 else:
@@ -66,7 +66,7 @@ def requires_mark(peer_mark: PeerMark):
 
             def new_call(self, name: str, args: Optional[List[str]], event: Event):
                 mark = get_peer_mark(TOASTER_DB, event)
-                if mark == peer_mark:
+                if mark == peer_mark.value:
                     return original(self, name, args, event)
 
                 else:
