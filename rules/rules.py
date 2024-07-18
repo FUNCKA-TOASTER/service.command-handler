@@ -1,4 +1,4 @@
-from typing import List, Optional, Iterable
+from typing import List, Optional, Tuple
 from toaster.broker.events import Event
 from data import UserPermission, PeerMark
 from data import TOASTER_DB
@@ -17,7 +17,11 @@ def requires_permission(permission_lvl: UserPermission):
         if not isinstance(obj, type):
 
             def wrapper(name: str, args: Optional[List[str]], event: Event):
-                user_permission = get_user_permission(TOASTER_DB, event)
+                user_permission = get_user_permission(
+                    db_instance=TOASTER_DB,
+                    uuid=event.user.uuid,
+                    bpid=event.peer.bpid,
+                )
                 if user_permission >= permission_lvl.value:
                     return obj(name, args, event)
 
@@ -30,7 +34,11 @@ def requires_permission(permission_lvl: UserPermission):
             original = obj.__call__
 
             def new_call(self, name: str, args: Optional[List[str]], event: Event):
-                user_permission = get_user_permission(TOASTER_DB, event)
+                user_permission = get_user_permission(
+                    db_instance=TOASTER_DB,
+                    uuid=event.user.uuid,
+                    bpid=event.peer.bpid,
+                )
                 if user_permission >= permission_lvl.value:
                     return original(self, name, args, event)
 
@@ -52,7 +60,10 @@ def requires_mark(peer_mark: PeerMark):
         if not isinstance(obj, type):
 
             def wrapper(name: str, args: Optional[List[str]], event: Event):
-                mark = get_peer_mark(TOASTER_DB, event)
+                mark = get_peer_mark(
+                    db_instance=TOASTER_DB,
+                    bpid=event.peer.bpid,
+                )
                 if mark == peer_mark.value:
                     return obj(name, args, event)
 
@@ -65,7 +76,10 @@ def requires_mark(peer_mark: PeerMark):
             original = obj.__call__
 
             def new_call(self, name: str, args: Optional[List[str]], event: Event):
-                mark = get_peer_mark(TOASTER_DB, event)
+                mark = get_peer_mark(
+                    db_instance=TOASTER_DB,
+                    bpid=event.peer.bpid,
+                )
                 if mark == peer_mark.value:
                     return original(self, name, args, event)
 
@@ -78,5 +92,36 @@ def requires_mark(peer_mark: PeerMark):
     return decorator
 
 
-def requires_attachments(attachemnts: Iterable):
-    pass  # TODO: Write me
+def requires_attachments(attachments: Tuple[str]):
+    """DOCSTRING"""
+
+    exception_message = (
+        "The message does not have attachments in the form of forwarding."
+    )
+
+    def decorator(obj: object):
+        if not isinstance(obj, type):
+
+            def wrapper(name: str, args: Optional[List[str]], event: Event):
+                if set(attachments).issubset(event.message.attachemnts):
+                    return obj(name, args, event)
+
+                else:
+                    raise ValueError(exception_message)
+
+            return wrapper
+
+        else:
+            original = obj.__call__
+
+            def new_call(self, name: str, args: Optional[List[str]], event: Event):
+                if set(attachments).issubset(event.message.attachemnts):
+                    return original(self, name, args, event)
+
+                else:
+                    raise ValueError(exception_message)
+
+            obj.__call__ = new_call
+            return obj
+
+    return decorator
