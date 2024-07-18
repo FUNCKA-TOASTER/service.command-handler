@@ -1,8 +1,7 @@
 from typing import Optional, List
-from vk_api import VkApiError
 from toaster.broker.events import Event
 from toaster.keyboards import Keyboard, ButtonColor, Callback
-from rules import requires_mark, requires_permission
+from rules import requires_mark, requires_permission, requires_attachments
 from data import UserPermission, PeerMark
 from .base import BaseCommand
 
@@ -151,6 +150,7 @@ class Say(BaseCommand):
 
 
 @requires_mark(PeerMark.CHAT)
+@requires_attachments(("reply", "forward"))
 @requires_permission(UserPermission.moderator)
 class DeleteCommand(BaseCommand):
     NAME = "delete"
