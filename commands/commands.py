@@ -221,7 +221,7 @@ class Game(BaseCommand):
 class Copy(BaseCommand):
     NAME = "copy"
 
-    async def _handle(self, event: dict, kwargs) -> bool:
+    def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
         self.api.messages.send(
             peer_ids=event.peer.bpid,
             random_id=0,
