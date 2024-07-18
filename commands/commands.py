@@ -152,7 +152,7 @@ class Say(BaseCommand):
 @requires_mark(PeerMark.CHAT)
 @requires_attachments(("reply", "forward"))
 @requires_permission(UserPermission.moderator)
-class DeleteCommand(BaseCommand):
+class Delete(BaseCommand):
     NAME = "delete"
 
     def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
