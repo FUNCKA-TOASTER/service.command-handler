@@ -18,9 +18,13 @@ class CommandHandler:
             name, args = self._recognize_command(event)
             if self._execute(name, args, event):
                 logger.info(f"Command '{name}' executed with args {args}.")
+                return
 
         except Exception as error:
             logger.error(error)
+
+        else:
+            logger.info("Not a single command was executed.")
 
         finally:
             self._delete_own_message(event)
