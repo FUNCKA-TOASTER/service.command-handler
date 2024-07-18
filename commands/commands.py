@@ -218,7 +218,7 @@ class Game(BaseCommand):
 @requires_mark(PeerMark.CHAT)
 @requires_attachments("reply")
 @requires_permission(UserPermission.moderator)
-class CopyCommand(BaseCommand):
+class Copy(BaseCommand):
     NAME = "copy"
 
     async def _handle(self, event: dict, kwargs) -> bool:

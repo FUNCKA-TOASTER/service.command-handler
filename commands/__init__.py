@@ -3,6 +3,8 @@ from .commands import (
     Permission,
     Say,
     Delete,
+    Game,
+    Copy,
 )
 
 
@@ -11,6 +13,8 @@ command_list = {
     Permission.NAME: Permission,
     Say.NAME: Say,
     Delete.NAME: Delete,
+    Game.NAME: Game,
+    Copy.NAME: Copy,
 }
 
 
