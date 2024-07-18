@@ -131,7 +131,7 @@ class Permission(BaseCommand):
 
 @requires_mark(PeerMark.CHAT)
 @requires_permission(UserPermission.moderator)
-class SayCommand(BaseCommand):
+class Say(BaseCommand):
     NAME = "say"
 
     def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
