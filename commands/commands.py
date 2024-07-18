@@ -127,3 +127,23 @@ class Permission(BaseCommand):
         # TODO: Алерт о вызове команды
 
         return True
+
+
+@requires_mark(PeerMark.CHAT)
+@requires_permission(UserPermission.moderator)
+class SayCommand(BaseCommand):
+    NAME = "say"
+
+    def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
+        if not args:
+            return False
+
+        answer_text = " ".join(args)
+
+        self.api.messages.send(
+            peer_ids=event.peer.bpid,
+            random_id=0,
+            message=answer_text,
+        )
+
+        return True
