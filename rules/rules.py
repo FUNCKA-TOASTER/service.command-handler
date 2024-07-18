@@ -1,4 +1,4 @@
-from typing import List, Optional, Tuple
+from typing import List, Optional
 from toaster.broker.events import Event
 from data import UserPermission, PeerMark
 from data import TOASTER_DB
@@ -51,7 +51,7 @@ def requires_permission(permission_lvl: UserPermission):
     return decorator
 
 
-def requires_mark(peer_mark: PeerMark):
+def requires_mark(*peer_marks: PeerMark):
     """DOCSTRING"""
 
     exception_message = "Command execution aborted. Wrong peer mark."
@@ -64,7 +64,8 @@ def requires_mark(peer_mark: PeerMark):
                     db_instance=TOASTER_DB,
                     bpid=event.peer.bpid,
                 )
-                if mark == peer_mark.value:
+                required = [peer_mark.value for peer_mark in peer_marks]
+                if mark in required:
                     return obj(name, args, event)
 
                 else:
@@ -80,7 +81,8 @@ def requires_mark(peer_mark: PeerMark):
                     db_instance=TOASTER_DB,
                     bpid=event.peer.bpid,
                 )
-                if mark == peer_mark.value:
+                required = [peer_mark.value for peer_mark in peer_marks]
+                if mark in required:
                     return original(self, name, args, event)
 
                 else:
@@ -92,7 +94,7 @@ def requires_mark(peer_mark: PeerMark):
     return decorator
 
 
-def requires_attachments(attachments: Tuple[str]):
+def requires_attachments(*attachments: str):
     """DOCSTRING"""
 
     exception_message = (
