@@ -103,7 +103,7 @@ def requires_attachments(attachments: Tuple[str]):
         if not isinstance(obj, type):
 
             def wrapper(name: str, args: Optional[List[str]], event: Event):
-                if set(attachments).issubset(event.message.attachemnts):
+                if set(attachments).issubset(event.message.attachments):
                     return obj(name, args, event)
 
                 else:
@@ -115,7 +115,7 @@ def requires_attachments(attachments: Tuple[str]):
             original = obj.__call__
 
             def new_call(self, name: str, args: Optional[List[str]], event: Event):
-                if set(attachments).issubset(event.message.attachemnts):
+                if set(attachments).issubset(event.message.attachments):
                     return original(self, name, args, event)
 
                 else:
