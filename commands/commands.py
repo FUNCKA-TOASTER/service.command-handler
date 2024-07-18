@@ -160,7 +160,7 @@ class Delete(BaseCommand):
             self.api.messages.delete(
                 delete_for_all=1,
                 cmids=event.message.reply.cmid,
-                peer_id=event.message.reply.bpid,
+                peer_id=event.peer.bpid,
             )
 
         elif "forward" in event.message.attachments:
