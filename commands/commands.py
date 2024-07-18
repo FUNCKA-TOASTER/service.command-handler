@@ -124,7 +124,6 @@ class Permission(BaseCommand):
         )
 
         # TODO: Создать сессию меню
-        # TODO: Алерт о вызове команды
 
         return True
 
@@ -150,7 +149,7 @@ class Say(BaseCommand):
 
 
 @requires_mark(PeerMark.CHAT)
-@requires_attachments(("reply", "forward"))
+@requires_attachments("reply", "forward")
 @requires_permission(UserPermission.moderator)
 class Delete(BaseCommand):
     NAME = "delete"
@@ -173,4 +172,59 @@ class Delete(BaseCommand):
         else:
             return False
 
+        return True
+
+
+@requires_mark(PeerMark.CHAT)
+class Game(BaseCommand):
+    NAME = "game"
+
+    def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
+        answer_text = "🎲 Потянуло на азарт? :)\n\n" "Выберите игру из списка ниже:"
+
+        keyboard = (
+            Keyboard(inline=True, one_time=False, owner_id=event.user.uuid)
+            .add_row()
+            .add_button(
+                Callback(label="Рулетка", payload={"action_name": "game_roll"}),
+                ButtonColor.PRIMARY,
+            )
+            .add_row()
+            .add_button(
+                Callback(
+                    label="Бросок монетки", payload={"action_name": "game_coinflip"}
+                ),
+                ButtonColor.PRIMARY,
+            )
+            .add_row()
+            .add_button(
+                Callback(label="Закрыть", payload={"action_name": "close_menu"}),
+                ButtonColor.NEGATIVE,
+            )
+        )
+
+        send_info = self.api.messages.send(
+            peer_ids=event.get("peer_id"),
+            random_id=0,
+            message=answer_text,
+            keyboard=keyboard.json,
+        )
+
+        # TODO: Создать сессию меню
+
+        return True
+
+
+@requires_mark(PeerMark.CHAT)
+@requires_attachments("reply")
+@requires_permission(UserPermission.moderator)
+class CopyCommand(BaseCommand):
+    NAME = "copy"
+
+    async def _handle(self, event: dict, kwargs) -> bool:
+        self.api.messages.send(
+            peer_ids=event.peer.bpid,
+            random_id=0,
+            message=event.message.reply.text,
+        )
         return True
