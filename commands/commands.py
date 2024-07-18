@@ -1,4 +1,5 @@
 from typing import Optional, List
+from vk_api import VkApiError
 from toaster.broker.events import Event
 from toaster.keyboards import Keyboard, ButtonColor, Callback
 from rules import requires_mark, requires_permission
@@ -145,5 +146,31 @@ class Say(BaseCommand):
             random_id=0,
             message=answer_text,
         )
+
+        return True
+
+
+@requires_mark(PeerMark.CHAT)
+@requires_permission(UserPermission.moderator)
+class DeleteCommand(BaseCommand):
+    NAME = "delete"
+
+    def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
+        if "reply" in event.message.attachments:
+            self.api.messages.delete(
+                delete_for_all=1,
+                cmids=event.message.reply.cmid,
+                peer_id=event.message.reply.bpid,
+            )
+
+        elif "forward" in event.message.attachments:
+            for reply in event.message.forward:
+                self.api.messages.delete(
+                    delete_for_all=1,
+                    cmids=reply.cmid,
+                    peer_id=reply.bpid,
+                )
+        else:
+            return False
 
         return True

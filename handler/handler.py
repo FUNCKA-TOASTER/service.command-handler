@@ -18,6 +18,7 @@ class CommandHandler:
             name, args = self._recognize_command(event)
             if self._execute(name, args, event):
                 logger.info(f"Command '{name}' executed with args {args}.")
+                # TODO: Алерт о вызове команды в лог-чат
                 return
 
         except Exception as error:
