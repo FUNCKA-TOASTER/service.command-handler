@@ -168,7 +168,7 @@ class Delete(BaseCommand):
                 self.api.messages.delete(
                     delete_for_all=1,
                     cmids=reply.cmid,
-                    peer_id=reply.bpid,
+                    peer_id=event.peer.bpid,
                 )
         else:
             return False
