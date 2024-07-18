@@ -115,7 +115,7 @@ def requires_attachments(attachments: Tuple[str]):
             original = obj.__call__
 
             def new_call(self, name: str, args: Optional[List[str]], event: Event):
-                if set(attachments).issubset(event.message.attachments):
+                if set(attachments) & set(event.message.attachments):
                     return original(self, name, args, event)
 
                 else:
