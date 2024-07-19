@@ -10,7 +10,7 @@ def get_peer_mark(session: Session, bpid: int) -> Optional[str]:
     return peer.mark.value if peer else None
 
 
-@script(auto_commit=False)
+@script(auto_commit=False, debug=True)
 def set_peer_mark(session: Session, mark: str, bpid: int, name: str) -> None:
     new_mark = Peer(
         id=bpid,
@@ -21,14 +21,14 @@ def set_peer_mark(session: Session, mark: str, bpid: int, name: str) -> None:
     session.commit()
 
 
-@script(auto_commit=False)
+@script(auto_commit=False, debug=True)
 def update_peer_data(session: Session, bpid: int, name: str) -> None:
     peer = session.get(Peer, {"id": bpid})
     peer.name = name
     session.commit()
 
 
-@script(auto_commit=False)
+@script(auto_commit=False, debug=True)
 def drop_peer_mark(session: Session, bpid: int) -> None:
     peer = session.get(Peer, {"id": bpid})
     session.delete(peer)
