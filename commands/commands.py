@@ -228,3 +228,47 @@ class Copy(BaseCommand):
             message=event.message.reply.text,
         )
         return True
+
+
+@requires_mark(PeerMark.CHAT)
+@requires_permission(UserPermission.administrator)
+class Settings(BaseCommand):
+    NAME = "settings"
+
+    def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
+        answer_text = "🚸 Выберите необходимую группу настроек:"
+
+        keyboard = (
+            Keyboard(inline=True, one_time=False, owner_id=event.user.uuid)
+            .add_row()
+            .add_button(
+                Callback(
+                    label="Фильтры",
+                    payload={"action_name": "filters_settings", "page": "1"},
+                ),
+                ButtonColor.PRIMARY,
+            )
+            .add_button(
+                Callback(
+                    label="Системы",
+                    payload={"action_name": "systems_settings", "page": "1"},
+                ),
+                ButtonColor.PRIMARY,
+            )
+            .add_row()
+            .add_button(
+                Callback(label="Закрыть", payload={"action_name": "close_menu"}),
+                ButtonColor.NEGATIVE,
+            )
+        )
+
+        send_info = self.api.messages.send(
+            peer_ids=event.peer.bpid,
+            random_id=0,
+            message=answer_text,
+            keyboard=keyboard.json,
+        )
+
+        # TODO: создать сессию меню
+
+        return True

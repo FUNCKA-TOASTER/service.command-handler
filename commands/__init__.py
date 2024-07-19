@@ -5,6 +5,7 @@ from .commands import (
     Delete,
     Game,
     Copy,
+    Settings,
 )
 
 
@@ -15,6 +16,7 @@ command_list = {
     Delete.NAME: Delete,
     Game.NAME: Game,
     Copy.NAME: Copy,
+    Settings.NAME: Settings,
 }
 
 
