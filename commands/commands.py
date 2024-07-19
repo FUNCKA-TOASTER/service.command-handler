@@ -272,3 +272,64 @@ class Settings(BaseCommand):
         # TODO: создать сессию меню
 
         return True
+
+
+@requires_mark(PeerMark.CHAT)
+@requires_permission(UserPermission.administrator)
+class Delay(BaseCommand):
+    NAME = "delay"
+
+    def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
+        answer_text = "🚸 Выберите настройку:"
+
+        keyboard = (
+            Keyboard(inline=True, one_time=False, owner_id=event.user.uuid)
+            .add_row()
+            .add_button(
+                Callback(
+                    label="Медленный режим",
+                    payload={
+                        "action_name": "change_delay",
+                        "setting": "slow_mode",
+                    },
+                ),
+                ButtonColor.PRIMARY,
+            )
+            .add_button(
+                Callback(
+                    label="Возраст аккаунта",
+                    payload={
+                        "action_name": "change_delay",
+                        "setting": "account_age",
+                    },
+                ),
+                ButtonColor.PRIMARY,
+            )
+            .add_row()
+            .add_button(
+                Callback(
+                    label="Срок сессий",
+                    payload={
+                        "action_name": "change_delay",
+                        "setting": "menu_session",
+                    },
+                ),
+                ButtonColor.PRIMARY,
+            )
+            .add_row()
+            .add_button(
+                Callback(label="Закрыть", payload={"action_name": "close_menu"}),
+                ButtonColor.NEGATIVE,
+            )
+        )
+
+        send_info = self.api.messages.send(
+            peer_ids=event.get("peer_id"),
+            random_id=0,
+            message=answer_text,
+            keyboard=keyboard.json,
+        )
+
+        # TODO: Создать сессию меню
+
+        return True

@@ -6,6 +6,7 @@ from .commands import (
     Game,
     Copy,
     Settings,
+    Delay,
 )
 
 
@@ -17,6 +18,7 @@ command_list = {
     Game.NAME: Game,
     Copy.NAME: Copy,
     Settings.NAME: Settings,
+    Delay.NAME: Delay,
 }
 
 
