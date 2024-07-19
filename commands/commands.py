@@ -333,3 +333,107 @@ class Delay(BaseCommand):
         # TODO: Создать сессию меню
 
         return True
+
+
+@requires_mark(PeerMark.CHAT)
+@requires_permission(UserPermission.administrator)
+class Expire(BaseCommand):
+    NAME = "expire"
+
+    def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
+        answer_text = "🚸 Выберите зону:"
+
+        keyboard = (
+            Keyboard(inline=True, one_time=False, owner_id=event.user.uuid)
+            .add_row()
+            .add_button(
+                Callback(
+                    label="Зеленая зона",
+                    payload={
+                        "action_name": "change_delay",
+                        "setting": "green_zone",
+                    },
+                ),
+                ButtonColor.PRIMARY,
+            )
+            .add_row()
+            .add_button(
+                Callback(
+                    label="Жёлтая зона",
+                    payload={
+                        "action_name": "change_delay",
+                        "setting": "yellow_zone",
+                    },
+                ),
+                ButtonColor.PRIMARY,
+            )
+            .add_row()
+            .add_button(
+                Callback(
+                    label="Красная зона",
+                    payload={
+                        "action_name": "change_delay",
+                        "setting": "red_zone",
+                    },
+                ),
+                ButtonColor.PRIMARY,
+            )
+            .add_row()
+            .add_button(
+                Callback(label="Закрыть", payload={"action_name": "close_menu"}),
+                ButtonColor.NEGATIVE,
+            )
+        )
+
+        send_info = self.api.messages.send(
+            peer_ids=event.peer.bpid,
+            random_id=0,
+            message=answer_text,
+            keyboard=keyboard.json,
+        )
+
+        # TODO: Создать сессию меню
+        return True
+
+
+@requires_mark(PeerMark.CHAT)
+@requires_permission(UserPermission.administrator)
+class Punishment(BaseCommand):
+    NAME = "punishment"
+
+    def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
+        answer_text = "🚸 Выберите необходимую группу настроек:"
+
+        keyboard = (
+            Keyboard(inline=True, one_time=False, owner_id=event.user.uuid)
+            .add_row()
+            .add_button(
+                Callback(
+                    label="Фильтры",
+                    payload={"action_name": "filters_punishment", "page": "1"},
+                ),
+                ButtonColor.PRIMARY,
+            )
+            .add_button(
+                Callback(
+                    label="Системы",
+                    payload={"action_name": "systems_punishment", "page": "1"},
+                ),
+                ButtonColor.PRIMARY,
+            )
+            .add_row()
+            .add_button(
+                Callback(label="Закрыть", payload={"action_name": "close_menu"}),
+                ButtonColor.NEGATIVE,
+            )
+        )
+
+        send_info = self.api.messages.send(
+            peer_ids=event.peer.bpid,
+            random_id=0,
+            message=answer_text,
+            keyboard=keyboard.json,
+        )
+
+        # TODO: Создать сессию меню
+        return True

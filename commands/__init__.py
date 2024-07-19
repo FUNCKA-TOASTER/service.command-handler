@@ -7,6 +7,8 @@ from .commands import (
     Copy,
     Settings,
     Delay,
+    Expire,
+    Punishment,
 )
 
 
@@ -19,6 +21,8 @@ command_list = {
     Copy.NAME: Copy,
     Settings.NAME: Settings,
     Delay.NAME: Delay,
+    Expire.NAME: Expire,
+    Punishment.NAME: Punishment,
 }
 
 
