@@ -290,7 +290,7 @@ class Delay(BaseCommand):
                     label="Медленный режим",
                     payload={
                         "action_name": "change_delay",
-                        "setting": "slow_mode",
+                        "setting_name": "slow_mode",
                     },
                 ),
                 ButtonColor.PRIMARY,
@@ -300,7 +300,7 @@ class Delay(BaseCommand):
                     label="Возраст аккаунта",
                     payload={
                         "action_name": "change_delay",
-                        "setting": "account_age",
+                        "setting_name": "account_age",
                     },
                 ),
                 ButtonColor.PRIMARY,
@@ -311,7 +311,7 @@ class Delay(BaseCommand):
                     label="Срок сессий",
                     payload={
                         "action_name": "change_delay",
-                        "setting": "menu_session",
+                        "setting_name": "menu_session",
                     },
                 ),
                 ButtonColor.PRIMARY,
