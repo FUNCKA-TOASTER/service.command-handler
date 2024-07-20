@@ -22,7 +22,7 @@ def requires_permission(permission_lvl: UserPermission):
                     uuid=event.user.uuid,
                     bpid=event.peer.bpid,
                 )
-                if user_permission >= permission_lvl.value:
+                if user_permission.value >= permission_lvl.value:
                     return obj(name, args, event)
 
                 else:
@@ -39,7 +39,7 @@ def requires_permission(permission_lvl: UserPermission):
                     uuid=event.user.uuid,
                     bpid=event.peer.bpid,
                 )
-                if user_permission >= permission_lvl.value:
+                if user_permission.value >= permission_lvl.value:
                     return original(self, name, args, event)
 
                 else:
@@ -65,7 +65,7 @@ def requires_mark(*peer_marks: PeerMark):
                     bpid=event.peer.bpid,
                 )
                 required = [peer_mark.value for peer_mark in peer_marks]
-                if mark in required:
+                if mark.value in required:
                     return obj(name, args, event)
 
                 else:
@@ -82,7 +82,7 @@ def requires_mark(*peer_marks: PeerMark):
                     bpid=event.peer.bpid,
                 )
                 required = [peer_mark.value for peer_mark in peer_marks]
-                if mark in required:
+                if mark.value in required:
                     return original(self, name, args, event)
 
                 else:
