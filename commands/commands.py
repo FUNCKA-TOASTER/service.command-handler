@@ -171,32 +171,6 @@ class Say(BaseCommand):
 
 
 @requires_mark(PeerMark.CHAT)
-@requires_attachments("reply", "forward")
-@requires_permission(UserPermission.moderator)
-class Delete(BaseCommand):
-    NAME = "delete"
-
-    def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
-        if "reply" in event.message.attachments:
-            cmids = [event.message.reply.cmid]
-
-        elif "forward" in event.message.attachments:
-            cmids = [reply.cmid for reply in event.message.forward]
-
-        else:
-            return False
-
-        # TODO: Запустить действие в сервисе наказаний.
-        # На сервис наказаний отправить:
-        #   - type: "delete"                  (Название действия)
-        #   - uuid: target_id                 (ID нарушителя)
-        #   - bpid: event.peer.bpid           (Где произошло)
-        #   - cmids: cmids  (Если есть - удалить это сообщение)
-
-        return True
-
-
-@requires_mark(PeerMark.CHAT)
 class Game(BaseCommand):
     NAME = "game"
 
@@ -648,6 +622,32 @@ class Unwarn(BaseCommand):
         #   - points: -points                 (Кол-во поинтов)
         #   - bpid: event.peer.bpid           (Где произошло)
         #   - cmid: event.message.reply.cmid  (Если есть - удалить это сообщение)
+
+        return True
+
+
+@requires_mark(PeerMark.CHAT)
+@requires_attachments("reply", "forward")
+@requires_permission(UserPermission.moderator)
+class Delete(BaseCommand):
+    NAME = "delete"
+
+    def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
+        if "reply" in event.message.attachments:
+            cmids = [event.message.reply.cmid]
+
+        elif "forward" in event.message.attachments:
+            cmids = [reply.cmid for reply in event.message.forward]
+
+        else:
+            return False
+
+        # TODO: Запустить действие в сервисе наказаний.
+        # На сервис наказаний отправить:
+        #   - type: "delete"                  (Название действия)
+        #   - uuid: target_id                 (ID нарушителя)
+        #   - bpid: event.peer.bpid           (Где произошло)
+        #   - cmids: cmids  (Если есть - удалить это сообщение)
 
         return True
 
