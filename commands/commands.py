@@ -172,21 +172,20 @@ class Delete(BaseCommand):
 
     def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
         if "reply" in event.message.attachments:
-            self.api.messages.delete(
-                delete_for_all=1,
-                cmids=event.message.reply.cmid,
-                peer_id=event.peer.bpid,
-            )
+            cmids = [event.message.reply.cmid]
 
         elif "forward" in event.message.attachments:
-            for reply in event.message.forward:
-                self.api.messages.delete(
-                    delete_for_all=1,
-                    cmids=reply.cmid,
-                    peer_id=event.peer.bpid,
-                )
+            cmids = [reply.cmid for reply in event.message.forward]
+
         else:
             return False
+
+        # TODO: Запустить действие в сервисе наказаний.
+        # На сервис наказаний отправить:
+        #   - type: "delete"                  (Название действия)
+        #   - uuid: target_id                 (ID нарушителя)
+        #   - bpid: event.peer.bpid           (Где произошло)
+        #   - cmids: cmids  (Если есть - удалить это сообщение)
 
         return True
 
@@ -537,10 +536,10 @@ class Kick(BaseCommand):
 
         # TODO: Запустить действие в сервисе наказаний.
         # На сервис наказаний отправить:
-        #   - type: "kick"                    (Название действия)
-        #   - uuid: target_id                 (ID нарушителя)
-        #   - bpid: event.peer.bpid           (Где произошло)
-        #   - cmid: event.message.reply.cmid  (Если есть - удалить это сообщение)
+        #   - type: "kick"                       (Название действия)
+        #   - uuid: target_id                    (ID нарушителя)
+        #   - bpid: event.peer.bpid              (Где произошло)
+        #   - cmids: [event.message.reply.cmid]  (Если есть - удалить это сообщение)
 
         return True
 
@@ -573,11 +572,11 @@ class Warn(BaseCommand):
 
         # TODO: Запустить действие в сервисе наказаний.
         # На сервис наказаний отправить:
-        #   - type: "warn"                    (Название действия)
-        #   - uuid: target_id                 (ID нарушителя)
-        #   - points: points                  (Кол-во варнов)
-        #   - bpid: event.peer.bpid           (Где произошло)
-        #   - cmid: event.message.reply.cmid  (Если есть - удалить это сообщение)
+        #   - type: "warn"                       (Название действия)
+        #   - uuid: target_id                    (ID нарушителя)
+        #   - points: points                     (Кол-во варнов)
+        #   - bpid: event.peer.bpid              (Где произошло)
+        #   - cmids: [event.message.reply.cmid]  (Если есть - удалить это сообщение)
 
         return True
 
