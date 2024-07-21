@@ -535,7 +535,7 @@ class Kick(BaseCommand):
         elif event.message.reply:
             target_id = event.message.reply.uuid
             if len(args) > 0:
-                mode = "global" if args[1] == "global" else "local"
+                mode = "global" if args[0] == "global" else "local"
             else:
                 mode = "local"
 
