@@ -3,6 +3,7 @@ from .peer import (
     set_peer_mark,
     drop_peer_mark,
     update_peer_data,
+    get_log_peers,
 )
 from .user import (
     get_user_permission,
@@ -44,4 +45,5 @@ __all__ = (
     "get_user_queue_status",
     "insert_pattern",
     "insert_cursed",
+    "get_log_peers",
 )
