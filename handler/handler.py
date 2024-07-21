@@ -1,3 +1,4 @@
+import json
 from typing import Tuple, List, NoReturn, Optional, Any, Union
 from loguru import logger
 from vk_api import VkApi, VkApiError
@@ -91,7 +92,7 @@ class CommandHandler:
                 peer_ids=bpid,
                 random_id=0,
                 message=answer_text,
-                forward=forward,
+                forward=json.dumps(forward),
             )
 
     def _get_api(self) -> Any:
