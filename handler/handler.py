@@ -67,7 +67,8 @@ class CommandHandler:
     def _alert_about_execution(self, event: Event, name: str, args: List[str]):
         answer_text = (
             f"[id{event.user.uuid}|{event.user.name}] вызвал команду. \n"
-            f"Название: {name} \n"
+            f"Беседа: {event.peer.name} \n"
+            f"Команда: {name} \n"
             f"Аргументы: {args}"
         )
 
