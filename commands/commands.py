@@ -509,6 +509,113 @@ class Profile(BaseCommand):
         return True
 
 
+@requires_mark(PeerMark.CHAT)
+@requires_permission(UserPermission.moderator)
+class Kick(BaseCommand):
+    NAME = "kick"
+
+    def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
+        if args and self.is_tag(args[0]):
+            target_id = self.id_from_tag(args[0])
+            if len(args) > 1:
+                mode = "global" if args[1] == "global" else "local"
+            else:
+                mode = "local"
+
+        elif event.message.reply:
+            target_id = event.message.reply.uuid
+            if len(args) > 0:
+                mode = "global" if args[1] == "global" else "local"
+            else:
+                mode = "local"
+
+        else:
+            return False
+
+        if target_id == event.user.uuid:
+            return False
+
+        # TODO: Запустить действие в сервисе наказаний.
+        # На сервис наказаний отправить:
+        #   - type: "kick"                    (Название действия)
+        #   - uuid: target_id                 (ID нарушителя)
+        #   - bpid: event.peer.bpid           (Где произошло)
+        #   - cmid: event.message.reply.cmid  (Если есть - удалить это сообщение)
+
+        return True
+
+
+@requires_mark(PeerMark.CHAT)
+@requires_permission(UserPermission.moderator)
+class Warn(BaseCommand):
+    NAME = "warn"
+
+    def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
+        if args and self.is_tag(args[0]):
+            target_id = self.id_from_tag(args[0])
+            if len(args) > 1:
+                points = int(args[1]) if args[1].isnumeric() else 1
+            else:
+                points = 1
+
+        elif event.message.reply:
+            target_id = event.message.reply.uuid
+            if len(args) > 0:
+                points = int(args[0]) if args[0].isnumeric() else 1
+            else:
+                points = 1
+
+        else:
+            return False
+
+        if target_id == event.user.uuid:
+            return False
+
+        # TODO: Запустить действие в сервисе наказаний.
+        # На сервис наказаний отправить:
+        #   - type: "warn"                    (Название действия)
+        #   - uuid: target_id                 (ID нарушителя)
+        #   - points: points                  (Кол-во варнов)
+        #   - bpid: event.peer.bpid           (Где произошло)
+        #   - cmid: event.message.reply.cmid  (Если есть - удалить это сообщение)
+
+        return True
+
+
+@requires_mark(PeerMark.CHAT)
+@requires_permission(UserPermission.moderator)
+class Unwarn(BaseCommand):
+    NAME = "unwarn"
+
+    def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
+        if args and self.is_tag(args[0]):
+            target_id = self.id_from_tag(args[0])
+            if len(args) > 1:
+                points = int(args[1]) if args[1].isnumeric() else 1
+            else:
+                points = 1
+
+        elif event.message.reply:
+            target_id = event.message.reply.uuid
+            if len(args) > 0:
+                points = int(args[0]) if args[0].isnumeric() else 1
+            else:
+                points = 1
+
+        else:
+            return False
+
+        # TODO: Запустить действие в сервисе наказаний.
+        # На сервис наказаний отправить:
+        #   - type: "warn"                    (Название действия)
+        #   - uuid: target_id                 (ID нарушителя)
+        #   - points: -points                 (Кол-во поинтов)
+        #   - bpid: event.peer.bpid           (Где произошло)
+        #   - cmid: event.message.reply.cmid  (Если есть - удалить это сообщение)
+
+        return True
+
+
 # TODO: Подумать, как можно фиксануть
 # Опасные команды. не использовать кроме тех, кро знает как
 @requires_mark(PeerMark.CHAT)

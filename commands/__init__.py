@@ -12,6 +12,9 @@ from .commands import (
     Profile,
     AddCurseWord,
     AddURLFilterPattern,
+    Kick,
+    Warn,
+    Unwarn,
 )
 
 
@@ -29,6 +32,9 @@ command_list = {
     Profile.NAME: Profile,
     AddCurseWord.NAME: AddCurseWord,
     AddURLFilterPattern.NAME: AddURLFilterPattern,
+    Kick.NAME: Kick,
+    Warn.NAME: Warn,
+    Warn.NAME: Unwarn,
 }
 
 
