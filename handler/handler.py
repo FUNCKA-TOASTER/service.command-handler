@@ -2,6 +2,8 @@ from typing import Tuple, List, NoReturn, Optional, Any, Union
 from loguru import logger
 from vk_api import VkApi, VkApiError
 from toaster.broker.events import Event
+from data import TOASTER_DB
+from data.scripts import get_log_peers
 from commands import command_list
 import config
 
@@ -18,7 +20,7 @@ class CommandHandler:
             name, args = self._recognize_command(event)
             if self._execute(name, args, event):
                 logger.info(f"Command '{name}' executed with args {args}.")
-                # TODO: Алерт о вызове команды в лог-чат
+                self._alert_about_execution(event, name)
                 return
 
         except Exception as error:
@@ -61,6 +63,35 @@ class CommandHandler:
 
         except VkApiError as error:
             logger.info(f"Could not delete own command message: {error}")
+
+    def _alert_about_execution(self, event: Event, name: str, args: List[str]):
+        answer_text = (
+            f"[id{event.user.uuid}|{event.user.name}] вызвал команду. \n"
+            f"Название: {name} \n"
+            f"Аргументы: {args}"
+        )
+
+        forward = {
+            "peer_id": event.peer.bpid,
+            "conversation_message_ids": None,
+        }
+
+        if event.message.reply:
+            forward["conversation_message_ids"] = [event.message.reply.cmid]
+
+        elif event.message.forward:
+            cmids = [reply.cmid for reply in event.message.forward]
+            forward["conversation_message_ids"] = cmids
+
+        api = self._get_api()
+
+        for bpid in get_log_peers(db_instance=TOASTER_DB):
+            api.messages.send(
+                peer_ids=bpid,
+                random_id=0,
+                message=answer_text,
+                forward=forward,
+            )
 
     def _get_api(self) -> Any:
         session = VkApi(
