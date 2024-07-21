@@ -9,6 +9,7 @@ from .commands import (
     Delay,
     Expire,
     Punishment,
+    Profile,
 )
 
 
@@ -23,6 +24,7 @@ command_list = {
     Delay.NAME: Delay,
     Expire.NAME: Expire,
     Punishment.NAME: Punishment,
+    Profile.NAME: Profile,
 }
 
 

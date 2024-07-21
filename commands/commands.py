@@ -2,7 +2,8 @@ from typing import Optional, List
 from toaster.broker.events import Event
 from toaster.keyboards import Keyboard, ButtonColor, Callback
 from rules import requires_mark, requires_permission, requires_attachments
-from data import UserPermission, PeerMark
+from data import UserPermission, PeerMark, TOASTER_DB
+from data.scripts import get_user_warns, get_user_queue_status
 from .base import BaseCommand
 
 
@@ -436,4 +437,57 @@ class Punishment(BaseCommand):
         )
 
         # TODO: Создать сессию меню
+        return True
+
+
+@requires_mark(PeerMark.CHAT)
+class Profile(BaseCommand):
+    NAME = "profile"
+
+    def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
+        answer_text = f"🚸 Профиль: [id{event.user.uuid}|{event.user.name}] \n"
+
+        warn_info = get_user_warns(
+            db_instance=TOASTER_DB,
+            uuid=event.user.uuid,
+            bpid=event.peer.bpid,
+        )
+        if warn_info:
+            warn_count, warn_expire = warn_info
+            answer_text += f"Предупреждения: {warn_count} \n"
+            answer_text += f"Истекает: {warn_expire} \n"
+        else:
+            answer_text += "Предупреждения: 0 \n"
+
+        answer_text += "-- \n"
+
+        queue_expire = get_user_queue_status(
+            db_instance=TOASTER_DB,
+            uuid=event.user.uuid,
+            bpid=event.peer.bpid,
+        )
+        if queue_expire:
+            answer_text += "В очереди: Да \n"
+            answer_text += f"Истекает: {queue_expire} \n"
+        else:
+            answer_text += "В очереди: Нет"
+
+        keyboard = (
+            Keyboard(inline=True, one_time=False, owner_id=event.user.uuid)
+            .add_row()
+            .add_button(
+                Callback(label="Закрыть", payload={"action_name": "close_menu"}),
+                ButtonColor.NEGATIVE,
+            )
+        )
+
+        send_info = self.api.messages.send(
+            peer_ids=event.peer.bpid,
+            random_id=0,
+            message=answer_text,
+            keyboard=keyboard.json,
+        )
+
+        # Создать сессию меню
+
         return True
