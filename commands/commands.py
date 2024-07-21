@@ -562,7 +562,12 @@ class Warn(BaseCommand):
     NAME = "warn"
 
     def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
+        from loguru import logger
+
+        logger.info(1)
+
         if args and self.is_tag(args[0]):
+            logger.info(2)
             target_id = self.id_from_tag(args[0])
             if len(args) > 1:
                 points = int(args[1]) if args[1].isnumeric() else 1
@@ -570,6 +575,7 @@ class Warn(BaseCommand):
                 points = 1
 
         elif event.message.reply:
+            logger.info(3)
             target_id = event.message.reply.uuid
             if len(args) > 0:
                 points = int(args[0]) if args[0].isnumeric() else 1
@@ -577,14 +583,17 @@ class Warn(BaseCommand):
                 points = 1
 
         else:
+            logger.info(4)
             return False
 
         from loguru import logger
 
+        logger.info(5)
         logger.info(target_id)
         logger.info(event.user.uuid)
 
         if target_id == event.user.uuid:
+            logger.info(6)
             return False
 
         # TODO: Запустить действие в сервисе наказаний.
@@ -595,6 +604,7 @@ class Warn(BaseCommand):
         #   - bpid: event.peer.bpid              (Где произошло)
         #   - cmids: [event.message.reply.cmid]  (Если есть - удалить это сообщение)
 
+        logger.info(7)
         return True
 
 
