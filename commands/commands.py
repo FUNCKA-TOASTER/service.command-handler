@@ -1,8 +1,18 @@
 from typing import Optional, List
 from toaster.broker.events import Event
 from toaster.keyboards import Keyboard, ButtonColor, Callback
-from rules import requires_mark, requires_permission, requires_attachments
-from data import UserPermission, PeerMark, TOASTER_DB, UrlStatus, UrlType
+from rules import (
+    requires_mark,
+    requires_permission,
+    requires_attachments,
+)
+from data import (
+    TOASTER_DB,
+    UserPermission,
+    PeerMark,
+    UrlStatus,
+    UrlType,
+)
 from data.scripts import (
     get_user_warns,
     get_user_queue_status,
@@ -514,6 +524,7 @@ class AddURLFilterPattern(BaseCommand):
 
             insert_pattern(
                 db_instance=TOASTER_DB,
+                bpid=event.peer.bpid,
                 type=pattern_type,
                 status=pattern_status,
                 pattern=pattern,
@@ -534,6 +545,7 @@ class AddCurseWord(BaseCommand):
             new_word = args[0].lower()
             insert_cursed(
                 db_instance=TOASTER_DB,
+                bpid=event.peer.bpid,
                 word=new_word,
             )
 
