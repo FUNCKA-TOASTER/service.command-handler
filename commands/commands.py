@@ -2,8 +2,13 @@ from typing import Optional, List
 from toaster.broker.events import Event
 from toaster.keyboards import Keyboard, ButtonColor, Callback
 from rules import requires_mark, requires_permission, requires_attachments
-from data import UserPermission, PeerMark, TOASTER_DB
-from data.scripts import get_user_warns, get_user_queue_status
+from data import UserPermission, PeerMark, TOASTER_DB, UrlStatus, UrlType
+from data.scripts import (
+    get_user_warns,
+    get_user_queue_status,
+    insert_pattern,
+    insert_cursed,
+)
 from .base import BaseCommand
 
 
@@ -437,6 +442,7 @@ class Punishment(BaseCommand):
         )
 
         # TODO: Создать сессию меню
+
         return True
 
 
@@ -491,3 +497,46 @@ class Profile(BaseCommand):
         # Создать сессию меню
 
         return True
+
+
+# TODO: Подумать, как можно фиксануть
+# Опасные команды. не использовать кроме тех, кро знает как
+@requires_mark(PeerMark.CHAT)
+@requires_permission(UserPermission.administrator)
+class AddURLFilterPattern(BaseCommand):
+    NAME = "aufp"
+
+    def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
+        if args:
+            pattern_type = UrlType(args[0].lower())
+            pattern_status = UrlStatus(args[1].lower())
+            pattern = args[2].lower()
+
+            insert_pattern(
+                db_instance=TOASTER_DB,
+                type=pattern_type,
+                status=pattern_status,
+                pattern=pattern,
+            )
+
+            return True
+
+        return False
+
+
+@requires_mark(PeerMark.CHAT)
+@requires_permission(UserPermission.administrator)
+class AddCurseWord(BaseCommand):
+    NAME = "acw"
+
+    def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
+        if args:
+            new_word = args[0].lower()
+            insert_cursed(
+                db_instance=TOASTER_DB,
+                word=new_word,
+            )
+
+            return True
+
+        return False

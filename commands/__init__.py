@@ -10,6 +10,8 @@ from .commands import (
     Expire,
     Punishment,
     Profile,
+    AddCurseWord,
+    AddURLFilterPattern,
 )
 
 
@@ -25,6 +27,8 @@ command_list = {
     Expire.NAME: Expire,
     Punishment.NAME: Punishment,
     Profile.NAME: Profile,
+    AddCurseWord.NAME: AddCurseWord,
+    AddURLFilterPattern.NAME: AddURLFilterPattern,
 }
 
 
