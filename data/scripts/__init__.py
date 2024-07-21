@@ -22,6 +22,8 @@ from .delay import (
     get_setting_delay,
     update_setting_delay,
 )
+from .url import insert_pattern
+from .cursed import insert_cursed
 
 __all__ = (
     "get_peer_mark",
@@ -40,4 +42,6 @@ __all__ = (
     "update_setting_delay",
     "get_user_warns",
     "get_user_queue_status",
+    "insert_pattern",
+    "insert_cursed",
 )
