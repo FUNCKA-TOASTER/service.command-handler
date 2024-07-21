@@ -9,6 +9,8 @@ from .user import (
     set_user_permission,
     update_user_permission,
     drop_user_permission,
+    get_user_warns,
+    get_user_queue_status,
 )
 from .setting import (
     get_destinated_settings_status,
@@ -36,4 +38,6 @@ __all__ = (
     "update_setting_points",
     "get_setting_delay",
     "update_setting_delay",
+    "get_user_warns",
+    "get_user_queue_status",
 )
