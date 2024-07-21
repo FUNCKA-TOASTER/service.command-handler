@@ -18,6 +18,7 @@ from data.scripts import (
     get_user_queue_status,
     insert_pattern,
     insert_cursed,
+    open_menu_session,
 )
 from .base import BaseCommand
 
@@ -139,7 +140,12 @@ class Permission(BaseCommand):
             keyboard=keyboard.json,
         )
 
-        # TODO: Создать сессию меню
+        cmid = send_info[0]["conversation_message_id"]
+        open_menu_session(
+            db_instance=TOASTER_DB,
+            bpid=event.peer.bpid,
+            cmid=cmid,
+        )
 
         return True
 
@@ -225,7 +231,12 @@ class Game(BaseCommand):
             keyboard=keyboard.json,
         )
 
-        # TODO: Создать сессию меню
+        cmid = send_info[0]["conversation_message_id"]
+        open_menu_session(
+            db_instance=TOASTER_DB,
+            bpid=event.peer.bpid,
+            cmid=cmid,
+        )
 
         return True
 
@@ -284,7 +295,12 @@ class Settings(BaseCommand):
             keyboard=keyboard.json,
         )
 
-        # TODO: создать сессию меню
+        cmid = send_info[0]["conversation_message_id"]
+        open_menu_session(
+            db_instance=TOASTER_DB,
+            bpid=event.peer.bpid,
+            cmid=cmid,
+        )
 
         return True
 
@@ -345,7 +361,12 @@ class Delay(BaseCommand):
             keyboard=keyboard.json,
         )
 
-        # TODO: Создать сессию меню
+        cmid = send_info[0]["conversation_message_id"]
+        open_menu_session(
+            db_instance=TOASTER_DB,
+            bpid=event.peer.bpid,
+            cmid=cmid,
+        )
 
         return True
 
@@ -407,7 +428,13 @@ class Expire(BaseCommand):
             keyboard=keyboard.json,
         )
 
-        # TODO: Создать сессию меню
+        cmid = send_info[0]["conversation_message_id"]
+        open_menu_session(
+            db_instance=TOASTER_DB,
+            bpid=event.peer.bpid,
+            cmid=cmid,
+        )
+
         return True
 
 
@@ -450,7 +477,12 @@ class Punishment(BaseCommand):
             keyboard=keyboard.json,
         )
 
-        # TODO: Создать сессию меню
+        cmid = send_info[0]["conversation_message_id"]
+        open_menu_session(
+            db_instance=TOASTER_DB,
+            bpid=event.peer.bpid,
+            cmid=cmid,
+        )
 
         return True
 
@@ -503,7 +535,12 @@ class Profile(BaseCommand):
             keyboard=keyboard.json,
         )
 
-        # Создать сессию меню
+        cmid = send_info[0]["conversation_message_id"]
+        open_menu_session(
+            db_instance=TOASTER_DB,
+            bpid=event.peer.bpid,
+            cmid=cmid,
+        )
 
         return True
 
