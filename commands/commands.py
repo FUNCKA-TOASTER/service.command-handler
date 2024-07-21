@@ -548,6 +548,7 @@ class Kick(BaseCommand):
         # TODO: Запустить действие в сервисе наказаний.
         # На сервис наказаний отправить:
         #   - type: "kick"                       (Название действия)
+        #   - mode: mode                         (Режим кика)
         #   - uuid: target_id                    (ID нарушителя)
         #   - bpid: event.peer.bpid              (Где произошло)
         #   - cmids: [event.message.reply.cmid]  (Если есть - удалить это сообщение)
@@ -577,6 +578,11 @@ class Warn(BaseCommand):
 
         else:
             return False
+
+        from loguru import logger
+
+        logger.info(target_id)
+        logger.info(event.user.uuid)
 
         if target_id == event.user.uuid:
             return False
