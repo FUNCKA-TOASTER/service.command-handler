@@ -22,7 +22,6 @@ command_list = {
     Mark.NAME: Mark,
     Permission.NAME: Permission,
     Say.NAME: Say,
-    Delete.NAME: Delete,
     Game.NAME: Game,
     Copy.NAME: Copy,
     Settings.NAME: Settings,
@@ -34,7 +33,8 @@ command_list = {
     AddURLFilterPattern.NAME: AddURLFilterPattern,
     Kick.NAME: Kick,
     Warn.NAME: Warn,
-    Warn.NAME: Unwarn,
+    Unwarn.NAME: Unwarn,
+    Delete.NAME: Delete,
 }
 
 
