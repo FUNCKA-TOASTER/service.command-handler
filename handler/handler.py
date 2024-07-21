@@ -20,7 +20,7 @@ class CommandHandler:
             name, args = self._recognize_command(event)
             if self._execute(name, args, event):
                 logger.info(f"Command '{name}' executed with args {args}.")
-                self._alert_about_execution(event, name)
+                self._alert_about_execution(event, name, args)
                 return
 
         except Exception as error:
