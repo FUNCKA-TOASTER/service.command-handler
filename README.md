@@ -4,41 +4,55 @@
 
 ## 📄 Информация ##
 
-**TOASTER.COMMAND-HANDLING-SERVICE** - сервис обработки событий, классифицированных как вызов команды. Событие приходит от сервиса фетчинга, после чего обрабатывается. Праллельно производятся необходимые действия внутреннего\внешнего логирования.
+**TOASTER.COMMAND-HANDLING-SERVICE** - сервис обработки событий, классифицированных как "command". Событие приходит от сервиса фетчинга через шину Redis, после чего обрабатывается, параллельно логируя свои дейстивия как внутри контейнера (внутренние логи), так и внутри лог-чатов (внешщние логи).
 
 ### Входные данные:
 
-**CommandEvent (command_call):**
-```
-content type: application\json
+Пример обьекта события, которое приходит на toaster.command-handling-service.
 
-{
-    "ts": 1709107923,
-    "datetime": "2024-02-28 11:12:03",
-    "event_type": "command_call", 
-    "event_id": "8dd52b4d7c822b78db23db85bf351c7114e46b36", 
-    "user_id": 206295116, 
-    "user_name": "Руслан Башинский", 
-    "user_nick": "oidaho", 
-    "peer_id": 2000000002, 
-    "peer_name": "FUNCKA | DEV | CHAT", 
-    "chat_id": 2, 
-    "cmid": 2708, 
-    "text": "Hi!", 
-    "reply": null, 
-    "forward": [], 
-    "attachments": []
-}
+**Event:**
+
+```python
+class Event:
+    event_id: str
+    event_type: str
+
+    peer: Peer
+    user: User
+    message: Message
 ```
 
-Пример события, которое приходит от toaster.event-routing-service сервера на toaster.command-handling-service.
+```python
+class Message(NamedTuple):
+    cmid: int
+    text: str
+    reply: Optional[Reply]
+    forward: List[Reply]
+    attachments: List[str]
+```
 
-Далее, сервис определяет, какая команда была вызвана, а уже после - исполняет все действия, которые за этой командой сокрыты.
+```python
+class Peer(NamedTuple):
+    bpid: int
+    cid: int
+    name: str
+```
 
+```python
+class User(NamedTuple):
+    uuid: int
+    name: str
+    firstname: str
+    lastname: str
+    nick: str
+```
+
+Далее, сервис определяет командлет внутри текста сообщения и исполняет вызываемую команду.
 
 ### Дополнительно
 
 Docker setup:
+
 ```
     docker network
         name: TOASTER
@@ -61,9 +75,6 @@ Docker setup:
     docker container
         name: toaster.command-handling-service
         network_ip: 172.1.08.6
-
-    docker volumes:
-        /var/log/TOASTER/toaster.command-handling-service:/service/logs
 ```
 
 Jenkins shell command:
@@ -91,7 +102,6 @@ docker build . -t $imageName \
 #run container
 docker run -d \
 --name $containerName \
---volume /var/log/TOASTER/$imageName:/service/logs \
 --restart always \
 $imageName
 
