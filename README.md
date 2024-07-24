@@ -2,15 +2,13 @@
 
 ![main_img](https://github.com/STALCRAFT-FUNCKA/toaster.command-handling-service/assets/76991612/bbb5fee4-803e-4613-8f19-9acb5daf4e1e)
 
-## 📄 Информация ##
+## 📄 Информация
 
 **TOASTER.COMMAND-HANDLING-SERVICE** - сервис обработки событий, классифицированных как "command". Событие приходит от сервиса фетчинга через шину Redis, после чего обрабатывается, параллельно логируя свои дейстивия как внутри контейнера (внутренние логи), так и внутри лог-чатов (внешние логи).
 
-### Входные данные:
+### Входные данные
 
-Пример обьекта события, которое приходит на toaster.command-handling-service.
-
-**Event:**
+Пример обьекта события, которое приходит на service.command-handling:
 
 ```python
 class Event:
@@ -53,7 +51,7 @@ class User(NamedTuple):
 
 Docker setup:
 
-```
+```text
     docker network
         name: TOASTER
         ip_gateway: 172.18.0.1
@@ -78,7 +76,8 @@ Docker setup:
 ```
 
 Jenkins shell command:
-```
+
+```shell
 imageName="toaster.command-handling-service"
 containerName="toaster.command-handling-service"
 localIP="172.18.0.6"
