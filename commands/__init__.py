@@ -1,3 +1,12 @@
+"""Module "commands".
+
+File:
+    __init__.py
+
+About:
+    Initializing the "commands" module.
+"""
+
 from .commands import (
     Mark,
     Permission,

@@ -1,3 +1,12 @@
+"""Module "handler".
+
+File:
+    handler.py
+
+About:
+    File describing command handler class.
+"""
+
 import json
 from typing import Tuple, List, NoReturn, Optional, Any, Union
 from loguru import logger
@@ -14,7 +23,7 @@ ExecResult = Optional[Union[bool, NoReturn]]
 
 
 class CommandHandler:
-    """DOCSTRING"""
+    """Command handler class."""
 
     def __call__(self, event: Event) -> None:
         try:

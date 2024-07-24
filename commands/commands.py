@@ -1,3 +1,12 @@
+"""Module "commands".
+
+File:
+    commands.py
+
+About:
+    File describing Possible commands recognized by the bot.
+"""
+
 from typing import Optional, List
 from toaster.broker.events import Event
 from toaster.keyboards import Keyboard, ButtonColor, Callback

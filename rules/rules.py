@@ -1,15 +1,38 @@
-from typing import List, Optional
+"""Module "rules".
+
+File:
+    rules.py
+
+About:
+    File describing rules that check the fulfillment
+    of certain conditions immediately before executing
+    a bot command.
+"""
+
+from typing import List, Optional, Callable
 from toaster.broker.events import Event
 from data import UserPermission, PeerMark
 from data import TOASTER_DB
+
 from data.scripts import (
     get_peer_mark,
     get_user_permission,
 )
 
 
-def requires_permission(permission_lvl: UserPermission):
-    """DOCSTRING"""
+def requires_permission(permission_lvl: UserPermission) -> Callable:
+    """Checks whether the user has the necessary rights
+    to issue a given command.
+
+    Args:
+        permission_lvl (UserPermission): User permission lvl.
+
+    Raises:
+        PermissionError: Access rejected. Low level of access rights.
+
+    Returns:
+        Callable: Wrapper.
+    """
 
     exception_message = "Access rejected. Low level of access rights."
 
@@ -51,8 +74,19 @@ def requires_permission(permission_lvl: UserPermission):
     return decorator
 
 
-def requires_mark(*peer_marks: PeerMark):
-    """DOCSTRING"""
+def requires_mark(*peer_marks: PeerMark) -> Callable:
+    """Checks if the peer has the required
+    tag to execute the command.
+
+    Args:
+        *peer_marks (PeerMark): Necessary peer marks.
+
+    Raises:
+        RuntimeError: Command execution aborted. Wrong peer mark.
+
+    Returns:
+        Callable: Wrapper.
+    """
 
     exception_message = "Command execution aborted. Wrong peer mark."
 
@@ -94,8 +128,20 @@ def requires_mark(*peer_marks: PeerMark):
     return decorator
 
 
-def requires_attachments(*attachments: str):
-    """DOCSTRING"""
+def requires_attachments(*attachments: str) -> Callable:
+    """Checks whether the message that invoked the
+    command has the required attachments.
+
+    Args:
+        *attachments (str): Necessary attachments names.
+
+    Raises:
+        ValueError: The message does not have attachments
+        in the form of forwarding.
+
+    Returns:
+        Callable: Wrapper.
+    """
 
     exception_message = (
         "The message does not have attachments in the form of forwarding."

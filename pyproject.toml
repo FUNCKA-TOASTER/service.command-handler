@@ -1,10 +1,10 @@
 [tool.poetry]
 package-mode = false
-name = "toaster.command-handling-service"
+name = "service.command-handler"
 version = "0.2.0"
-description = "Microservice of the TOASTER bot, responsible for processing and calling commands."
-repository = "https://github.com/STALCRAFT-FUNCKA/toaster.command-handling-service"
-documentation = "https://github.com/STALCRAFT-FUNCKA/TOASTER/wiki"
+description = "TOASTER bot. Service for handling command events."
+repository = "https://github.com/FUNCKA-TOASTER/service.command-handler"
+documentation = "https://github.com/FUNCKA-TOASTER/TOASTER/wiki"
 authors = [
     "Oidaho <oidahomain@gmail.com>"
 ]

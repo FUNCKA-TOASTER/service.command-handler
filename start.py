@@ -1,4 +1,4 @@
-"""Service "toaster.comman-handling-service".
+"""Service "service.comman-handler".
 
 File:
     start.py
@@ -28,11 +28,15 @@ def setup_logger() -> None:
     )
 
 
+def setup_db() -> None:
+    TOASTER_DB.create_tables()
+
+
 def main():
-    """Entry point."""
+    """Program entry point."""
 
     setup_logger()
-    TOASTER_DB.create_tables()
+    setup_db()
     subscriber = Subscriber(client=build_connection(config.REDIS_CREDS))
     handler = CommandHandler()
 
