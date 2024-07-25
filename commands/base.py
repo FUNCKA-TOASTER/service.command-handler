@@ -19,7 +19,7 @@ class BaseCommand(ABC):
 
     NAME = "None"
 
-    def __init__(self, api: VkApi):
+    def __init__(self, api: VkApi) -> None:
         self.api = api
 
     def __call__(self, name: str, args: Optional[List[str]], event: Event) -> bool:
