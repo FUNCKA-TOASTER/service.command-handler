@@ -11,8 +11,10 @@ import re
 from typing import Union, Optional, Tuple, List
 from abc import ABC, abstractmethod
 from vk_api import VkApi
-from toaster.broker.events import Event
+from toaster.broker.events import Event, Punishment
 from toaster.broker import Publisher, build_connection
+from data import TOASTER_DB
+from data.scripts import get_setting_points
 import config
 
 
@@ -82,3 +84,34 @@ class BaseCommand(ABC):
             return None
 
         return (user_info[0].get("first_name"), user_info[0].get("last_name"))
+
+    def _publish_punishment(
+        self,
+        type: str,
+        comment: str,
+        mode: str,
+        event: Event,
+        points: Optional[int] = None,
+    ) -> None:
+        coeff = 1
+        if type == "unwarn":
+            type = "warn"
+            coeff = -1
+
+        punishment = Punishment(type=type, comment=comment)
+
+        if event.message.reply:
+            punishment.set_cmids(cmids=event.message.reply.cmid)
+        elif event.message.forward:
+            punishment.set_cmids(cmids=[reply.cmid for reply in event.message.forward])
+        else:
+            punishment.set_cmids(cmids=[])
+
+        punishment.set_target(bpid=event.peer.bpid, uuid=event.user.uuid)
+
+        if type == "warn" and points is not None:
+            punishment.set_points(points=points * coeff)
+        if type == "kick":
+            punishment.set_mode(mode=mode)
+
+        self.publisher.publish(punishment, "punishment")

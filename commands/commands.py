@@ -554,14 +554,13 @@ class Kick(BaseCommand):
         if target_id == event.user.uuid:
             return False
 
-        # TODO: Запустить действие в сервисе наказаний.
-        # На сервис наказаний отправить:
-        #   - type: "kick"                       (Название действия)
-        #   - mode: mode                         (Режим кика)
-        #   - uuid: target_id                    (ID нарушителя)
-        #   - bpid: event.peer.bpid              (Где произошло)
-        #   - cmids: [event.message.reply.cmid]  (Если есть - удалить это сообщение)
-
+        comment = "Модератор исключил вас из беседы."
+        self._publish_punishment(
+            type="kick",
+            comment=comment,
+            mode=mode,
+            event=event,
+        )
         return True
 
 
@@ -591,14 +590,13 @@ class Warn(BaseCommand):
         if target_id == event.user.uuid:
             return False
 
-        # TODO: Запустить действие в сервисе наказаний.
-        # На сервис наказаний отправить:
-        #   - type: "warn"                       (Название действия)
-        #   - uuid: target_id                    (ID нарушителя)
-        #   - points: points                     (Кол-во варнов)
-        #   - bpid: event.peer.bpid              (Где произошло)
-        #   - cmids: [event.message.reply.cmid]  (Если есть - удалить это сообщение)
-
+        comment = f"Модератор вынес предупреждение (в кол-ве: {points})."
+        self._publish_punishment(
+            type="warn",
+            comment=comment,
+            points=points,
+            event=event,
+        )
         return True
 
 
@@ -628,14 +626,13 @@ class Unwarn(BaseCommand):
         if target_id == event.user.uuid:
             return False
 
-        # TODO: Запустить действие в сервисе наказаний.
-        # На сервис наказаний отправить:
-        #   - type: "warn"                    (Название действия)
-        #   - uuid: target_id                 (ID нарушителя)
-        #   - points: -points                 (Кол-во поинтов)
-        #   - bpid: event.peer.bpid           (Где произошло)
-        #   - cmid: event.message.reply.cmid  (Если есть - удалить это сообщение)
-
+        comment = f"Модератор снял предупреждения (в кол-ве: {points})."
+        self._publish_punishment(
+            type="unwarn",
+            comment=comment,
+            points=-points,
+            event=event,
+        )
         return True
 
 
@@ -655,13 +652,12 @@ class Delete(BaseCommand):
         else:
             return False
 
-        # TODO: Запустить действие в сервисе наказаний.
-        # На сервис наказаний отправить:
-        #   - type: "delete"                  (Название действия)
-        #   - uuid: target_id                 (ID нарушителя)
-        #   - bpid: event.peer.bpid           (Где произошло)
-        #   - cmids: cmids  (Если есть - удалить это сообщение)
-
+        comment = "Модератор удалил сообщения."
+        self._publish_punishment(
+            type="delete",
+            comment=comment,
+            event=event,
+        )
         return True
 
 
