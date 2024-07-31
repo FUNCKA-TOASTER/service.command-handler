@@ -643,13 +643,7 @@ class Delete(BaseCommand):
     NAME = "delete"
 
     def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
-        if "reply" in event.message.attachments:
-            cmids = [event.message.reply.cmid]
-
-        elif "forward" in event.message.attachments:
-            cmids = [reply.cmid for reply in event.message.forward]
-
-        else:
+        if not event.message.reply or not event.message.forward:
             return False
 
         comment = "Модератор удалил сообщения."

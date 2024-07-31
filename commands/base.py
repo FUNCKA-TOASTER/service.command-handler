@@ -100,9 +100,9 @@ class BaseCommand(ABC):
 
         punishment = Punishment(type=type, comment=comment)
 
-        if event.message.reply:
+        if "reply" in event.message.attachments:
             punishment.set_cmids(cmids=event.message.reply.cmid)
-        elif event.message.forward:
+        elif "forward" in event.message.attachments:
             punishment.set_cmids(cmids=[reply.cmid for reply in event.message.forward])
         else:
             punishment.set_cmids(cmids=[])
