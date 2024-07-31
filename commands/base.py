@@ -12,12 +12,15 @@ from typing import Union, Optional, Tuple, List
 from abc import ABC, abstractmethod
 from vk_api import VkApi
 from toaster.broker.events import Event
+from toaster.broker import Publisher, build_connection
+import config
 
 
 class BaseCommand(ABC):
     """Base class of the bot command."""
 
     NAME = "None"
+    publisher = Publisher(build_connection(config.REDIS_CREDS))
 
     def __init__(self, api: VkApi) -> None:
         self.api = api
