@@ -82,7 +82,7 @@ class CommandHandler:
         )
 
         if args:
-            answer_text + f"Аргументы: {args}"
+            answer_text += f"Аргументы: {args}"
 
         forward = {
             "peer_id": event.peer.bpid,
