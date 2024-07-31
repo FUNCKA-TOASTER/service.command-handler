@@ -79,8 +79,10 @@ class CommandHandler:
             f"[id{event.user.uuid}|{event.user.name}] вызвал команду. \n"
             f"Беседа: {event.peer.name} \n"
             f"Команда: {name} \n"
-            f"Аргументы: {args}"
         )
+
+        if args:
+            answer_text + f"Аргументы: {args}"
 
         forward = {
             "peer_id": event.peer.bpid,
