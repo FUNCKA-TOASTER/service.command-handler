@@ -14,8 +14,8 @@ from toaster.keyboards import Keyboard, ButtonColor, Callback
 from toaster_utils.enums import (
     UserPermission,
     PeerMark,
-    UrlStatus,
-    UrlType,
+    LinkStatus,
+    LinkType,
 )
 from toaster_utils.scripts import (
     get_user_warns,
@@ -664,8 +664,8 @@ class AddURLFilterPattern(BaseCommand):
 
     def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
         if args:
-            pattern_type = UrlType(args[0].lower())
-            pattern_status = UrlStatus(args[1].lower())
+            pattern_type = LinkType(args[0].lower())
+            pattern_status = LinkStatus(args[1].lower())
             pattern = args[2].lower()
 
             insert_pattern(
