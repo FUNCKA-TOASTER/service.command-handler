@@ -11,10 +11,9 @@ About:
 
 from typing import List, Optional, Callable
 from toaster.broker.events import Event
-from data import UserPermission, PeerMark
-from data import TOASTER_DB
-
-from data.scripts import (
+from db import TOASTER_DB
+from toaster_utils.enums import UserPermission, PeerMark
+from toaster_utils.scripts import (
     get_peer_mark,
     get_user_permission,
 )

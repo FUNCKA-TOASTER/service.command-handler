@@ -8,26 +8,26 @@ About:
 """
 
 from typing import Optional, List
+from db import TOASTER_DB
 from toaster.broker.events import Event
 from toaster.keyboards import Keyboard, ButtonColor, Callback
-from rules import (
-    requires_mark,
-    requires_permission,
-    requires_attachments,
-)
-from data import (
-    TOASTER_DB,
+from toaster_utils.enums import (
     UserPermission,
     PeerMark,
     UrlStatus,
     UrlType,
 )
-from data.scripts import (
+from toaster_utils.scripts import (
     get_user_warns,
     get_user_queue_status,
     insert_pattern,
     insert_cursed,
     open_menu_session,
+)
+from rules import (
+    requires_mark,
+    requires_permission,
+    requires_attachments,
 )
 from .base import BaseCommand
 
@@ -76,7 +76,7 @@ class Mark(BaseCommand):
             )
         )
 
-        answer = self.api.messages.send(
+        self.api.messages.send(
             peer_ids=event.peer.bpid,
             random_id=0,
             message=answer_text,

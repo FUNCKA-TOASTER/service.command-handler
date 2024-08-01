@@ -8,13 +8,25 @@ About:
 """
 
 import re
-from typing import Union, Optional, Tuple, List
-from abc import ABC, abstractmethod
+from typing import (
+    Union,
+    Optional,
+    Tuple,
+    List,
+)
+from abc import (
+    ABC,
+    abstractmethod,
+)
 from vk_api import VkApi
-from toaster.broker.events import Event, Punishment
-from toaster.broker import Publisher, build_connection
-from data import TOASTER_DB
-from data.scripts import get_setting_points
+from toaster.broker import (
+    Publisher,
+    build_connection,
+)
+from toaster.broker.events import (
+    Event,
+    Punishment,
+)
 import config
 
 
