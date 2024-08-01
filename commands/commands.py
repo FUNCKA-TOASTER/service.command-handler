@@ -659,8 +659,8 @@ class Delete(BaseCommand):
 # Опасные команды. не использовать кроме тех, кро знает как
 @requires_mark(PeerMark.CHAT)
 @requires_permission(UserPermission.administrator)
-class AddURLFilterPattern(BaseCommand):
-    NAME = "aufp"
+class AddLinkPattern(BaseCommand):
+    NAME = "alp"
 
     def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
         if args:
