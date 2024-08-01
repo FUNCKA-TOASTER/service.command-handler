@@ -89,8 +89,8 @@ class BaseCommand(ABC):
         self,
         type: str,
         comment: str,
-        mode: str,
         event: Event,
+        mode: str = "local",
         points: Optional[int] = None,
     ) -> None:
         coeff = 1
