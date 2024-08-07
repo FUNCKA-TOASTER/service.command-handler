@@ -628,7 +628,7 @@ class Unwarn(BaseCommand):
         if target_id == event.user.uuid:
             return False
 
-        comment = "Модератор снял предупреждения"
+        comment = "Модератор снял предупреждение"
         self._publish_punishment(
             type="unwarn",
             comment=comment,
