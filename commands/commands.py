@@ -632,7 +632,7 @@ class Unwarn(BaseCommand):
         self._publish_punishment(
             type="unwarn",
             comment=comment,
-            points=-points,
+            points=points,
             event=event,
             target_id=target_id,
         )

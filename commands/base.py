@@ -120,9 +120,6 @@ class BaseCommand(ABC):
         if type in ("warn", "unwarn") and points is not None:
             if type == "unwarn":
                 points = -points
-                from loguru import logger
-
-                logger.info(points)
             punishment.set_points(points=points)
         if type == "kick":
             punishment.set_mode(mode=mode)
