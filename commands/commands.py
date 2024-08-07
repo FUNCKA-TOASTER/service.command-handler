@@ -559,7 +559,8 @@ class Kick(BaseCommand):
             type="kick",
             comment=comment,
             mode=mode,
-            event=event,
+            bpid=event.peer.bpid,
+            uuid=target_id,
         )
         return True
 
@@ -595,7 +596,8 @@ class Warn(BaseCommand):
             type="warn",
             comment=comment,
             points=points,
-            event=event,
+            bpid=event.peer.bpid,
+            uuid=target_id,
         )
         return True
 
@@ -631,7 +633,8 @@ class Unwarn(BaseCommand):
             type="unwarn",
             comment=comment,
             points=-points,
-            event=event,
+            bpid=event.peer.bpid,
+            uuid=target_id,
         )
         return True
 
@@ -650,7 +653,8 @@ class Delete(BaseCommand):
         self._publish_punishment(
             type="delete",
             comment=comment,
-            event=event,
+            bpid=event.peer.bpid,
+            uuid=0,
         )
         return True
 

@@ -101,7 +101,8 @@ class BaseCommand(ABC):
         self,
         type: str,
         comment: str,
-        event: Event,
+        bpid: int,
+        uuid: int,
         mode: str = "local",
         points: Optional[int] = None,
     ) -> None:
@@ -119,7 +120,7 @@ class BaseCommand(ABC):
         else:
             punishment.set_cmids(cmids=[])
 
-        punishment.set_target(bpid=event.peer.bpid, uuid=event.user.uuid)
+        punishment.set_target(bpid=bpid, uuid=uuid)
 
         if type == "warn" and points is not None:
             punishment.set_points(points=points * coeff)
