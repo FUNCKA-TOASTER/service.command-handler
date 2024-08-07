@@ -106,11 +106,6 @@ class BaseCommand(ABC):
         mode: str = "local",
         points: Optional[int] = None,
     ) -> None:
-        coeff = 1
-        if type == "unwarn":
-            type = "warn"
-            coeff = -1
-
         punishment = Punishment(type=type, comment=comment)
 
         if "reply" in event.message.attachments:
@@ -122,8 +117,10 @@ class BaseCommand(ABC):
 
         punishment.set_target(bpid=event.peer.bpid, uuid=target_id)
 
-        if type == "warn" and points is not None:
-            punishment.set_points(points=points * coeff)
+        if type in ("warn", "unwarn") and points is not None:
+            if type == "unwarn":
+                points = -points
+            punishment.set_points(points=points)
         if type == "kick":
             punishment.set_mode(mode=mode)
 
