@@ -108,12 +108,14 @@ class BaseCommand(ABC):
     ) -> None:
         punishment = Punishment(type=type, comment=comment)
 
-        if "reply" in event.message.attachments:
-            punishment.set_cmids(cmids=event.message.reply.cmid)
-        elif "forward" in event.message.attachments:
-            punishment.set_cmids(cmids=[reply.cmid for reply in event.message.forward])
-        else:
-            punishment.set_cmids(cmids=[])
+        punishment.set_cmids(cmids=[])
+        if type != "unwarn":
+            if "reply" in event.message.attachments:
+                punishment.set_cmids(cmids=event.message.reply.cmid)
+            elif "forward" in event.message.attachments:
+                punishment.set_cmids(
+                    cmids=[reply.cmid for reply in event.message.forward]
+                )
 
         punishment.set_target(bpid=event.peer.bpid, uuid=target_id)
 
