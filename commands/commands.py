@@ -590,7 +590,7 @@ class Warn(BaseCommand):
         if target_id == event.user.uuid:
             return False
 
-        comment = f"Модератор вынес предупреждение (в кол-ве: {points})."
+        comment = "Модератор вынес предупреждение."
         self._publish_punishment(
             type="warn",
             comment=comment,
@@ -626,7 +626,7 @@ class Unwarn(BaseCommand):
         if target_id == event.user.uuid:
             return False
 
-        comment = f"Модератор снял предупреждения (в кол-ве: {points})."
+        comment = "Модератор снял предупреждения."
         self._publish_punishment(
             type="unwarn",
             comment=comment,
