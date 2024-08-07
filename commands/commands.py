@@ -554,7 +554,7 @@ class Kick(BaseCommand):
         if target_id == event.user.uuid:
             return False
 
-        comment = "Модератор исключил вас из беседы."
+        comment = "Модератор исключил вас из беседы"
         self._publish_punishment(
             type="kick",
             comment=comment,
@@ -591,7 +591,7 @@ class Warn(BaseCommand):
         if target_id == event.user.uuid:
             return False
 
-        comment = "Модератор вынес предупреждение."
+        comment = "Модератор вынес предупреждение"
         self._publish_punishment(
             type="warn",
             comment=comment,
@@ -628,7 +628,7 @@ class Unwarn(BaseCommand):
         if target_id == event.user.uuid:
             return False
 
-        comment = "Модератор снял предупреждения."
+        comment = "Модератор снял предупреждения"
         self._publish_punishment(
             type="unwarn",
             comment=comment,
