@@ -1,6 +1,6 @@
-# ⚙️ SERVICE.COMMAND-HANDLE
+# ⚙️ SERVICE.COMMAND-HANDLER
 
-![main_img](https://github.com/STALCRAFT-FUNCKA/toaster.command-handling-service/assets/76991612/bbb5fee4-803e-4613-8f19-9acb5daf4e1e)
+![main_img](https://github.com/FUNCKA-TOASTER/service.command-handler/assets/76991612/bbb5fee4-803e-4613-8f19-9acb5daf4e1e)
 
 ## 📄 Информация
 
