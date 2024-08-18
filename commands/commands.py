@@ -646,7 +646,7 @@ class Delete(BaseCommand):
     NAME = "delete"
 
     def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
-        if not event.message.reply or not event.message.forward:
+        if not event.message.reply and not event.message.forward:
             return False
 
         comment = "Модератор удалил сообщения."
