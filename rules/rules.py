@@ -10,10 +10,10 @@ About:
 """
 
 from typing import List, Optional, Callable
-from toaster.broker.events import Event
+from funcka_bots.broker.events import Event
 from db import TOASTER_DB
-from toaster_utils.enums import UserPermission, PeerMark
-from toaster_utils.scripts import (
+from toaster.enums import UserPermission, PeerMark
+from toaster.scripts import (
     get_peer_mark,
     get_user_permission,
 )

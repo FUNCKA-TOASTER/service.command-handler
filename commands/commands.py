@@ -9,15 +9,15 @@ About:
 
 from typing import Optional, List
 from db import TOASTER_DB
-from toaster.broker.events import Event
-from toaster.keyboards import Keyboard, ButtonColor, Callback
-from toaster_utils.enums import (
+from funcka_bots.broker.events import Event
+from funcka_bots.keyboards import Keyboard, ButtonColor, Callback
+from toaster.enums import (
     UserPermission,
     PeerMark,
     LinkStatus,
     LinkType,
 )
-from toaster_utils.scripts import (
+from toaster.scripts import (
     get_user_warns,
     get_user_queue_status,
     insert_pattern,

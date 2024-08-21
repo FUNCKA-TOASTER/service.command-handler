@@ -12,8 +12,8 @@ from typing import Tuple, List, NoReturn, Optional, Any, Union
 from loguru import logger
 from vk_api import VkApi, VkApiError
 from db import TOASTER_DB
-from toaster.broker.events import Event
-from toaster_utils.scripts import get_log_peers
+from funcka_bots.broker.events import Event
+from toaster.scripts import get_log_peers
 from commands import command_list
 import config
 

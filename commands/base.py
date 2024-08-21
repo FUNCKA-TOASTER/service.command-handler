@@ -19,11 +19,11 @@ from abc import (
     abstractmethod,
 )
 from vk_api import VkApi
-from toaster.broker import (
+from funcka_bots.broker import (
     Publisher,
     build_connection,
 )
-from toaster.broker.events import (
+from funcka_bots.broker.events import (
     Event,
     Punishment,
 )
