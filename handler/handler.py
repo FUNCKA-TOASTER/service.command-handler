@@ -13,6 +13,7 @@ from loguru import logger
 from vk_api import VkApi, VkApiError
 from db import TOASTER_DB
 from funcka_bots.broker.events import Event
+from funcka_bots.handler import ABCHandler
 from toaster.scripts import get_log_peers
 from commands import command_list
 import config
@@ -22,7 +23,7 @@ CommandData = Tuple[str, List[str]]
 ExecResult = Optional[Union[bool, NoReturn]]
 
 
-class CommandHandler:
+class CommandHandler(ABCHandler):
     """Command handler class."""
 
     def __call__(self, event: Event) -> None:
