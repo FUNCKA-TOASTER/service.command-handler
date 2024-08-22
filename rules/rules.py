@@ -10,7 +10,7 @@ About:
 """
 
 from typing import List, Optional, Callable
-from funcka_bots.broker.events import Event
+from funcka_bots.broker.events import BaseEvent
 from db import TOASTER_DB
 from toaster.enums import UserPermission, PeerMark
 from toaster.scripts import (
@@ -38,7 +38,7 @@ def requires_permission(permission_lvl: UserPermission) -> Callable:
     def decorator(obj: object):
         if not isinstance(obj, type):
 
-            def wrapper(name: str, args: Optional[List[str]], event: Event):
+            def wrapper(name: str, args: Optional[List[str]], event: BaseEvent):
                 user_permission = get_user_permission(
                     db_instance=TOASTER_DB,
                     uuid=event.user.uuid,
@@ -55,7 +55,7 @@ def requires_permission(permission_lvl: UserPermission) -> Callable:
         else:
             original = obj.__call__
 
-            def new_call(self, name: str, args: Optional[List[str]], event: Event):
+            def new_call(self, name: str, args: Optional[List[str]], event: BaseEvent):
                 user_permission = get_user_permission(
                     db_instance=TOASTER_DB,
                     uuid=event.user.uuid,
@@ -92,7 +92,7 @@ def requires_mark(*peer_marks: PeerMark) -> Callable:
     def decorator(obj: object):
         if not isinstance(obj, type):
 
-            def wrapper(name: str, args: Optional[List[str]], event: Event):
+            def wrapper(name: str, args: Optional[List[str]], event: BaseEvent):
                 mark = get_peer_mark(
                     db_instance=TOASTER_DB,
                     bpid=event.peer.bpid,
@@ -109,7 +109,7 @@ def requires_mark(*peer_marks: PeerMark) -> Callable:
         else:
             original = obj.__call__
 
-            def new_call(self, name: str, args: Optional[List[str]], event: Event):
+            def new_call(self, name: str, args: Optional[List[str]], event: BaseEvent):
                 mark = get_peer_mark(
                     db_instance=TOASTER_DB,
                     bpid=event.peer.bpid,
@@ -149,7 +149,7 @@ def requires_attachments(*attachments: str) -> Callable:
     def decorator(obj: object):
         if not isinstance(obj, type):
 
-            def wrapper(name: str, args: Optional[List[str]], event: Event):
+            def wrapper(name: str, args: Optional[List[str]], event: BaseEvent):
                 if set(attachments).issubset(event.message.attachments):
                     return obj(name, args, event)
 
@@ -161,7 +161,7 @@ def requires_attachments(*attachments: str) -> Callable:
         else:
             original = obj.__call__
 
-            def new_call(self, name: str, args: Optional[List[str]], event: Event):
+            def new_call(self, name: str, args: Optional[List[str]], event: BaseEvent):
                 if set(attachments) & set(event.message.attachments):
                     return original(self, name, args, event)
 
