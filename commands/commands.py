@@ -9,7 +9,7 @@ About:
 
 from typing import Optional, List
 from db import TOASTER_DB
-from funcka_bots.broker.events import Event
+from funcka_bots.broker.events import BaseEvent
 from funcka_bots.keyboards import Keyboard, ButtonColor, Callback
 from toaster.enums import (
     UserPermission,
@@ -36,7 +36,7 @@ from .base import BaseCommand
 class Mark(BaseCommand):
     NAME = "mark"
 
-    def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
+    def _handle(self, name: str, args: Optional[List[str]], event: BaseEvent) -> bool:
         answer_text = (
             "⚠️ Вы хотите задать метку беседе? \n\n"
             "Выберите необходимое дествие из меню ниже:"
@@ -91,7 +91,7 @@ class Mark(BaseCommand):
 class Permission(BaseCommand):
     NAME = "permission"
 
-    def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
+    def _handle(self, name: str, args: Optional[List[str]], event: BaseEvent) -> bool:
         if not args or not self.is_tag(user_tag := args[0]):
             return False
 
@@ -164,7 +164,7 @@ class Permission(BaseCommand):
 class Say(BaseCommand):
     NAME = "say"
 
-    def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
+    def _handle(self, name: str, args: Optional[List[str]], event: BaseEvent) -> bool:
         if not args:
             return False
 
@@ -183,7 +183,7 @@ class Say(BaseCommand):
 class Game(BaseCommand):
     NAME = "game"
 
-    def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
+    def _handle(self, name: str, args: Optional[List[str]], event: BaseEvent) -> bool:
         answer_text = "🎲 Потянуло на азарт? :)\n\n" "Выберите игру из списка ниже:"
 
         keyboard = (
@@ -230,7 +230,7 @@ class Game(BaseCommand):
 class Copy(BaseCommand):
     NAME = "copy"
 
-    def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
+    def _handle(self, name: str, args: Optional[List[str]], event: BaseEvent) -> bool:
         self.api.messages.send(
             peer_ids=event.peer.bpid,
             random_id=0,
@@ -244,7 +244,7 @@ class Copy(BaseCommand):
 class Settings(BaseCommand):
     NAME = "settings"
 
-    def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
+    def _handle(self, name: str, args: Optional[List[str]], event: BaseEvent) -> bool:
         answer_text = "🚸 Выберите необходимую группу настроек:"
 
         keyboard = (
@@ -293,7 +293,7 @@ class Settings(BaseCommand):
 class Delay(BaseCommand):
     NAME = "delay"
 
-    def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
+    def _handle(self, name: str, args: Optional[List[str]], event: BaseEvent) -> bool:
         answer_text = "🚸 Выберите настройку:"
 
         keyboard = (
@@ -359,7 +359,7 @@ class Delay(BaseCommand):
 class Expire(BaseCommand):
     NAME = "expire"
 
-    def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
+    def _handle(self, name: str, args: Optional[List[str]], event: BaseEvent) -> bool:
         answer_text = "🚸 Выберите зону:"
 
         keyboard = (
@@ -426,7 +426,7 @@ class Expire(BaseCommand):
 class Punishment(BaseCommand):
     NAME = "punishment"
 
-    def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
+    def _handle(self, name: str, args: Optional[List[str]], event: BaseEvent) -> bool:
         answer_text = "🚸 Выберите необходимую группу настроек:"
 
         keyboard = (
@@ -474,7 +474,7 @@ class Punishment(BaseCommand):
 class Profile(BaseCommand):
     NAME = "profile"
 
-    def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
+    def _handle(self, name: str, args: Optional[List[str]], event: BaseEvent) -> bool:
         answer_text = f"🚸 Профиль: [id{event.user.uuid}|{event.user.name}] \n"
 
         warn_info = get_user_warns(
@@ -533,7 +533,7 @@ class Profile(BaseCommand):
 class Kick(BaseCommand):
     NAME = "kick"
 
-    def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
+    def _handle(self, name: str, args: Optional[List[str]], event: BaseEvent) -> bool:
         if args and self.is_tag(args[0]):
             target_id = self.id_from_tag(args[0])
             cmid = None
@@ -573,7 +573,7 @@ class Kick(BaseCommand):
 class Warn(BaseCommand):
     NAME = "warn"
 
-    def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
+    def _handle(self, name: str, args: Optional[List[str]], event: BaseEvent) -> bool:
         if args and self.is_tag(args[0]):
             target_id = self.id_from_tag(args[0])
             cmid = None
@@ -613,7 +613,7 @@ class Warn(BaseCommand):
 class Unwarn(BaseCommand):
     NAME = "unwarn"
 
-    def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
+    def _handle(self, name: str, args: Optional[List[str]], event: BaseEvent) -> bool:
         if args and self.is_tag(args[0]):
             target_id = self.id_from_tag(args[0])
             cmid = None
@@ -654,7 +654,7 @@ class Unwarn(BaseCommand):
 class Delete(BaseCommand):
     NAME = "delete"
 
-    def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
+    def _handle(self, name: str, args: Optional[List[str]], event: BaseEvent) -> bool:
         if not event.message.reply and not event.message.forward:
             return False
 
@@ -679,7 +679,7 @@ class Delete(BaseCommand):
 class AddLinkPattern(BaseCommand):
     NAME = "alp"
 
-    def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
+    def _handle(self, name: str, args: Optional[List[str]], event: BaseEvent) -> bool:
         if args:
             pattern_type = LinkType(args[0].lower())
             pattern_status = LinkStatus(args[1].lower())
@@ -703,7 +703,7 @@ class AddLinkPattern(BaseCommand):
 class AddCurseWord(BaseCommand):
     NAME = "acw"
 
-    def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
+    def _handle(self, name: str, args: Optional[List[str]], event: BaseEvent) -> bool:
         if args:
             new_word = args[0].lower()
             insert_cursed(
