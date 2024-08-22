@@ -23,10 +23,7 @@ from funcka_bots.broker import (
     Publisher,
     build_connection,
 )
-from funcka_bots.broker.events import (
-    Event,
-    Punishment,
-)
+from funcka_bots.broker.events import BaseEvent, event_builder
 import config
 
 
@@ -39,17 +36,17 @@ class BaseCommand(ABC):
     def __init__(self, api: VkApi) -> None:
         self.api = api
 
-    def __call__(self, name: str, args: Optional[List[str]], event: Event) -> bool:
+    def __call__(self, name: str, args: Optional[List[str]], event: BaseEvent) -> bool:
         return self._handle(name, args, event)
 
     @abstractmethod
-    def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
+    def _handle(self, name: str, args: Optional[List[str]], event: BaseEvent) -> bool:
         """The main function of command execution.
 
         Args:
             name (str): Comamnd name.
             args (Optional[List[str]]): Command arguments.
-            event (Event): Custom Event object.
+            event (BaseEvent): Custom BaseEvent object.
 
         Returns:
             bool: Execution status.
@@ -99,31 +96,31 @@ class BaseCommand(ABC):
 
     def _publish_punishment(
         self,
-        type: str,
-        comment: str,
-        target_id: int,
-        event: Event,
+        punishment_type: str,
+        punishment_comment: str,
+        event: BaseEvent,
+        target_id: int = 0,
+        cmid: Optional[int] = None,
         mode: str = "local",
         points: Optional[int] = None,
     ) -> None:
-        punishment = Punishment(type=type, comment=comment)
-
-        punishment.set_cmids(cmids=[])
-        if type != "unwarn":
-            if "reply" in event.message.attachments:
-                punishment.set_cmids(cmids=event.message.reply.cmid)
-            elif "forward" in event.message.attachments:
-                punishment.set_cmids(
-                    cmids=[reply.cmid for reply in event.message.forward]
-                )
-
-        punishment.set_target(bpid=event.peer.bpid, uuid=target_id)
-
-        if type in ("warn", "unwarn") and points is not None:
-            if type == "unwarn":
-                points = -points
-            punishment.set_points(points=points)
-        if type == "kick":
-            punishment.set_mode(mode=mode)
+        punishment = event_builder.build_punishment(
+            punishment_type=punishment_type,
+            punishment_comment=punishment_comment,
+            peer=dict(event.peer._asdict()),
+            user={
+                "uuid": target_id,
+                "name": "Some User",
+                "firstname": "Some",
+                "lastname": "User",
+                "nick": "someuser",
+            },
+            message=cmid
+            if cmid is None
+            else {"cmid": cmid, "text": "", "attachemnts": []},
+            warn={"points": points} if punishment_type == "warn" else None,
+            unwarn={"points": points * -1} if punishment_type == "unwarn" else None,
+            kick={"mode": mode} if punishment_type == "kick" else None,
+        )
 
         self.publisher.publish(punishment, "punishment")

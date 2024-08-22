@@ -536,6 +536,7 @@ class Kick(BaseCommand):
     def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
         if args and self.is_tag(args[0]):
             target_id = self.id_from_tag(args[0])
+            cmid = None
             if len(args) > 1:
                 mode = "global" if args[1] == "global" else "local"
             else:
@@ -543,6 +544,7 @@ class Kick(BaseCommand):
 
         elif event.message.reply:
             target_id = event.message.reply.uuid
+            cmid = event.message.reply.cmid
             if len(args) > 0:
                 mode = "global" if args[0] == "global" else "local"
             else:
@@ -556,11 +558,12 @@ class Kick(BaseCommand):
 
         comment = "Модератор исключил вас из беседы"
         self._publish_punishment(
-            type="kick",
-            comment=comment,
+            punishment_type="kick",
+            punishment_comment=comment,
             mode=mode,
             event=event,
             target_id=target_id,
+            cmid=cmid,
         )
         return True
 
@@ -573,6 +576,7 @@ class Warn(BaseCommand):
     def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
         if args and self.is_tag(args[0]):
             target_id = self.id_from_tag(args[0])
+            cmid = None
             if len(args) > 1:
                 points = int(args[1]) if args[1].isnumeric() else 1
             else:
@@ -580,6 +584,7 @@ class Warn(BaseCommand):
 
         elif event.message.reply:
             target_id = event.message.reply.uuid
+            cmid = event.message.reply.cmid
             if len(args) > 0:
                 points = int(args[0]) if args[0].isnumeric() else 1
             else:
@@ -593,11 +598,12 @@ class Warn(BaseCommand):
 
         comment = "Модератор вынес предупреждение"
         self._publish_punishment(
-            type="warn",
-            comment=comment,
+            punishment_type="warn",
+            punishment_comment=comment,
             points=points,
             event=event,
             target_id=target_id,
+            cmid=cmid,
         )
         return True
 
@@ -610,6 +616,7 @@ class Unwarn(BaseCommand):
     def _handle(self, name: str, args: Optional[List[str]], event: Event) -> bool:
         if args and self.is_tag(args[0]):
             target_id = self.id_from_tag(args[0])
+            cmid = None
             if len(args) > 1:
                 points = int(args[1]) if args[1].isnumeric() else 1
             else:
@@ -617,6 +624,7 @@ class Unwarn(BaseCommand):
 
         elif event.message.reply:
             target_id = event.message.reply.uuid
+            cmid = event.message.reply.cmid
             if len(args) > 0:
                 points = int(args[0]) if args[0].isnumeric() else 1
             else:
@@ -630,11 +638,12 @@ class Unwarn(BaseCommand):
 
         comment = "Модератор снял предупреждение"
         self._publish_punishment(
-            type="unwarn",
-            comment=comment,
+            punishment_type="unwarn",
+            punishment_comment=comment,
             points=points,
             event=event,
             target_id=target_id,
+            cmid=cmid,
         )
         return True
 
@@ -649,13 +658,17 @@ class Delete(BaseCommand):
         if not event.message.reply and not event.message.forward:
             return False
 
+        cmids = [event.message.reply.cmid] or [
+            fwd.cmid for fwd in event.message.forward
+        ]
         comment = "Модератор удалил сообщения."
-        self._publish_punishment(
-            type="delete",
-            comment=comment,
-            event=event,
-            target_id=0,
-        )
+        for cmid in cmids:
+            self._publish_punishment(
+                punishment_type="delete",
+                punishment_comment=comment,
+                event=event,
+                cmid=cmid,
+            )
         return True
 
 

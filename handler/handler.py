@@ -12,7 +12,7 @@ from typing import Tuple, List, NoReturn, Optional, Any, Union
 from loguru import logger
 from vk_api import VkApi, VkApiError
 from db import TOASTER_DB
-from funcka_bots.broker.events import Event
+from funcka_bots.broker.events import BaseEvent
 from funcka_bots.handler import ABCHandler
 from toaster.scripts import get_log_peers
 from commands import command_list
@@ -26,7 +26,7 @@ ExecResult = Optional[Union[bool, NoReturn]]
 class CommandHandler(ABCHandler):
     """Command handler class."""
 
-    def __call__(self, event: Event) -> None:
+    def __call__(self, event: BaseEvent) -> None:
         try:
             name, args = self._recognize_command(event)
             if self._execute(name, args, event):
@@ -43,7 +43,7 @@ class CommandHandler(ABCHandler):
         finally:
             self._delete_own_message(event)
 
-    def _execute(self, name: str, args: List[str], event: Event) -> ExecResult:
+    def _execute(self, name: str, args: List[str], event: BaseEvent) -> ExecResult:
         selected = command_list.get(name)
         if selected is None:
             raise KeyError(f"Could not recognize command '{name}'")
@@ -52,7 +52,7 @@ class CommandHandler(ABCHandler):
         return comamnd_obj(name, args, event)
 
     @staticmethod
-    def _recognize_command(event: Event) -> CommandData:
+    def _recognize_command(event: BaseEvent) -> CommandData:
         command_text = event.message.text
         if not command_text:
             raise ValueError("Message does not contain any text.")
@@ -63,7 +63,7 @@ class CommandHandler(ABCHandler):
 
         return (command, arguments)
 
-    def _delete_own_message(self, event: Event):
+    def _delete_own_message(self, event: BaseEvent):
         try:
             api = self._get_api()
             api.messages.delete(
@@ -75,7 +75,7 @@ class CommandHandler(ABCHandler):
         except VkApiError as error:
             logger.info(f"Could not delete own command message: {error}")
 
-    def _alert_about_execution(self, event: Event, name: str, args: List[str]):
+    def _alert_about_execution(self, event: BaseEvent, name: str, args: List[str]):
         answer_text = (
             f"[id{event.user.uuid}|{event.user.name}] вызвал команду. \n"
             f"Беседа: {event.peer.name} \n"
