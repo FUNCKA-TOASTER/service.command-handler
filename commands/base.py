@@ -117,7 +117,7 @@ class BaseCommand(ABC):
             },
             message=cmid
             if cmid is None
-            else {"cmid": cmid, "text": "", "attachemnts": []},
+            else {"cmid": cmid, "text": "", "attachments": []},
             warn={"points": points} if punishment_type == "warn" else None,
             unwarn={"points": points * -1} if punishment_type == "unwarn" else None,
             kick={"mode": mode} if punishment_type == "kick" else None,
