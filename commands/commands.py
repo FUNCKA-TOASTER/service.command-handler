@@ -658,9 +658,11 @@ class Delete(BaseCommand):
         if not event.message.reply and not event.message.forward:
             return False
 
-        cmids = [event.message.reply.cmid] or [
-            fwd.cmid for fwd in event.message.forward
-        ]
+        if event.message.reply:
+            cmids = [event.message.reply.cmid]
+        else:
+            cmids = [fwd.cmid for fwd in event.message.forward]
+
         comment = "Модератор удалил сообщения."
         for cmid in cmids:
             self._publish_punishment(
