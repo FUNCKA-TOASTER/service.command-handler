@@ -11,8 +11,7 @@ import json
 from typing import Tuple, List, NoReturn, Optional, Any, Union
 from loguru import logger
 from vk_api import VkApi, VkApiError
-from db import TOASTER_DB
-from funcka_bots.broker.events import BaseEvent
+from funcka_bots.events import BaseEvent
 from funcka_bots.handler import ABCHandler
 from toaster.scripts import get_log_peers
 from commands import command_list
@@ -99,7 +98,7 @@ class CommandHandler(ABCHandler):
 
         api = self._get_api()
 
-        for bpid in get_log_peers(db_instance=TOASTER_DB):
+        for bpid in get_log_peers():
             api.messages.send(
                 peer_ids=bpid,
                 random_id=0,
@@ -109,7 +108,7 @@ class CommandHandler(ABCHandler):
 
     def _get_api(self) -> Any:
         session = VkApi(
-            token=config.TOKEN,
-            api_version=config.API_VERSION,
+            token=config.VK_GROUP_TOKEN,
+            api_version=config.VK_API_VERSION,
         )
         return session.get_api()

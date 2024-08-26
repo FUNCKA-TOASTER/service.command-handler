@@ -8,22 +8,11 @@ About:
 """
 
 import re
-from typing import (
-    Union,
-    Optional,
-    Tuple,
-    List,
-)
-from abc import (
-    ABC,
-    abstractmethod,
-)
+from typing import Union, Optional, Tuple, List
+from abc import ABC, abstractmethod
 from vk_api import VkApi
-from funcka_bots.broker import (
-    Publisher,
-    build_connection,
-)
-from funcka_bots.broker.events import BaseEvent, event_builder
+from funcka_bots.broker import Publisher
+from funcka_bots.events import BaseEvent, event_builder
 import config
 
 
@@ -31,7 +20,7 @@ class BaseCommand(ABC):
     """Base class of the bot command."""
 
     NAME = "None"
-    publisher = Publisher(build_connection(config.REDIS_CREDS))
+    publisher = Publisher(creds=config.BROKER_CREDS)
 
     def __init__(self, api: VkApi) -> None:
         self.api = api

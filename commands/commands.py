@@ -675,7 +675,7 @@ class Delete(BaseCommand):
 
 
 # TODO: Подумать, как можно фиксануть
-# Опасные команды. не использовать кроме тех, кро знает как
+# Опасные команды. не использовать кроме тех, кто знает как
 @requires_mark(PeerMark.CHAT)
 @requires_permission(UserPermission.administrator)
 class AddLinkPattern(BaseCommand):

@@ -10,8 +10,7 @@ About:
 """
 
 from typing import List, Optional, Callable
-from funcka_bots.broker.events import BaseEvent
-from db import TOASTER_DB
+from funcka_bots.events import BaseEvent
 from toaster.enums import UserPermission, PeerMark
 from toaster.scripts import (
     get_peer_mark,
@@ -40,9 +39,7 @@ def requires_permission(permission_lvl: UserPermission) -> Callable:
 
             def wrapper(name: str, args: Optional[List[str]], event: BaseEvent):
                 user_permission = get_user_permission(
-                    db_instance=TOASTER_DB,
-                    uuid=event.user.uuid,
-                    bpid=event.peer.bpid,
+                    uuid=event.user.uuid, bpid=event.peer.bpid
                 )
                 if user_permission.value >= permission_lvl.value:
                     return obj(name, args, event)
@@ -57,9 +54,7 @@ def requires_permission(permission_lvl: UserPermission) -> Callable:
 
             def new_call(self, name: str, args: Optional[List[str]], event: BaseEvent):
                 user_permission = get_user_permission(
-                    db_instance=TOASTER_DB,
-                    uuid=event.user.uuid,
-                    bpid=event.peer.bpid,
+                    uuid=event.user.uuid, bpid=event.peer.bpid
                 )
                 if user_permission.value >= permission_lvl.value:
                     return original(self, name, args, event)
@@ -93,10 +88,7 @@ def requires_mark(*peer_marks: PeerMark) -> Callable:
         if not isinstance(obj, type):
 
             def wrapper(name: str, args: Optional[List[str]], event: BaseEvent):
-                mark = get_peer_mark(
-                    db_instance=TOASTER_DB,
-                    bpid=event.peer.bpid,
-                )
+                mark = get_peer_mark(bpid=event.peer.bpid)
                 required = [peer_mark.value for peer_mark in peer_marks]
                 if mark.value in required:
                     return obj(name, args, event)
@@ -110,10 +102,7 @@ def requires_mark(*peer_marks: PeerMark) -> Callable:
             original = obj.__call__
 
             def new_call(self, name: str, args: Optional[List[str]], event: BaseEvent):
-                mark = get_peer_mark(
-                    db_instance=TOASTER_DB,
-                    bpid=event.peer.bpid,
-                )
+                mark = get_peer_mark(bpid=event.peer.bpid)
                 required = [peer_mark.value for peer_mark in peer_marks]
                 if mark.value in required:
                     return original(self, name, args, event)

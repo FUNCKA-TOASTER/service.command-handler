@@ -12,10 +12,7 @@ About:
 
 import sys
 from loguru import logger
-from funcka_bots.broker import (
-    Subscriber,
-    build_connection,
-)
+from funcka_bots.broker import Subscriber
 from handler import CommandHandler
 import config
 
@@ -34,10 +31,10 @@ def main():
     """Program entry point."""
 
     setup_logger()
-    subscriber = Subscriber(client=build_connection(config.REDIS_CREDS))
+    subscriber = Subscriber(creds=config.BROKER_CREDS)
     handler = CommandHandler()
 
-    for event in subscriber.listen(channel_name=config.CHANNEL_NAME):
+    for event in subscriber.listen(queue_name=config.BROKER_QUEUE_NAME):
         handler(event)
 
 
