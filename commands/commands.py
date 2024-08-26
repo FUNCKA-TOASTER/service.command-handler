@@ -8,8 +8,7 @@ About:
 """
 
 from typing import Optional, List
-from db import TOASTER_DB
-from funcka_bots.broker.events import BaseEvent
+from funcka_bots.events import BaseEvent
 from funcka_bots.keyboards import Keyboard, ButtonColor, Callback
 from toaster.enums import (
     UserPermission,
@@ -150,11 +149,7 @@ class Permission(BaseCommand):
         )
 
         cmid = send_info[0]["conversation_message_id"]
-        open_menu_session(
-            db_instance=TOASTER_DB,
-            bpid=event.peer.bpid,
-            cmid=cmid,
-        )
+        open_menu_session(bpid=event.peer.bpid, cmid=cmid)
 
         return True
 
@@ -215,11 +210,7 @@ class Game(BaseCommand):
         )
 
         cmid = send_info[0]["conversation_message_id"]
-        open_menu_session(
-            db_instance=TOASTER_DB,
-            bpid=event.peer.bpid,
-            cmid=cmid,
-        )
+        open_menu_session(bpid=event.peer.bpid, cmid=cmid)
 
         return True
 
@@ -279,11 +270,7 @@ class Settings(BaseCommand):
         )
 
         cmid = send_info[0]["conversation_message_id"]
-        open_menu_session(
-            db_instance=TOASTER_DB,
-            bpid=event.peer.bpid,
-            cmid=cmid,
-        )
+        open_menu_session(bpid=event.peer.bpid, cmid=cmid)
 
         return True
 
@@ -345,11 +332,7 @@ class Delay(BaseCommand):
         )
 
         cmid = send_info[0]["conversation_message_id"]
-        open_menu_session(
-            db_instance=TOASTER_DB,
-            bpid=event.peer.bpid,
-            cmid=cmid,
-        )
+        open_menu_session(bpid=event.peer.bpid, cmid=cmid)
 
         return True
 
@@ -412,11 +395,7 @@ class Expire(BaseCommand):
         )
 
         cmid = send_info[0]["conversation_message_id"]
-        open_menu_session(
-            db_instance=TOASTER_DB,
-            bpid=event.peer.bpid,
-            cmid=cmid,
-        )
+        open_menu_session(bpid=event.peer.bpid, cmid=cmid)
 
         return True
 
@@ -461,11 +440,7 @@ class Punishment(BaseCommand):
         )
 
         cmid = send_info[0]["conversation_message_id"]
-        open_menu_session(
-            db_instance=TOASTER_DB,
-            bpid=event.peer.bpid,
-            cmid=cmid,
-        )
+        open_menu_session(bpid=event.peer.bpid, cmid=cmid)
 
         return True
 
@@ -477,11 +452,7 @@ class Profile(BaseCommand):
     def _handle(self, name: str, args: Optional[List[str]], event: BaseEvent) -> bool:
         answer_text = f"🚸 Профиль: [id{event.user.uuid}|{event.user.name}] \n"
 
-        warn_info = get_user_warns(
-            db_instance=TOASTER_DB,
-            uuid=event.user.uuid,
-            bpid=event.peer.bpid,
-        )
+        warn_info = get_user_warns(uuid=event.user.uuid, bpid=event.peer.bpid)
         if warn_info:
             warn_count, warn_expire = warn_info
             answer_text += f"Предупреждения: {warn_count} \n"
@@ -491,11 +462,7 @@ class Profile(BaseCommand):
 
         answer_text += "-- \n"
 
-        queue_expire = get_user_queue_status(
-            db_instance=TOASTER_DB,
-            uuid=event.user.uuid,
-            bpid=event.peer.bpid,
-        )
+        queue_expire = get_user_queue_status(uuid=event.user.uuid, bpid=event.peer.bpid)
         if queue_expire:
             answer_text += "В очереди: Да \n"
             answer_text += f"Истекает: {queue_expire} \n"
@@ -519,11 +486,7 @@ class Profile(BaseCommand):
         )
 
         cmid = send_info[0]["conversation_message_id"]
-        open_menu_session(
-            db_instance=TOASTER_DB,
-            bpid=event.peer.bpid,
-            cmid=cmid,
-        )
+        open_menu_session(bpid=event.peer.bpid, cmid=cmid)
 
         return True
 
@@ -688,7 +651,6 @@ class AddLinkPattern(BaseCommand):
             pattern = args[2].lower()
 
             insert_pattern(
-                db_instance=TOASTER_DB,
                 bpid=event.peer.bpid,
                 type=pattern_type,
                 status=pattern_status,
@@ -708,11 +670,7 @@ class AddCurseWord(BaseCommand):
     def _handle(self, name: str, args: Optional[List[str]], event: BaseEvent) -> bool:
         if args:
             new_word = args[0].lower()
-            insert_cursed(
-                db_instance=TOASTER_DB,
-                bpid=event.peer.bpid,
-                word=new_word,
-            )
+            insert_cursed(bpid=event.peer.bpid, word=new_word)
 
             return True
 
