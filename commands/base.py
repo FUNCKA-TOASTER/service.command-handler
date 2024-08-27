@@ -11,16 +11,14 @@ import re
 from typing import Union, Optional, Tuple, List
 from abc import ABC, abstractmethod
 from vk_api import VkApi
-from funcka_bots.broker import Publisher
 from funcka_bots.events import BaseEvent, event_builder
-import config
+from toaster import broker
 
 
 class BaseCommand(ABC):
     """Base class of the bot command."""
 
     NAME = "None"
-    publisher = Publisher(creds=config.BROKER_CREDS)
 
     def __init__(self, api: VkApi) -> None:
         self.api = api
@@ -112,4 +110,4 @@ class BaseCommand(ABC):
             kick={"mode": mode} if punishment_type == "kick" else None,
         )
 
-        self.publisher.publish(punishment, "punishment")
+        broker.publish(punishment, "punishment")
