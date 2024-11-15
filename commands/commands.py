@@ -353,7 +353,7 @@ class Expire(BaseCommand):
                     label="Зеленая зона",
                     payload={
                         "action_name": "change_delay",
-                        "setting": "green_zone",
+                        "setting_name": "green_zone",
                     },
                 ),
                 ButtonColor.PRIMARY,
