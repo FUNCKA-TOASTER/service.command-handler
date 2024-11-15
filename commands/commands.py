@@ -364,7 +364,7 @@ class Expire(BaseCommand):
                     label="Жёлтая зона",
                     payload={
                         "action_name": "change_delay",
-                        "setting": "yellow_zone",
+                        "setting_name": "yellow_zone",
                     },
                 ),
                 ButtonColor.PRIMARY,
@@ -375,7 +375,7 @@ class Expire(BaseCommand):
                     label="Красная зона",
                     payload={
                         "action_name": "change_delay",
-                        "setting": "red_zone",
+                        "setting_name": "red_zone",
                     },
                 ),
                 ButtonColor.PRIMARY,
